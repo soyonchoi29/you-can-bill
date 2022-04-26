@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.*;
 import java.io.*;
+import java.awt.image.*;
+import javax.imageio.ImageIO;
+import java.awt.FlowLayout;
 
-public class Main extends JFrame{
+public class Main extends JPanel{
     public Main() {
         JFrame frame = new JFrame("Recieptify");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,13 +32,23 @@ public class Main extends JFrame{
                  int returnVal = chooser.showOpenDialog(frame);
                  if(returnVal == JFileChooser.APPROVE_OPTION) {
                      System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
-                     System.out.println(chooser.getSelectedFile().getPath());
+                     //try{
+                         //BufferedImage image = ImageIO.read(new File("Images/TestInput.jpg"));
+                        // JLabel picLabel = new JLabel(new ImageIcon(image));
+                        // panel.add(picLabel);
+                        // frame.add(panel);
+                         //frame.repaint(); // This all doesn't work
+                        // System.out.println(chooser.getSelectedFile().getPath());
+                     //} catch (IOException error) {}
+
+                     File input = new File(chooser.getSelectedFile().getPath());
+                     ImagePopup.drawNew(input); // working
+
                      //Scanner input = new Scanner(chooser.getSelectedFile().getPath());
-                     File input = new File(chooser.getSelectedFile().getPath()); // hardcoding doesn't seem to work here
-                     //ImageIcon image = new ImageIcon("C:\\Users\\kevin\\Documents\\COSC-112\\COSC112Final\\src\\Images\\TestInput.jpg");
+                     //ImageIcon image = new ImageIcon(input.getPath());
                      //JLabel label = new JLabel("", image, JLabel.CENTER);
                      //JPanel panel = new JPanel(new BorderLayout());
-                     //panel.add(label, BorderLayout.CENTER);
+                     //frame.add(label, BorderLayout.CENTER);
                  }
             }
         });
@@ -66,6 +79,7 @@ public class Main extends JFrame{
     }
     public static void main(String args[]) {
         new Main();
-        
+
     }
+
 }
