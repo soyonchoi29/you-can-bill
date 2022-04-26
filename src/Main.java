@@ -23,13 +23,19 @@ public class Main extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e){
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & JPEG Images", "jpg", "jpeg");
-                chooser.setFileFilter(filter);
-                int returnVal = chooser.showOpenDialog(frame);
-                if(returnVal == JFileChooser.APPROVE_OPTION) {
+                 JFileChooser chooser = new JFileChooser();
+                 FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & JPEG Images", "jpg", "jpeg");
+                 chooser.setFileFilter(filter);
+                 int returnVal = chooser.showOpenDialog(frame);
+                 if(returnVal == JFileChooser.APPROVE_OPTION) {
                      System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
-                }
+                     System.out.println(chooser.getSelectedFile().getPath());
+                     //File input = new File(chooser.getSelectedFile().getPath());
+                     ImageIcon image = new ImageIcon("C:\Users\kevin\Documents\COSC-112\COSC112Final\Images\TestInput.jpg"");
+                     JLabel label = new JLabel("", image, JLabel.CENTER);
+                     JPanel panel = new JPanel(new BorderLayout());
+                     panel.add(label, BorderLayout.CENTER);
+                 }
             }
         });
     
