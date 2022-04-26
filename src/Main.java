@@ -23,13 +23,13 @@ public class Main extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e){
-                 JFileChooser chooser = new JFileChooser();
-                 FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & JPEG Images", "jpg", "jpeg");
-                 chooser.setFileFilter(filter);
-                 int returnVal = chooser.showOpenDialog(frame);
-                 if(returnVal == JFileChooser.APPROVE_OPTION) {
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & JPEG Images", "jpg", "jpeg");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showOpenDialog(frame);
+                if(returnVal == JFileChooser.APPROVE_OPTION) {
                      System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
-                 }
+                }
             }
         });
     

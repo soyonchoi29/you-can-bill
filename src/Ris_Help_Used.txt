@@ -1,0 +1,12 @@
+https://stackoverflow.com/questions/25869768/addactionlistener-not-working
+Helped immensely with how to add actions for the buttons.
+
+https://www.codejava.net/java-se/swing/add-file-filter-for-jfilechooser-dialog
+I realized robustness was going to be an issue if people can choose just any image/file.
+This helped.
+
+https://docs.oracle.com/javase/tutorial/uiswing/components/button.html#abstractbutton
+https://docs.oracle.com/javase/tutorial/uiswing/components/menu.html
+https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
+These are documentations I used to help with the creation of the menu.
