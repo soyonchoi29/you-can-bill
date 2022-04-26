@@ -30,11 +30,12 @@ public class Main extends JFrame{
                  if(returnVal == JFileChooser.APPROVE_OPTION) {
                      System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
                      System.out.println(chooser.getSelectedFile().getPath());
-                     //File input = new File(chooser.getSelectedFile().getPath());
-                     ImageIcon image = new ImageIcon("C:\Users\kevin\Documents\COSC-112\COSC112Final\Images\TestInput.jpg"");
-                     JLabel label = new JLabel("", image, JLabel.CENTER);
-                     JPanel panel = new JPanel(new BorderLayout());
-                     panel.add(label, BorderLayout.CENTER);
+                     Scanner input = new Scanner(chooser.getSelectedFile().getPath());
+                     //File input = new File(chooser.getSelectedFile().getPath()); // hardcoding doesn't seem to work here
+                     //ImageIcon image = new ImageIcon("C:\\Users\\kevin\\Documents\\COSC-112\\COSC112Final\\src\\Images\\TestInput.jpg");
+                     //JLabel label = new JLabel("", image, JLabel.CENTER);
+                     //JPanel panel = new JPanel(new BorderLayout());
+                     //panel.add(label, BorderLayout.CENTER);
                  }
             }
         });
