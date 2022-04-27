@@ -55,11 +55,35 @@ public class Main extends JPanel{
     
         JMenu Menu2 = new JMenu("Enter Names");
         MenuBar.add(Menu2);
-        Menu2.addActionListener(new ActionListener(){
+        JButton addnames = new JButton("Add");
+        Menu2.add(addnames);
+        addnames.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e){
-                 
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(390, 300);
+                frame.setLocation(100, 150);
+                JLabel task = new JLabel("Enter Name");
+                task.setBounds(50, 50, 200, 30);
+                JTextField textfield = new JTextField();
+                textfield.setBounds(50, 100, 200, 30);
+                frame.add(task);
+                frame.add(textfield);
+                
+
+                //add a button
+                JButton submit = new JButton("Submit");
+                submit.setBounds(50, 150, 50, 30);
+                frame.add(submit);
+                submit.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent d) {
+                        // new Person(textfield.getText());
+                        // System.out.println(Person.Name);
+                    }
+                });
+                frame.setVisible(true);
             }
         });
 
