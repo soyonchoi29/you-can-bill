@@ -15,7 +15,7 @@ public class ImageChange {
         try{
             BufferedImage originalImage = ImageIO.read(input);
             BufferedImage croppedImage = originalImage.getSubimage(x, y, width, height);
-            return croppedImage;
+            return croppedImage; // Call cropimage and image stitch from imagepopup file most likely
         }catch(IOException error){return null;}
     }
 
