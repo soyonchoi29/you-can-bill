@@ -12,6 +12,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.lang.Math;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.*;
+import java.io.*;
+import java.awt.image.*;
+import javax.imageio.ImageIO;
+import java.awt.FlowLayout;
 
 public class ImagePopup {
     //public static void main(String[] args) throws IOException {
@@ -22,11 +31,11 @@ public class ImagePopup {
             JFrame frame = new JFrame("Selected receipt"); // change later???
             JPanel panel = new JPanel();
             BufferedImage myPicture = ImageIO.read(input);
-            Image resized = myPicture.getScaledInstance(500, 500, 2); // Resizes image to fit entire upload into JPanel
+            Image resized = myPicture.getScaledInstance(400, 400, 2); // Resizes image to fit entire upload into JPanel
 
             AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90), 250, 250); // ROTATE BY 90 (CAN CHANGE)
             AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR); // some sort of rotation option
-            BufferedImage rotated = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
+            BufferedImage rotated = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
             Graphics2D redraw = rotated.createGraphics(); // Turns rotated into Graphics2D object and draws it
             redraw.drawImage(resized, 0, 0, null);
             redraw.dispose();
@@ -38,6 +47,25 @@ public class ImagePopup {
             frame.setVisible(true); // will need to recenter receipt better most likely
             // Looking for while button not being pressed
             //Maybe some sort of an instructional popup
+            JButton rotate = new JButton("Rotate Image");
+            rotate.setBounds(0, 0, 50, 30);
+            panel.add(rotate);
+            rotate.addActionListener(new ActionListener(){
+
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90), 200, 200); // ROTATE BY 90 (CAN CHANGE)
+                    AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR); // some sort of rotation option
+                    BufferedImage rotated = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
+                    Graphics2D redraw = rotated.createGraphics(); // Turns rotated into Graphics2D object and draws it
+                    redraw.drawImage(resized, 0, 0, null);
+                    redraw.dispose();
+        
+                    JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
+                    panel.add(picLabel);
+                    frame.setVisible(true); // will need to recenter receipt better most likely
+                }
+            });
         } catch (IOException error) {}
     }
 }
