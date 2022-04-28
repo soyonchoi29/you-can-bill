@@ -32,23 +32,9 @@ public class Main extends JPanel{
                  int returnVal = chooser.showOpenDialog(frame);
                  if(returnVal == JFileChooser.APPROVE_OPTION) {
                      System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
-                     //try{
-                         //BufferedImage image = ImageIO.read(new File("Images/TestInput.jpg"));
-                        // JLabel picLabel = new JLabel(new ImageIcon(image));
-                        // panel.add(picLabel);
-                        // frame.add(panel);
-                         //frame.repaint(); // This all doesn't work
-                        // System.out.println(chooser.getSelectedFile().getPath());
-                     //} catch (IOException error) {}
 
                      File input = new File(chooser.getSelectedFile().getPath());
                      ImagePopup.drawNew(input); // working
-
-                     //Scanner input = new Scanner(chooser.getSelectedFile().getPath());
-                     //ImageIcon image = new ImageIcon(input.getPath());
-                     //JLabel label = new JLabel("", image, JLabel.CENTER);
-                     //JPanel panel = new JPanel(new BorderLayout());
-                     //frame.add(label, BorderLayout.CENTER);
                  }
             }
         });
