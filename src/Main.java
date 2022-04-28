@@ -8,7 +8,7 @@ import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.awt.FlowLayout;
 
-public class Main extends JPanel{
+public class Main extends JPanel {
     public Main() {
         JFrame frame = new JFrame("Recieptify");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,6 +87,7 @@ public class Main extends JPanel{
         frame.getContentPane().add(BorderLayout.NORTH, MenuBar);
         frame.setVisible(true);
     }
+
     public static void main(String args[]) {
         new Main();
 
