@@ -25,7 +25,7 @@ public class ImagePopup {
             Image resized = myPicture.getScaledInstance(500, 500, 2); // Resizes image to fit entire upload into JPanel
 
             AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90), 250, 250); // ROTATE BY 90 (CAN CHANGE)
-            AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+            AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR); // some sort of rotation option
             BufferedImage rotated = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
             Graphics2D redraw = rotated.createGraphics(); // Turns rotated into Graphics2D object and draws it
             redraw.drawImage(resized, 0, 0, null);
@@ -33,7 +33,7 @@ public class ImagePopup {
 
             JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
             panel.add(picLabel);
-            frame.add(panel);
+            frame.add(panel); // Button to rotate
             frame.setSize(500, 500); // perhaps cropping is drawing new jpanels on top or something
             frame.setVisible(true); // will need to recenter receipt better most likely
             // Looking for while button not being pressed
@@ -42,7 +42,7 @@ public class ImagePopup {
     }
 }
 
-//Based on https://www.javaexercise.com/java/add-an-image-to-a-jpanel - citation needed
+//Based on https://www.javaexercise.com/java/add-an-image-to-a-jpanel
 //https://docs.oracle.com/javase/7/docs/api/java/awt/Image.html#getScaledInstance(int,%20int,%20int)
 // https://mkyong.com/java/how-to-resize-an-image-in-java/
 //https://stackoverflow.com/questions/13605248/java-converting-image-to-bufferedimage
