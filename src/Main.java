@@ -8,23 +8,68 @@ import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
-public class Main extends JPanel {
-    ArrayList<Person> Peeps = new ArrayList<>();
-    public Main() {
+
+public class Main {
+    static ArrayList<Person> Peeps = new ArrayList<Person>();
+    
+    public static void main(String[] args) {
         JFrame frame = new JFrame("Recieptify");
+        
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 500);
-        frame.setBackground(Color.BLACK);
+        frame.setContentPane(new mainMenu(frame));
+        frame.pack();    
+        frame.setVisible(true);
+        
+    
+    }
+}
 
-        //creating the main menu
-        JMenuBar MenuBar = new JMenuBar();
+class mainMenu extends JPanel{
+    JFrame frame;
+    public mainMenu(JFrame f) {
+        frame = f;
+        frame.setSize(300, 300);
+        frame.setLayout(new BorderLayout());
+    
+        JButton inputImage = new JButton("Input Image");
+        inputImage.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                frame.setContentPane(new inputImage(frame));
+                f.setVisible(true);
+            }
+        });
 
-        JMenu Menu1 = new JMenu("Input Image");
-        MenuBar.add(Menu1);
-        JButton openfiles = new JButton("Open");
-        Menu1.add(openfiles);
-        openfiles.addActionListener(new ActionListener(){
+        JButton enterNames = new JButton("Enter Names");
+        enterNames.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                frame.setContentPane(new namePeople(frame));
+                f.setVisible(true);
+            }
+        });
 
+        JButton options = new JButton("Options");
+        options.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                frame.setContentPane(new pickOptions(frame));
+                f.setVisible(true);
+            }
+        });
+
+        add(inputImage);
+        add(enterNames);
+        add(options); 
+    }
+}
+
+
+class inputImage extends JPanel{
+    JFrame frame;
+    public inputImage(JFrame f) {
+        frame = f;
+        frame.setSize(300, 300);
+        frame.setLayout(new BorderLayout());
+        JButton openFiles= new JButton("Open");
+        openFiles.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
                  JFileChooser chooser = new JFileChooser();
@@ -32,25 +77,37 @@ public class Main extends JPanel {
                  chooser.setFileFilter(filter);
                  int returnVal = chooser.showOpenDialog(frame);
                  if(returnVal == JFileChooser.APPROVE_OPTION) {
-                     System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
+                    System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
 
-                     File input = new File(chooser.getSelectedFile().getPath());
-                     ImagePopup.drawNew(input); // working
+                    File input = new File(chooser.getSelectedFile().getPath());
+                    ImagePopup.drawNew(input); // working
                  }
             }
         });
-    
-        JMenu Menu2 = new JMenu("Enter Names");
-        MenuBar.add(Menu2);
-        JButton addnames = new JButton("Add");
-        Menu2.add(addnames);
-        addnames.addActionListener(new ActionListener(){
 
+        JButton mainMenu = new JButton("Main Menu");
+        mainMenu.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                frame.setContentPane(new mainMenu(frame));
+                f.setVisible(true);
+            }
+        });
+
+        add(openFiles);
+        add(mainMenu);
+    }
+}
+
+class namePeople extends JPanel{
+    JFrame frame;
+    public namePeople(JFrame f) {
+        frame = f;
+        frame.setSize(300, 300);
+        frame.setLayout(new BorderLayout());
+        JButton addNames = new JButton("People");
+        addNames.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(390, 300);
-                frame.setLocation(100, 150);
                 JLabel task = new JLabel("Enter Name");
                 task.setBounds(50, 50, 200, 30);
                 JTextField textfield = new JTextField();
@@ -62,35 +119,55 @@ public class Main extends JPanel {
                 //add a button
                 JButton submit = new JButton("Submit");
                 submit.setBounds(50, 150, 50, 30);
-                frame.add(submit);
+                
                 submit.addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent d) {
-                        Peeps.add(new Person(textfield.getText()));
+                        Main.Peeps.add(new Person(textfield.getText()));
+                        for(int i = 0; i < Main.Peeps.size(); i++) {
+                            System.out.println(Main.Peeps.get(i).getName());
+                        }
                     }
                 });
+                add(BorderLayout.SOUTH, submit);
                 frame.setVisible(true);
             }
         });
 
-        JMenu Menu3 = new JMenu("Pick Options");
-        MenuBar.add(Menu3);
-        JButton option1 = new JButton("Pay Yourself");
-        JButton option2 = new JButton("Split Evenly");
-        JButton option3 = new JButton("Random Payer");
-        Menu3.add(option1);
-        Menu3.add(option2);
-        Menu3.add(option3);
+        JButton mainMenu = new JButton("Main Menu");
+        mainMenu.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                frame.setContentPane(new mainMenu(frame));
+                f.setVisible(true);
+            }
+        });
 
-
-        //adding components to the frame
-        frame.getContentPane().add(BorderLayout.NORTH, MenuBar);
-        frame.setVisible(true);
+        add(BorderLayout.WEST, addNames);
+        add(BorderLayout.EAST, mainMenu);
     }
+}
 
-    public static void main(String args[]) {
-        new Main();
+class pickOptions extends JPanel{
+    JFrame frame;
+    public pickOptions(JFrame f) {
+        frame = f;
+        frame.setSize(300, 300);
+        frame.setLayout(new BorderLayout());
+        JButton optionOne = new JButton("Pay Yourself");
+        JButton optionTwo = new JButton("Split Evenly");
+        JButton optionThree = new JButton("Random Payer");
 
+        JButton mainMenu = new JButton("Main Menu");
+        mainMenu.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                frame.setContentPane(new mainMenu(frame));
+                f.setVisible(true);
+            }
+        });
+
+        add(optionOne);
+        add(optionTwo);
+        add(optionThree);
+        add(mainMenu);
     }
-
 }
