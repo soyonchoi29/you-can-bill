@@ -7,8 +7,9 @@ import java.io.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.awt.FlowLayout;
-
+import java.util.ArrayList;
 public class Main extends JPanel {
+    ArrayList<Person> Peeps = new ArrayList<>();
     public Main() {
         JFrame frame = new JFrame("Recieptify");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,8 +66,7 @@ public class Main extends JPanel {
                 submit.addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent d) {
-                        // new Person(textfield.getText());
-                        // System.out.println(Person.Name);
+                        Peeps.add(new Person(textfield.getText()));
                     }
                 });
                 frame.setVisible(true);
