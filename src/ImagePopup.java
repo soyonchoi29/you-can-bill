@@ -26,53 +26,75 @@ public class ImagePopup {
     //public static void main(String[] args) throws IOException {
     //}
 
+    static int counter = 0;
     public static void drawNew(File input) {
+        JFrame frame = new JFrame("Selected receipt"); // change later???
+        JPanel panel = new JPanel();
+        BufferedImage myPicture = null;
         try {
-            JFrame frame = new JFrame("Selected receipt"); // change later???
-            JPanel panel = new JPanel();
-            BufferedImage myPicture = ImageIO.read(input);
-            Image resized = myPicture.getScaledInstance(500, 500, 2); // Resizes image to fit entire upload into JPanel
-
-            //AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90), 200, 250); // ROTATE BY 90 (CAN CHANGE) - DON'T NEED IF BUTTONS
-            //AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR); // some sort of rotation option
-            //BufferedImage rotated = new BufferedImage(400, 500, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
-            //Graphics2D redraw = rotated.createGraphics(); // Turns rotated into Graphics2D object and draws it
-            //redraw.drawImage(resized, 0, 0, null);
-            //redraw.dispose();
-
-            //JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
-            JLabel picLabel = new JLabel(new ImageIcon(resized));
-            panel.add(picLabel);
-            frame.add(panel); // Button to rotate
-            frame.setSize(500, 600); // perhaps cropping is drawing new jpanels on top or something
-            frame.setVisible(true); // will need to recenter receipt better most likely
-            // Looking for while button not being pressed
-            //Maybe some sort of an instructional popup
-            JButton rotateB = new JButton("Rotate Image");
-            rotateB.setBounds(0, 0, 50, 30);
-            panel.add(rotateB);
-            rotateB.addActionListener(new ActionListener(){
-
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    System.out.println("reeeeeee");
-                    panel.remove(picLabel);
-                    panel.validate();
-                    panel.repaint(); // only rotates the first time, then doesn't rotate again - maybe solve with a call to external method???
-                    AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90), 250, 250); // ROTATE BY 90 (CAN CHANGE)
-                    AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR); // some sort of rotation option
-                    BufferedImage rotated = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
-                    Graphics2D redraw = rotated.createGraphics(); // Turns rotated into Graphics2D object and draws it
-                    redraw.drawImage(resized, 0, 0, null);
-                    redraw.dispose();
-        
-                    JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
-                    panel.add(picLabel);
-                    frame.setVisible(true);
-                }
-
-            });
+            myPicture = ImageIO.read(input);
         } catch (IOException error) {}
+
+        JButton rotateB = new JButton("Rotate Image");
+        rotateB.setBounds(0, 0, 50, 30); // Might need to move
+        panel.add(rotateB);
+
+        Image resized = myPicture.getScaledInstance(500, 500, 2); // Resizes image to fit entire upload into JPanel
+        //AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90), 200, 250); // ROTATE BY 90 (CAN CHANGE) - DON'T NEED IF BUTTONS
+        //AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR); // some sort of rotation option
+        //BufferedImage rotated = new BufferedImage(400, 500, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
+        //Graphics2D redraw = rotated.createGraphics(); // Turns rotated into Graphics2D object and draws it
+        //redraw.drawImage(resized, 0, 0, null);
+        //redraw.dispose();
+
+        //JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
+        JLabel picLabel = new JLabel(new ImageIcon(resized));
+        panel.add(picLabel);
+        frame.add(panel);
+        frame.setSize(500, 600); // perhaps cropping is drawing new jpanels on top or something
+        frame.setVisible(true); // will need to recenter receipt better most likely
+        // Looking for while button not being pressed
+        //Maybe some sort of an instructional popup
+        rotateB.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e){
+                counter++;
+                //System.out.println("reeeeeee");
+                //Get the components in the panel
+                Component[] componentList = panel.getComponents();
+
+                //Loop through the components
+                for(Component c : componentList){ // https://stackoverflow.com/questions/7117332/dynamically-remove-component-from-jpanel
+
+                    //Find the components you want to remove
+                    if(c instanceof JLabel){
+
+                        //Remove it
+                        panel.remove(c);
+                    }
+                }
+                panel.validate();
+                panel.repaint(); // only rotates the first time, then doesn't rotate again - maybe solve with a call to external method???
+                AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90 * counter), 250, 250); // ROTATE BY 90 (CAN CHANGE)
+                AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+                BufferedImage rotated = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
+                Graphics2D redraw = rotated.createGraphics(); // Turns rotated into Graphics2D object and draws it
+                redraw.drawImage(resized, 0, 0, null);
+                redraw.dispose();
+
+                JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
+                panel.add(picLabel);
+
+                frame.setVisible(true);
+            }
+
+        });
+    }
+
+    public static void redraw(JLabel newDraw) {
+        //drawNew.add(picLabel);
+        //frame.setVisible(true);
     }
 }
 
