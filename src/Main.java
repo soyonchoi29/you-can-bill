@@ -9,28 +9,64 @@ import javax.imageio.ImageIO;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 
+//Creating a linked list to store People
+class Node{
+    Person person;
+    Node prev;
+    public Node(Person person) {
+        this.person = person;
+    }
+}
+
+class personHolder{
+	static Node end;
+	public personHolder(){
+		end = null;
+    }
+
+    //method called append to be able to add Persons
+    public static void append(Person toAppend){
+        Node toAdd = new Node(toAppend);
+        toAdd.prev = end;
+        end = toAdd;
+    }
+
+    //method called getNames to get names of Person
+    public static String getNames(){
+        String toReturn = " ";
+        Node n = end;
+        while (n != null){
+            toReturn = n.person.getName() + " " + toReturn;
+            n = n.prev;
+            }
+    return toReturn;
+    }
+    
+}
+
+//Creating the general Main Menu and subsequent submenus
 public class Main {
     static ArrayList<Person> Peeps = new ArrayList<Person>();
-    
     public static void main(String[] args) {
+        //Creating the frame that will hold everything
         JFrame frame = new JFrame("Recieptify");
-        
+        frame.setSize(300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(new mainMenu(frame));
         frame.pack();    
         frame.setVisible(true);
-        
-    
     }
 }
 
 class mainMenu extends JPanel{
-    JFrame frame;
+    private JFrame frame;
     public mainMenu(JFrame f) {
+        //creating the frame that will hold the buttons
         frame = f;
         frame.setSize(300, 300);
         frame.setLayout(new BorderLayout());
-    
+
+        //Button to go to submenu for inputting an image
         JButton inputImage = new JButton("Input Image");
         inputImage.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -39,7 +75,8 @@ class mainMenu extends JPanel{
             }
         });
 
-        JButton enterNames = new JButton("Enter Names");
+        //Button to go to submenu for adding people to your "party"
+        JButton enterNames = new JButton("People");
         enterNames.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 frame.setContentPane(new namePeople(frame));
@@ -47,6 +84,7 @@ class mainMenu extends JPanel{
             }
         });
 
+        //Button to pick an option of how you want to pay your bill
         JButton options = new JButton("Options");
         options.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -55,6 +93,7 @@ class mainMenu extends JPanel{
             }
         });
 
+        //Adding buttons to the frame
         add(inputImage);
         add(enterNames);
         add(options); 
@@ -63,11 +102,22 @@ class mainMenu extends JPanel{
 
 
 class inputImage extends JPanel{
-    JFrame frame;
+    private JFrame frame;
     public inputImage(JFrame f) {
         frame = f;
         frame.setSize(300, 300);
         frame.setLayout(new BorderLayout());
+
+        //Button to go back to the Main Menu
+        JButton mainMenu = new JButton("Main Menu");
+        mainMenu.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                frame.setContentPane(new mainMenu(frame));
+                f.setVisible(true);
+            }
+        });
+
+        //Button to open directory and pick an image
         JButton openFiles= new JButton("Open");
         openFiles.addActionListener(new ActionListener(){
             @Override
@@ -85,55 +135,20 @@ class inputImage extends JPanel{
             }
         });
 
-        JButton mainMenu = new JButton("Main Menu");
-        mainMenu.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                frame.setContentPane(new mainMenu(frame));
-                f.setVisible(true);
-            }
-        });
-
+        //Adding buttons to frame
         add(openFiles);
         add(mainMenu);
     }
 }
 
 class namePeople extends JPanel{
-    JFrame frame;
+    private JFrame frame;
     public namePeople(JFrame f) {
         frame = f;
         frame.setSize(300, 300);
         frame.setLayout(new BorderLayout());
-        JButton addNames = new JButton("People");
-        addNames.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                JLabel task = new JLabel("Enter Name");
-                task.setBounds(50, 50, 200, 30);
-                JTextField textfield = new JTextField();
-                textfield.setBounds(50, 100, 200, 30);
-                frame.add(task);
-                frame.add(textfield);
-                
 
-                //add a button
-                JButton submit = new JButton("Submit");
-                submit.setBounds(50, 150, 50, 30);
-                
-                submit.addActionListener(new ActionListener(){
-                    @Override
-                    public void actionPerformed(ActionEvent d) {
-                        Main.Peeps.add(new Person(textfield.getText()));
-                        for(int i = 0; i < Main.Peeps.size(); i++) {
-                            System.out.println(Main.Peeps.get(i).getName());
-                        }
-                    }
-                });
-                add(BorderLayout.SOUTH, submit);
-                frame.setVisible(true);
-            }
-        });
-
+        //Button to go back to the Main Menu
         JButton mainMenu = new JButton("Main Menu");
         mainMenu.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -142,21 +157,57 @@ class namePeople extends JPanel{
             }
         });
 
+        //Button to enter name of Persons
+        JButton addNames = new JButton("Enter Name");
+        addNames.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                remove(addNames);
+                JLabel task = new JLabel("Enter Name");
+                task.setSize(200, 30);
+                JTextField textfield = new JTextField();
+                textfield.setSize(200, 30);
+                add(BorderLayout.SOUTH, task);
+                add(BorderLayout.SOUTH, textfield);
+                
+
+                //Button to make an instance of Person
+                JButton submit = new JButton("Submit");
+                submit.setBounds(50, 150, 50, 30);
+                submit.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent d) {
+                        personHolder.append(new Person(textfield.getText()));
+                        System.out.println(personHolder.getNames());
+                    }
+                });
+                //Adding buttons to frame
+                add(BorderLayout.SOUTH, submit);
+                add(BorderLayout.EAST, mainMenu);
+                frame.setVisible(true);
+            }
+        });
+
+        //Adding buttons to frame
         add(BorderLayout.WEST, addNames);
         add(BorderLayout.EAST, mainMenu);
     }
 }
 
+//Submenu after picking Options to pick how you would like to pay the bill
 class pickOptions extends JPanel{
-    JFrame frame;
+    private JFrame frame;
     public pickOptions(JFrame f) {
+        //Making frame that holds the options
         frame = f;
         frame.setSize(300, 300);
         frame.setLayout(new BorderLayout());
+        //Creating buttons for options
         JButton optionOne = new JButton("Pay Yourself");
         JButton optionTwo = new JButton("Split Evenly");
         JButton optionThree = new JButton("Random Payer");
 
+        //Button to go back to the Main Menu
         JButton mainMenu = new JButton("Main Menu");
         mainMenu.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -165,6 +216,7 @@ class pickOptions extends JPanel{
             }
         });
 
+        //Adding buttons to frame
         add(optionOne);
         add(optionTwo);
         add(optionThree);
