@@ -17,10 +17,17 @@ public class ImageChange {
 
     public static void cropImage (File input, int x, int y, int width, int height){
         try{
+            //Reads the original image
             BufferedImage originalImage = ImageIO.read(input);
-            BufferedImage croppedImage = originalImage.getSubimage(x, y, width, height);
+
+            //Creates new image out of the subimage of original image
+            BufferedImage croppedImage = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
+            croppedImage.createGraphics().drawImage(originalImage.getSubimage(x, y, width, height),null,0,0);
+
+            //Adds the item to the list for user's receipt
             Item toAdd = new Item(croppedImage);
             receiptItems.add(toAdd);
+
             // Call cropimage and image stitch from imagepopup file most likely
         }catch(IOException error){}
     }

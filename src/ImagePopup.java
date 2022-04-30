@@ -14,12 +14,16 @@ import java.lang.Math;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.w3c.dom.events.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.*;
 import java.io.*;
 import java.awt.image.*;
-import javax.imageio.ImageIO;
 import java.awt.FlowLayout;
 
 public class ImagePopup {
@@ -95,6 +99,53 @@ public class ImagePopup {
     public static void redraw(JLabel newDraw) {
         //drawNew.add(picLabel);
         //frame.setVisible(true);
+    }
+
+}
+
+class JImageCropComponent extends JComponent implements MouseListener, MouseMotionListener{
+    private BufferedImage image;
+    private BufferedImage croppedImage;
+    private int x1, y1, x2, y2;
+    private Color cropToolColor = new Color(201, 221, 240);
+    private boolean cropping = false;
+
+    public JImageCropComponent(BufferedImage image){
+        this.image = image;
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
+    }
+
+    public void setImage(BufferedImage image){
+        this.image = image;
+    }
+
+    @Override
+    public void paintComponent(Graphics g){
+        if (cropping){
+            //Mark the area being cropped
+            g.setColor(cropToolColor);
+            g.drawRect(Math.min(x1,x2), Math.min(y1,y2), Math.max(x1,x2)-Math.min(x1,x2), Math.max(y1,y2)-Math.min(y1,y2));
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e){
+        this.x1 = e.getClientX();
+        this.x2 = e.getClientY();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e){
+        this.cropping = false;
+        this.croppedImage = this.image.getSubimage(Math.min(x1,x2), Math.min(y1,y2), Math.max(x1,x2)-Math.min(x1,x2), Math.max(y1,y2)-Math.min(y1,y2));
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e){
+        this.cropping = true;
+        this.x2 = e.getClientX();
+        this.y2 = e.getClientY();
     }
 }
 
