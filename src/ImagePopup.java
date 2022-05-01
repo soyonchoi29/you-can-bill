@@ -193,6 +193,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         try {
             myPicture = ImageIO.read(input);
         } catch (IOException error) {}
+    
 
         JButton rotateB = new JButton("Rotate Image");
         rotateB.setBounds(0, 0, 50, 30); // Might need to move
@@ -206,6 +207,10 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         //redraw.drawImage(resized, 0, 0, null);
         //redraw.dispose();
 
+        JLabel picLabel = new JLabel(new ImageIcon(resized));
+        panel.add(picLabel);
+        frame.setVisible(true);
+
         //JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
         // JLabel picLabel = new JLabel(new ImageIcon(resized));
         // panel.add(picLabel);
@@ -214,7 +219,6 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         frame.setVisible(true); // will need to recenter receipt better most likely
         // Looking for while button not being pressed
         //Maybe some sort of an instructional popup
-
         rotateB.addActionListener(new ActionListener(){
 
             @Override
@@ -247,7 +251,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                 panel.add(picLabel);
                 frame.setVisible(true);
             }
-
+            
         });
 
         JButton mainMenu = new JButton("Main Menu");
@@ -257,6 +261,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
             }
         });
         panel.add(mainMenu);
+        frame.setVisible(true);
 
     }
 
