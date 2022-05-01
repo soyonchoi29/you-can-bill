@@ -1,5 +1,5 @@
 https://stackoverflow.com/questions/25869768/addactionlistener-not-working
-Helped immensely with how to add actions for the buttons.
+Helped with how to add actions for the buttons.
 
 https://www.codejava.net/java-se/swing/add-file-filter-for-jfilechooser-dialog
 I realized robustness was going to be an issue if people can choose just any image/file.
@@ -10,3 +10,11 @@ https://docs.oracle.com/javase/tutorial/uiswing/components/menu.html
 https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
 https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
 These are documentations I used to help with the creation of the menu.
+
+https://docs.oracle.com/javase/7/docs/api/java/awt/Dimension.html
+https://docs.oracle.com/javase/7/docs/api/java/awt/Robot.html
+https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseEvent.html
+https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseListener.html
+https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseMotionListener.html
+https://www.tabnine.com/code/java/methods/java.awt.Robot/createScreenCapture
+Helped me immensely in creating the cropping functionality
