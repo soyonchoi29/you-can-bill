@@ -181,6 +181,8 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     }
 
     public void crop(File input) {
+
+        //Creates frame and panel that will contain reciept
         JFrame frame = new JFrame("Selected receipt"); // change later???
         JPanel panel = new JPanel();
         panel.setSize(500,600);
@@ -189,17 +191,15 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         panel.addMouseMotionListener (this);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        //Get image from the input file
         BufferedImage myPicture = null;
         try {
             myPicture = ImageIO.read(input);
         } catch (IOException error) {}
-    
 
-        JButton rotateB = new JButton("Rotate Image");
-        rotateB.setBounds(0, 0, 50, 30); // Might need to move
-        panel.add(rotateB);
+        //Resizes image to fit entire upload into JPanel
+        Image resized = myPicture.getScaledInstance(500, 500, 2); 
 
-        Image resized = myPicture.getScaledInstance(500, 500, 2); // Resizes image to fit entire upload into JPanel
         //AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90), 200, 250); // ROTATE BY 90 (CAN CHANGE) - DON'T NEED IF BUTTONS
         //AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR); // some sort of rotation option
         //BufferedImage rotated = new BufferedImage(400, 500, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
@@ -207,6 +207,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         //redraw.drawImage(resized, 0, 0, null);
         //redraw.dispose();
 
+        //Puts resized image in the frame
         JLabel picLabel = new JLabel(new ImageIcon(resized));
         panel.add(picLabel);
         frame.setVisible(true);
@@ -219,6 +220,11 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         frame.setVisible(true); // will need to recenter receipt better most likely
         // Looking for while button not being pressed
         //Maybe some sort of an instructional popup
+
+        //In case user inputs an image in the wrong orientation, button to fix it
+        JButton rotateB = new JButton("Rotate Image");
+        rotateB.setBounds(0, 0, 50, 30); // Might need to move
+        panel.add(rotateB);
         rotateB.addActionListener(new ActionListener(){
 
             @Override
@@ -254,6 +260,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
             
         });
 
+        //Button to go "back" to main menu
         JButton mainMenu = new JButton("Main Menu");
         mainMenu.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -265,9 +272,25 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
     }
 
+    //Supposed to draw a rectangle around area that you cropped image
+    public void paintComponent(Graphics g) {
+        int width = x1 - x2;
+        int height = y1 - y2;
+
+        width = -1 * width;
+        height = -1 * height;
+        if(width < 0) {
+            width = -1 * width;
+        }
+
+        g.setColor(Color.RED);
+        g.drawRect(x1, y1, width, height);
+    }
+    
+    //Creates and saves cropped image
     public void croppedImage() throws Exception {
-        int width = x2 - x1;
-        int height = y2 - y1;
+        int width = x1 - x2;
+        int height = y1 - y2;
 
         if(width < 0) {
             width = -1 * width;
@@ -282,22 +305,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         ImageIO.write(image, "jpg", croppedImage);
     }
 
-    public void paintComponent(Graphics g) {
-        super.paint(g);
-        int width = x2 - x1;
-        int height = y2 - y1;
-
-        if(width < 0) {
-            width = -1 * width;
-        }
-
-        if(height < 0) {
-            height = -1 * height;
-        }
-
-        g.drawRect(x1, y1, width, height);
-    }
-
+    //Record x and y values of when mouse is first pressed
     @Override
     public void mousePressed(MouseEvent e) {
         repaint();
@@ -305,6 +313,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         x2 = e.getY();
     }
 
+    //Once mouse is released after being dragged, record x and y values
     @Override
     public void mouseReleased(MouseEvent e) {
         repaint();
@@ -320,6 +329,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         }
     }
 
+    //As mouse is being dragged, record x and y values
     @Override
     public void mouseDragged (MouseEvent e) {
         repaint();
