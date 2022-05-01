@@ -310,7 +310,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     public void mousePressed(MouseEvent e) {
         repaint();
         x1 = e.getX();
-        x2 = e.getY();
+        y1 = e.getY();
     }
 
     //Once mouse is released after being dragged, record x and y values
