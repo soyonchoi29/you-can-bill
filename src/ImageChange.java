@@ -13,22 +13,26 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 public class ImageChange {
-    public static ArrayList<Item> receiptItems;
+    public static ArrayList<Item> receiptItems = new ArrayList<Item>();
 
-    public static void cropImage (File input, int x, int y, int width, int height){
+    public static void imageCrop (BufferedImage originalImage, int x, int y, int width, int height){
         try{
-            //Reads the original image
-            BufferedImage originalImage = ImageIO.read(input);
 
-            //Creates new image out of the subimage of original image
-            BufferedImage croppedImage = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
-            croppedImage.createGraphics().drawImage(originalImage.getSubimage(x, y, width, height),null,0,0);
+            // Creates new image out of the subimage of original image
+            BufferedImage cropped = originalImage.getSubimage(x, y, width, height);
+            //cropped.createGraphics().drawImage(originalImage.getSubimage(x, y, width, height),null,0,0);
 
-            //Adds the item to the list for user's receipt
-            Item toAdd = new Item(croppedImage);
+            // Adds the item to the list for user's receipt
+            Item toAdd = new Item(cropped);
             receiptItems.add(toAdd);
+            System.out.println("Trying to crop");;
+
+            // Save/write cropped image to a file
+            File croppedImage = new File ("croppedImage.jpg");
+            ImageIO.write(cropped, "jpg", croppedImage);
 
             // Call cropimage and image stitch from imagepopup file most likely
+            
         }catch(IOException error){}
     }
 
@@ -37,8 +41,8 @@ public class ImageChange {
         int width = 0;
         int height = 0;
 
-        //Finds max of the widths of all cropped images to get the width of finalImage
-        //Adds the height of all cropped images to get total height of finalImage
+        // Finds max of the widths of all cropped images to get the width of finalImage
+        // Adds the height of all cropped images to get total height of finalImage
         for (Item item : receiptItems){
             if (item.getImage().getWidth() > width){
                 width = item.getImage().getWidth();
@@ -46,10 +50,10 @@ public class ImageChange {
             height += item.getImage().getHeight();
         }
 
-        //Create finalImage
+        // Create finalImage
         BufferedImage finalImage = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
 
-        //Draw finalImage out of all the cropped images
+        // Draw finalImage out of all the cropped images
         int y = 0;
 
         for (int i = 0 ; i < receiptItems.size() ; i++){
