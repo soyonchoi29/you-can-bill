@@ -22,11 +22,13 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseAdapter;
 
 public class ImagePopup extends JFrame implements MouseListener, MouseMotionListener {
-    boolean cropping = false;
+    private boolean cropping = false;
     static BufferedImage image;
     static int scaledImageWidth;
     static int scaledImageHeight;
+    static float scaleFactor = 1;
     static File inputFile;
+    private int x, y;
     private int x1, y1, x2, y2;
     static int counter = 0;
 
@@ -65,12 +67,14 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
             while (imageWidth >= 500){
                 imageWidth *= 0.7;
                 imageHeight *= 0.7;
+                scaleFactor *= 0.7;
             }
         }
         if (imageHeight > imageWidth){
             while (imageHeight >= 500){
                 imageWidth *= 0.7;
                 imageHeight *= 0.7;
+                scaleFactor *= 0.7;
             }
         }
         scaledImageWidth = imageWidth;
@@ -154,7 +158,9 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     private Color cropToolColor = new Color(201, 221, 240);
 
     //Supposed to draw a rectangle around area that you cropped image
-    public void paintComponent(Graphics g) {
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
         int width = Math.abs(x1-x2);
         int height = Math.abs(y1-y2);
 
@@ -167,16 +173,19 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         int width = Math.abs(x1-x2);
         int height = Math.abs(y1-y2);
 
+        // System.out.println(x1);
+        // System.out.println(y1);
+
         image = ImageIO.read(inputFile);
-        ImageChange.imageCrop(image, Math.min(x1, x2)*(image.getWidth()/scaledImageWidth), Math.max(y1, y2)*(image.getHeight()/scaledImageHeight), width, height);
+        ImageChange.imageCrop(image, (int)(Math.min(x1, x2)/scaleFactor), (int)(Math.max(y1, y2)/scaleFactor), (int)(width/scaleFactor), (int)(height/scaleFactor));
     }
 
     //Record x and y values of when mouse is first pressed
     @Override
     public void mousePressed(MouseEvent e) {
         cropping = true;
-        x1 = e.getX();
-        y1 = e.getY();
+        x1 = e.getX()-x;
+        y1 = e.getY()-y;
     }
 
     //Once mouse is released after being dragged, record x and y values
@@ -184,8 +193,8 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     public void mouseReleased(MouseEvent e) {
         repaint();
         if(cropping == false) {
-            x2 = e.getX();
-            y2 = e.getY();
+            x2 = e.getX()-x;
+            y2 = e.getY()-y;
             try {
                 cropImage();
             }
@@ -200,8 +209,8 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     public void mouseDragged (MouseEvent e) {
         repaint();
         cropping = false;
-        x2 = e.getX();
-        y2 = e.getY();
+        x2 = e.getX()-x;
+        y2 = e.getY()-y;
     }
 
     @Override
