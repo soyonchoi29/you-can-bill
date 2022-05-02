@@ -49,7 +49,7 @@ public class Main {
     static ArrayList<Person> Peeps = new ArrayList<Person>();
     public static void main(String[] args) {
         //Creating the frame that will hold everything
-        JFrame frame = new JFrame("Recieptify");
+        JFrame frame = new JFrame("Receiptify");
         frame.setSize(300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(new mainMenu(frame));

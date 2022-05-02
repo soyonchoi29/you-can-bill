@@ -35,7 +35,6 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     static int counter = 0;
     private JFrame frame = new JFrame("Selected receipt");
     private JLabel picLabel = new JLabel();
-    //private JPanel panel = new JPanel();
     private JLayeredPane base = new JLayeredPane();
     private JPanel rectangle = new JPanel();
 
@@ -52,8 +51,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
     public void crop(File input) {
 
-        //Creates frame and panel that will contain reciept
-        //JFrame frame = new JFrame("Selected receipt"); // change later???
+        //Creates panel that will contain receipt
         JPanel panel = new JPanel();
         panel.setSize(500,600);
         panel.setVisible(true);
@@ -90,30 +88,19 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         }
 
         //Resizes image to fit entire upload into JPanel
-        Image resized = image.getScaledInstance(scaledImageWidth, scaledImageHeight, Image.SCALE_SMOOTH); 
-
-        //AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90), 200, 250); // ROTATE BY 90 (CAN CHANGE) - DON'T NEED IF BUTTONS
-        //AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR); // some sort of rotation option
-        //BufferedImage rotated = new BufferedImage(400, 500, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
-        //Graphics2D redraw = rotated.createGraphics(); // Turns rotated into Graphics2D object and draws it
-        //redraw.drawImage(resized, 0, 0, null);
-        //redraw.dispose();
+        Image resized = image.getScaledInstance(scaledImageWidth, scaledImageHeight, Image.SCALE_SMOOTH);
 
         //Puts resized image in the frame
         picLabel.setIcon(new ImageIcon(resized));
         panel.add(picLabel);
         Rectangle imageBounds = picLabel.getBounds();
         imagePosition = imageBounds.getLocation();
-        frame.setVisible(true);
+        frame.setVisible(true); // May be redundant
 
-        //JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
-        // JLabel picLabel = new JLabel(new ImageIcon(resized));
-        // panel.add(picLabel);
         base.add(panel);
         frame.add(base);
         frame.setSize(500, 600);
         frame.setVisible(true);
-        // Looking for while button not being pressed
         //Maybe some sort of an instructional popup
 
         //In case user inputs an image in the wrong orientation, button to fix it
@@ -140,7 +127,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         //            }
         //        }
         //        panel.validate();
-        //        panel.repaint(); // only rotates the first time, then doesn't rotate again - maybe solve with a call to external method???
+        //        panel.repaint();
         //        if (counter % 2 == 0){
         //            AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90 * counter), scaledImageWidth/2, scaledImageHeight/2); // ROTATE BY 90 (CAN CHANGE)
         //            AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
@@ -178,22 +165,9 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
     }
 
-    private Color cropToolColor = new Color(201, 221, 240);
+    private Color cropToolColor = new Color(201, 221, 240); // Currently unused color
 
-    //Supposed to draw a rectangle around area that you cropped image
-    //@Override
-    //public void paint(Graphics g) {
-        //super.paint(g);
-        //Graphics2D g2 = (Graphics2D)g;
-        //int width = Math.abs(x1-x2);
-        //int height = Math.abs(y1-y2);
-
-        //g2.setColor(Color.BLACK);//g2.setColor(cropToolColor);
-        //Rectangle2D selected = new Rectangle2D.Double(Math.min(x1,x2), Math.min(y1,y2), width, height);
-        //g2.draw(selected);
-        //System.out.println("Jba");
-    //}
-
+    // Draws a rectangle around the area of the image that you cropped
     public void drawRect() {
         base.remove(rectangle);
         int width = Math.abs(x1-x2);
@@ -215,7 +189,6 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         frame.validate();
         frame.repaint();
         frame.setVisible(true);
-        //System.out.println("Jba");
         }
     
     //Calls cropImage function in imageChange class
