@@ -30,10 +30,11 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     //static float scaleFactor = 1;
     static File inputFile;
     private Point imagePosition;
-    //private int xImage, yImage;
+    private int xImage, yImage;
     private int x1, y1, x2, y2;
     static int counter = 0;
     private JFrame frame = new JFrame("Selected receipt");
+    private JLabel picLabel = new JLabel();
     //private JPanel panel = new JPanel();
     private JLayeredPane base = new JLayeredPane();
     private JPanel rectangle = new JPanel();
@@ -99,7 +100,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         //redraw.dispose();
 
         //Puts resized image in the frame
-        JLabel picLabel = new JLabel(new ImageIcon(resized),JLabel.LEFT);
+        picLabel.setIcon(new ImageIcon(resized));
         panel.add(picLabel);
         Rectangle imageBounds = picLabel.getBounds();
         imagePosition = imageBounds.getLocation();
@@ -225,6 +226,9 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         float widthRatio = imageWidth / (float)scaledImageWidth;
         float heightRatio = imageHeight / (float)scaledImageHeight;
 
+        xImage = (int) picLabel.getLocation().getX();
+        yImage = (int) picLabel.getLocation().getY();
+
         int cropWidth = (int) (width * widthRatio);
         int cropHeight = (int) (height * heightRatio);
 
@@ -237,8 +241,9 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         // System.out.println(widthRatio);
         // System.out.println(heightRatio);
 
+    
         image = ImageIO.read(inputFile);
-        ImageChange.imageCrop(image, (int)(Math.min(x1, x2)*widthRatio), (int)(Math.min(y1, y2)*heightRatio), cropWidth, cropHeight);
+        ImageChange.imageCrop(image, (int)(Math.min(x1 - xImage, x2 - xImage)*widthRatio), (int)(Math.min(y1 - yImage, y2 - yImage)*heightRatio), cropWidth, cropHeight);
     }
 
     //Record x and y values of when mouse is first pressed
