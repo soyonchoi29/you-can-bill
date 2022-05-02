@@ -33,6 +33,10 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     //private int xImage, yImage;
     private int x1, y1, x2, y2;
     static int counter = 0;
+    private JFrame frame = new JFrame("Selected receipt");
+    //private JPanel panel = new JPanel();
+    private JLayeredPane base = new JLayeredPane();
+    private JPanel rectangle = new JPanel();
 
     public static void drawNew(File input) {
         new ImagePopup().crop(input);
@@ -48,7 +52,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     public void crop(File input) {
 
         //Creates frame and panel that will contain reciept
-        JFrame frame = new JFrame("Selected receipt"); // change later???
+        //JFrame frame = new JFrame("Selected receipt"); // change later???
         JPanel panel = new JPanel();
         panel.setSize(500,600);
         panel.setVisible(true);
@@ -104,7 +108,8 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         //JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
         // JLabel picLabel = new JLabel(new ImageIcon(resized));
         // panel.add(picLabel);
-        frame.add(panel);
+        base.add(panel);
+        frame.add(base);
         frame.setSize(500, 600);
         frame.setVisible(true);
         // Looking for while button not being pressed
@@ -175,19 +180,42 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     private Color cropToolColor = new Color(201, 221, 240);
 
     //Supposed to draw a rectangle around area that you cropped image
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D)g;
+    //@Override
+    //public void paint(Graphics g) {
+        //super.paint(g);
+        //Graphics2D g2 = (Graphics2D)g;
+        //int width = Math.abs(x1-x2);
+        //int height = Math.abs(y1-y2);
+
+        //g2.setColor(Color.BLACK);//g2.setColor(cropToolColor);
+        //Rectangle2D selected = new Rectangle2D.Double(Math.min(x1,x2), Math.min(y1,y2), width, height);
+        //g2.draw(selected);
+        //System.out.println("Jba");
+    //}
+
+    public void drawRect() {
+        base.remove(rectangle);
         int width = Math.abs(x1-x2);
         int height = Math.abs(y1-y2);
-
-        g2.setColor(cropToolColor);
-        Rectangle2D selected = new Rectangle2D.Double(Math.min(x1,x2), Math.min(y1,y2), width, height);
-        g2.draw(selected);
-        this.validate();
-        this.repaint();
-    }
+        rectangle.setBorder(BorderFactory.createLineBorder(Color.black)); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
+        if (x1-x2 >= 0 && y1-y2 >= 0) {
+            rectangle.setBounds(x2, y2, width, height);
+        } else if (y1-y2 >= 0) {
+            rectangle.setBounds(x1, y2, width, height);
+        } else if (x1-x2 >= 0) {
+            rectangle.setBounds(x2, y1, width, height);
+        } else {
+            rectangle.setBounds(x1, y1, width, height);
+        }
+        rectangle.setOpaque(false);
+        rectangle.setVisible(true);
+        base.add(rectangle);
+        base.moveToFront(rectangle);
+        frame.validate();
+        frame.repaint();
+        frame.setVisible(true);
+        //System.out.println("Jba");
+        }
     
     //Calls cropImage function in imageChange class
     public void cropImage() throws Exception {
@@ -244,6 +272,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         cropping = false;
         x2 = e.getX()-imagePosition.x;
         y2 = e.getY()-imagePosition.y;
+        drawRect();
     }
 
     @Override
