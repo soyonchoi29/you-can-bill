@@ -185,6 +185,8 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         g2.setColor(cropToolColor);
         Rectangle2D selected = new Rectangle2D.Double(Math.min(x1,x2), Math.min(y1,y2), width, height);
         g2.draw(selected);
+        this.validate();
+        this.repaint();
     }
     
     //Calls cropImage function in imageChange class
