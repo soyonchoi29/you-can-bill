@@ -25,7 +25,7 @@ public class ImageChange {
             // Adds the item to the list for user's receipt
             Item toAdd = new Item(cropped);
             receiptItems.add(toAdd);
-            System.out.println("Trying to crop");;
+            //System.out.println("Trying to crop");;
 
             // Save/write cropped image to a file
             File croppedImage = new File ("croppedImage.jpg");
