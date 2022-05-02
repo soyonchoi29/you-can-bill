@@ -13,6 +13,8 @@ import java.lang.Math;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.*;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -176,11 +178,13 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        Graphics2D g2 = (Graphics2D)g;
         int width = Math.abs(x1-x2);
         int height = Math.abs(y1-y2);
 
-        g.setColor(cropToolColor);
-        g.drawRect(Math.min(x1,x2), Math.min(y1,y2), width, height);
+        g2.setColor(cropToolColor);
+        Rectangle2D selected = new Rectangle2D.Double(Math.min(x1,x2), Math.min(y1,y2), width, height);
+        g2.draw(selected);
     }
     
     //Calls cropImage function in imageChange class
@@ -218,7 +222,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     //Once mouse is released after being dragged, record x and y values
     @Override
     public void mouseReleased(MouseEvent e) {
-        repaint();
+        this.repaint();
         if(cropping == false) {
             x2 = e.getX()-imagePosition.x;
             y2 = e.getY()-imagePosition.y;
@@ -234,7 +238,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     //As mouse is being dragged, record x and y values
     @Override
     public void mouseDragged (MouseEvent e) {
-        repaint();
+        this.repaint();
         cropping = false;
         x2 = e.getX()-imagePosition.x;
         y2 = e.getY()-imagePosition.y;
