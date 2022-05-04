@@ -171,16 +171,16 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     public void drawRect() {
         base.remove(rectangle);
         int width = Math.abs(x1-x2);
-        int height = Math.abs(y1-y2);
+        int height = Math.abs(y1-y2); // https://www.javatpoint.com/java-jlayeredpane
         rectangle.setBorder(BorderFactory.createLineBorder(Color.black)); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
         if (x1-x2 >= 0 && y1-y2 >= 0) {
-            rectangle.setBounds(x2, y2, width, height);
+            rectangle.setBounds(x2, y2, width, height); // https://coderanch.com/t/632120/java/Add-Rectangle-JFrame
         } else if (y1-y2 >= 0) {
-            rectangle.setBounds(x1, y2, width, height);
+            rectangle.setBounds(x1, y2, width, height); // https://docs.oracle.com/javase/7/docs/api/javax/swing/JLayeredPane.html#moveToFront(java.awt.Component)
         } else if (x1-x2 >= 0) {
-            rectangle.setBounds(x2, y1, width, height);
+            rectangle.setBounds(x2, y1, width, height); // https://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html
         } else {
-            rectangle.setBounds(x1, y1, width, height);
+            rectangle.setBounds(x1, y1, width, height); //https://microeducate.tech/placing-a-transparent-jpanel-on-top-of-another-jpanel-not-working/
         }
         rectangle.setOpaque(false);
         rectangle.setVisible(true);
