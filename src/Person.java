@@ -7,8 +7,7 @@ import javax.imageio.ImageIO;
 public class Person {
     private final String name;
     private int bill;
-
-    public static ArrayList<Item> receiptItems = new ArrayList<Item>();
+    private BufferedImage stitched;
     public Person(String name) {
         this.name = name;
     }
@@ -25,11 +24,12 @@ public class Person {
         return this.name;
     }
 
-    //Method to test if images are saves
-    public static void saved() {
-        try{
-            File savedimage = new File ("savedimage.jpg");
-            ImageIO.write(receiptItems.get(0).getImage(), "jpg", savedimage);
-        }catch(IOException error){}
+    public void addStitchedImage(BufferedImage img) {
+        this.stitched = img;
     }
+
+    public BufferedImage getStitched() {
+        return this.stitched;
+    }
+
 }

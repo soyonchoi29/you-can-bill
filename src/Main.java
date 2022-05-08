@@ -31,14 +31,33 @@ class personHolder{
         end = toAdd;
     }
 
-    //method called getNames to get names of Person by index
-    public static String getNames(int index) {
+    //method called getPerson to get Person based off index
+    public static Person getPerson(int index) {
         Node n = end;
-        while(index > 0) {
-            n = n.prev;
-            index--;
+        if(index == 0) {
+            return n.person;
+        } else {
+            while(index > 0) {
+                n = n.prev;
+                index--;
+            }
+            return n.person;
         }
-        return n.person.getName();
+    }
+
+    //method called getIndex to get index of Person based off name
+    public static int getIndex(String name) {
+        Node n = end;
+        int index = -1;
+        boolean done = false;
+        while(n != null || !done) {
+            if(n.person.getName() == name) {
+                done = true;
+            }
+            n = n.prev;
+            index++;
+        }
+        return index;
     }
     
     //method called length to get length of Person

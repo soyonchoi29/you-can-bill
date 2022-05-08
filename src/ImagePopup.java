@@ -164,15 +164,12 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         //Menu to choose who the cropped images are for
         JMenu pickPers = new JMenu("Pick a Person to Add images");
         for(int i = 0; i < personHolder.length(); i++) {
-            String name = personHolder.getNames(i);
+            String name = personHolder.getPerson(i).getName();
             JMenuItem names = new JMenuItem(name);
             pickPers.add(names);
             names.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    for(Item image : Person.receiptItems) {
-                        Person.receiptItems.add(image);
-                        Person.saved();
-                    }
+                    ImageChange.ImageStitch(name);
                 }
             });
         }
