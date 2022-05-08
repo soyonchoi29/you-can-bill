@@ -153,19 +153,38 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         //    }            
         //});
 
+        JMenuBar recieptMenu = new JMenuBar();
         //Button to go "back" to main menu
-        JButton mainMenu = new JButton("Main Menu");
-        mainMenu.addActionListener(new ActionListener(){
+        JButton back = new JButton("Back");
+        back.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 frame.setVisible(false);
             }
         });
-        panel.add(mainMenu);
+        //Menu to choose who the cropped images are for
+        JMenu pickPers = new JMenu("Pick a Person to Add images");
+        for(int i = 0; i < personHolder.length(); i++) {
+            String name = personHolder.getNames(i);
+            JMenuItem names = new JMenuItem(name);
+            pickPers.add(names);
+            names.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    for(Item image : Person.receiptItems) {
+                        Person.receiptItems.add(image);
+                        Person.saved();
+                    }
+                }
+            });
+        }
+
+        
+
+        recieptMenu.add(pickPers);
+        recieptMenu.add(back);
+        frame.setJMenuBar(recieptMenu);
         frame.setVisible(true);
 
     }
-
-    private Color cropToolColor = new Color(201, 221, 240); // Currently unused color
 
     // Draws a rectangle around the area of the image that you cropped
     public void drawRect() {

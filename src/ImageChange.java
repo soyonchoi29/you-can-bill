@@ -17,7 +17,6 @@ public class ImageChange {
 
     public static void imageCrop (BufferedImage originalImage, int x, int y, int width, int height){
         try{
-
             // Creates new image out of the subimage of original image
             BufferedImage cropped = originalImage.getSubimage(x, y, width, height);
             //cropped.createGraphics().drawImage(originalImage.getSubimage(x, y, width, height),null,0,0);

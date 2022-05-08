@@ -31,29 +31,38 @@ class personHolder{
         end = toAdd;
     }
 
-    //method called getNames to get names of Person
-    public static String getNames(){
-        String toReturn = " ";
+    //method called getNames to get names of Person by index
+    public static String getNames(int index) {
         Node n = end;
-        while (n != null){
-            toReturn = n.person.getName() + " " + toReturn;
+        while(index > 0) {
             n = n.prev;
-            }
-    return toReturn;
+            index--;
+        }
+        return n.person.getName();
     }
     
+    //method called length to get length of Person
+    public static int length() {
+        Node n = end;
+        int toReturn = 0;
+        while(n != null) {
+            n = n.prev;
+            toReturn++;
+        }
+
+        return toReturn;
+    }
 }
 
 //Creating the general Main Menu and subsequent submenus
 public class Main {
-    static ArrayList<Person> Peeps = new ArrayList<Person>();
     public static void main(String[] args) {
         //Creating the frame that will hold everything
-        JFrame frame = new JFrame("Receiptify");
+        JFrame frame = new JFrame("YouCanBill™");
+        frame.pack();
         frame.setSize(300, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(new mainMenu(frame));
-        frame.pack();    
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 }
@@ -178,7 +187,6 @@ class namePeople extends JPanel{
                     @Override
                     public void actionPerformed(ActionEvent d) {
                         personHolder.append(new Person(textfield.getText()));
-                        System.out.println(personHolder.getNames());
                     }
                 });
                 //Adding buttons to frame
