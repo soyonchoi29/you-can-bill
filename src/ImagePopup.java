@@ -164,7 +164,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         testStitch.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 frame.setVisible(true);
-                ImageChange.ImageStitch();
+                ImageChange.ImageStitch(); // like pass in person or something?? also unstatic arraylist in person
                 //for(Item image : Person.receiptItems) {
                     //try {
                     //    File savedimage = new File("savedimage.jpg");
@@ -173,7 +173,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                     //} catch(IOException error) {}
                     //System.out.println("Counter check");
                 //}
-                System.out.println("Button check");
+                //System.out.println("Button check");
             }
         });
 
@@ -185,14 +185,14 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
             pickPers.add(names);
             names.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("HERE");
+                    System.out.println("HERE"); // This section currently doesn't do anything
                     //Person.receiptItems.add(image);
                     //Person.saved();
-                    for(Item image : Person.receiptItems) {
-                        Person.receiptItems.add(image);
-                        Person.saved();
-                        System.out.println("BANANA");
-                    }
+                    //for(Item image : Person.receiptItems) {
+                    //    Person.receiptItems.add(image);
+                    //    Person.saved();
+                    //    System.out.println("BANANA");
+                    //}
                 }
             });
         }
