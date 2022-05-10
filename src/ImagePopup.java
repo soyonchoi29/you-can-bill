@@ -27,7 +27,6 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     private static BufferedImage image;
     private static int imageWidth, imageHeight;
     private static int scaledImageWidth, scaledImageHeight;
-    //static float scaleFactor = 1;
     static File inputFile;
     private Point imagePosition;
     private int xImage, yImage;
@@ -76,14 +75,12 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
             while (scaledImageWidth >= 500){
                 scaledImageWidth *= 0.7;
                 scaledImageHeight *= 0.7;
-                //scaleFactor *= 0.7; 
             }
         }
         if (scaledImageHeight > scaledImageWidth){
             while (scaledImageHeight >= 500){
                 scaledImageWidth *= 0.7;
                 scaledImageHeight *= 0.7;
-                //scaleFactor *= 0.7;
             }
         }
 
@@ -172,6 +169,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                     for(Item image : Person.receiptItems) {
                         Person.receiptItems.add(image);
                         Person.saved();
+                        System.out.println("BANANA");
                     }
                 }
             });
@@ -223,16 +221,6 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
         int cropWidth = (int) (width * widthRatio);
         int cropHeight = (int) (height * heightRatio);
-
-        // System.out.println(x1);
-        // System.out.println(y1);
-        // System.out.println("scaledImageWidth = " + scaledImageWidth);
-        // System.out.println("scaledImageHeight = " + scaledImageHeight);
-        // System.out.println("mouse width = " + width);
-        // System.out.println("mouse height = " + height);
-        // System.out.println(widthRatio);
-        // System.out.println(heightRatio);
-
     
         image = ImageIO.read(inputFile);
         ImageChange.imageCrop(image, (int)(Math.min(x1 - xImage, x2 - xImage)*widthRatio), (int)(Math.min(y1 - yImage, y2 - yImage)*heightRatio), cropWidth, cropHeight);
