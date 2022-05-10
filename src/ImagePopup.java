@@ -158,6 +158,25 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                 frame.setVisible(false);
             }
         });
+
+        //Test button for stitching
+        JButton testStitch = new JButton("Stitch");
+        testStitch.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                frame.setVisible(true);
+                ImageChange.ImageStitch();
+                //for(Item image : Person.receiptItems) {
+                    //try {
+                    //    File savedimage = new File("savedimage.jpg");
+                    //    ImageIO.write(Person.receiptItems.get(0).getImage(), "jpg", savedimage);
+                    //    System.out.println("Write check");
+                    //} catch(IOException error) {}
+                    //System.out.println("Counter check");
+                //}
+                System.out.println("Button check");
+            }
+        });
+
         //Menu to choose who the cropped images are for
         JMenu pickPers = new JMenu("Pick a Person to Add images");
         for(int i = 0; i < personHolder.length(); i++) {
@@ -166,6 +185,9 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
             pickPers.add(names);
             names.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
+                    System.out.println("HERE");
+                    //Person.receiptItems.add(image);
+                    //Person.saved();
                     for(Item image : Person.receiptItems) {
                         Person.receiptItems.add(image);
                         Person.saved();
@@ -179,6 +201,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
         recieptMenu.add(pickPers);
         recieptMenu.add(back);
+        recieptMenu.add(testStitch);
         frame.setJMenuBar(recieptMenu);
         frame.setVisible(true);
 

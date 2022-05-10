@@ -224,15 +224,6 @@ class pickOptions extends JPanel{
             }
         });
 
-        //Test button for stitching
-        JButton testStitch = new JButton("Stitch");
-        testStitch.addActionListener(new ActionListener(){
-           public void actionPerformed(ActionEvent e){
-               //frame.setContentPane(new testStitch(frame));
-               //f.setVisible(true);
-           }
-        });
-
         //Adding buttons to frame
         add(optionOne);
         add(optionTwo);

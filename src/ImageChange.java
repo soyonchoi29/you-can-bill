@@ -13,7 +13,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 public class ImageChange {
-    public static ArrayList<Item> receiptItems = new ArrayList<Item>();
+    //public static ArrayList<Item> receiptItems = new ArrayList<Item>(); // DUPED??
 
     public static void imageCrop (BufferedImage originalImage, int x, int y, int width, int height){
         try{
@@ -23,8 +23,9 @@ public class ImageChange {
 
             // Adds the item to the list for user's receipt
             Item toAdd = new Item(cropped);
-            receiptItems.add(toAdd);
+            Person.receiptItems.add(toAdd);
             System.out.println("Trying to crop");
+            System.out.println("Current size: " + Person.receiptItems.size());
 
             // Save/write cropped image to a file
             File croppedImage = new File ("croppedImage.jpg");
@@ -42,7 +43,7 @@ public class ImageChange {
 
         // Finds max of the widths of all cropped images to get the width of finalImage
         // Adds the height of all cropped images to get total height of finalImage
-        for (Item item : receiptItems){
+        for (Item item : Person.receiptItems){
             if (item.getImage().getWidth() > width){
                 width = item.getImage().getWidth();
             }
@@ -55,9 +56,17 @@ public class ImageChange {
         // Draw finalImage out of all the cropped images
         int y = 0;
 
-        for (int i = 0 ; i < receiptItems.size() ; i++){
-            finalImage.createGraphics().drawImage(receiptItems.get(i).getImage(), null, 0, y);
-            y += receiptItems.get(i).getImage().getHeight();
+        //for (Item i : Person.receiptItems){
+        for (int i = 0; i < Person.receiptItems.size(); i++) {
+            finalImage.createGraphics().drawImage(Person.receiptItems.get(i).getImage(), null, 0, y);
+            y += Person.receiptItems.get(i).getImage().getHeight();
+            System.out.println("Counter check");
         }
+
+        try {
+            File image = new File("finalimage.jpg");
+            ImageIO.write(finalImage, "jpg", image);
+            System.out.println("Write IMAGECHANGE check");
+        } catch(IOException error) {}
     }
 }
