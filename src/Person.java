@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Person {
+
+    public ArrayList<Item> receiptItems = new ArrayList<Item>();
     private final String name;
     private int bill;
     private BufferedImage stitched;

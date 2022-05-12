@@ -232,7 +232,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
     
         image = ImageIO.read(inputFile);
-        ImageChange.imageCrop(image, (int)(Math.min(x1 - xImage, x2 - xImage)*widthRatio), (int)(Math.min(y1 - yImage, y2 - yImage)*heightRatio), cropWidth, cropHeight);
+        ImageChange.imageCrop(image, (int)(Math.min(x1 - xImage, x2 - xImage)*widthRatio), (int)(Math.min(y1 - yImage, y2 - yImage)*heightRatio), cropWidth, cropHeight, "CHANGE THIS?????Q22@@@jav");
     }
 
     //Record x and y values of when mouse is first pressed
