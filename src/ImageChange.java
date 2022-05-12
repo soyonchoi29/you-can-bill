@@ -39,8 +39,9 @@ public class ImageChange {
     public static void ImageStitch(String name){
         //Testing
         try{
-            int indexofPerson = personHolder.getIndex(name);
+            int indexofPerson = personHolder.getIndex(name) - 1;
             Person currentPerson = personHolder.getPerson(indexofPerson);
+            currentPerson = personHolder.getPerson(personHolder.getIndex("dummy"));
             int width = 0;
             int height = 0;
 
@@ -59,7 +60,7 @@ public class ImageChange {
             // Draw finalImage out of all the cropped images
             int y = 0;
 
-            for (int i = 0; i < personHolder.length(); i++) {
+            for (int i = 0; i < personHolder.length() - 1; i++) {
                 for (int j = 0; j < personHolder.getPerson(i).receiptItems.size(); j++) {
                     finalImage.createGraphics().drawImage(personHolder.getPerson(i).receiptItems.get(j).getImage(), null, 0, y);
                     y += personHolder.getPerson(i).receiptItems.get(j).getImage().getHeight();
@@ -69,8 +70,10 @@ public class ImageChange {
             personHolder.getPerson(indexofPerson).addStitchedImage(finalImage);
 
             // Save/write stitched image to a file
-            File stitchedImage = new File ("stitchedImage.jpg");
-            ImageIO.write(personHolder.getPerson(indexofPerson).getStitched(), "jpg", stitchedImage);
+            String currentName = personHolder.getPerson(indexofPerson).getName() + "StitchedImage.jpg";
+            File stitchedImage = new File(currentName);
+            System.out.println(currentName);
+            ImageIO.write(personHolder.getPerson(indexofPerson).getStitched(), "png", stitchedImage); // Can change maybe later
             
         }catch(IOException error){}
     }
