@@ -17,7 +17,6 @@ public class ImageChange {
 
     public static void imageCrop (BufferedImage originalImage, int x, int y, int width, int height){
         try{
-
             // Creates new image out of the subimage of original image
             BufferedImage cropped = originalImage.getSubimage(x, y, width, height);
             //cropped.createGraphics().drawImage(originalImage.getSubimage(x, y, width, height),null,0,0);
@@ -36,29 +35,39 @@ public class ImageChange {
         }catch(IOException error){}
     }
 
-    public static void ImageStitch(){
-        
-        int width = 0;
-        int height = 0;
+    public static void ImageStitch(String name){
+        //Testing
+        try{
+            int indexofPerson = personHolder.getIndex(name);
+            int width = 0;
+            int height = 0;
 
-        // Finds max of the widths of all cropped images to get the width of finalImage
-        // Adds the height of all cropped images to get total height of finalImage
-        for (Item item : receiptItems){
-            if (item.getImage().getWidth() > width){
-                width = item.getImage().getWidth();
+            // Finds max of the widths of all cropped images to get the width of finalImage
+            // Adds the height of all cropped images to get total height of finalImage
+            for (Item item : receiptItems){
+                if (item.getImage().getWidth() > width){
+                    width = item.getImage().getWidth();
+                }
+                height += item.getImage().getHeight();
             }
-            height += item.getImage().getHeight();
-        }
 
-        // Create finalImage
-        BufferedImage finalImage = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
+                // Create finalImage
+            BufferedImage finalImage = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
 
-        // Draw finalImage out of all the cropped images
-        int y = 0;
+            // Draw finalImage out of all the cropped images
+            int y = 0;
 
-        for (int i = 0 ; i < receiptItems.size() ; i++){
-            finalImage.createGraphics().drawImage(receiptItems.get(i).getImage(), null, 0, y);
-            y += receiptItems.get(i).getImage().getHeight();
-        }
+            for (int i = 0 ; i < receiptItems.size() ; i++){
+                finalImage.createGraphics().drawImage(receiptItems.get(i).getImage(), null, 0, y);
+                y += receiptItems.get(i).getImage().getHeight();
+            }
+
+            personHolder.getPerson(indexofPerson).addStitchedImage(finalImage);
+
+            // Save/write stitched image to a file
+            File stitchedImage = new File ("stitchedImage.jpg");
+            ImageIO.write(personHolder.getPerson(indexofPerson).getStitched(), "jpg", stitchedImage);
+            
+        }catch(IOException error){}
     }
 }

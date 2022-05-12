@@ -4,222 +4,324 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.*;
 import java.io.*;
-import java.awt.image.*;
-import javax.imageio.ImageIO;
-import java.awt.FlowLayout;
-import java.util.ArrayList;
-
+import java.awt.Image;
+import java.awt.CardLayout;
+ 
 //Creating a linked list to store People
 class Node{
-    Person person;
-    Node prev;
-    public Node(Person person) {
-        this.person = person;
-    }
+   Person person;
+   Node prev;
+   public Node(Person person) {
+       this.person = person;
+   }
 }
-
+ 
 class personHolder{
-	static Node end;
-	public personHolder(){
-		end = null;
-    }
-
-    //method called append to be able to add Persons
-    public static void append(Person toAppend){
-        Node toAdd = new Node(toAppend);
-        toAdd.prev = end;
-        end = toAdd;
-    }
-
-    //method called getNames to get names of Person
-    public static String getNames(){
-        String toReturn = " ";
-        Node n = end;
-        while (n != null){
-            toReturn = n.person.getName() + " " + toReturn;
-            n = n.prev;
-            }
-    return toReturn;
-    }
-    
+   static Node end;
+   public personHolder(){
+       end = null;
+   }
+ 
+   //method called append to be able to add Persons
+   public static void append(Person toAppend){
+       Node toAdd = new Node(toAppend);
+       toAdd.prev = end;
+       end = toAdd;
+   }
+ 
+   //method called getPerson to get Person based off index
+   public static Person getPerson(int index) {
+       Node n = end;
+       if(index == 0) {
+           return n.person;
+       } else {
+           while(index > 0) {
+               n = n.prev;
+               index--;
+           }
+           return n.person;
+       }
+   }
+ 
+   //method called getIndex to get index of Person based off name
+   public static int getIndex(String name) {
+       Node n = end;
+       int index = -1;
+       boolean done = false;
+       while(n != null || !done) {
+           if(n.person.getName() == name) {
+               done = true;
+           }
+           n = n.prev;
+           index++;
+       }
+       return index;
+   }
+  
+   //method called length to get length of Person
+   public static int length() {
+       Node n = end;
+       int toReturn = 0;
+       while(n != null) {
+           n = n.prev;
+           toReturn++;
+       }
+ 
+       return toReturn;
+   }
+ 
+   public static String getName() {
+       String toReturn = "";
+       Node n = end;
+       while(n != null) {
+           toReturn = n.person + " " + toReturn;
+           n = n.prev;
+       }
+       return toReturn;
+   }
 }
-
+ 
 //Creating the general Main Menu and subsequent submenus
-public class Main {
-    static ArrayList<Person> Peeps = new ArrayList<Person>();
+public class Main extends JPanel{
     public static void main(String[] args) {
-        //Creating the frame that will hold everything
-        JFrame frame = new JFrame("Recieptify");
-        frame.setSize(300, 300);
+ 
+        //Creating frame that will contain application
+        JFrame frame = new JFrame("YouCanBill™");
+        frame.pack();
+        frame.setSize(400, 400);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(new mainMenu(frame));
-        frame.pack();    
+
+        //Creating first panel seen by user. Contain image and buttons. Help and Start. Help for instructions, and start to literally start using program
+        JPanel startScreen = new JPanel();
+        //Creating our brand image ;3. Don't worry image does not need license. I used the google search to help look for it.
+        ImageIcon toucan = new ImageIcon("/Users/risantpaul/COSC-112/VSCode/Projects/Final Project/COSC112Final/src/Images/toco-3718588_1280.jpg");//load image to imageIcon
+        Image toucan2 = toucan.getImage();//transform it
+        Image toucan3 = toucan2.getScaledInstance(400, 375, java.awt.Image.SCALE_SMOOTH);//scale it and make it smooth ;3
+        toucan = new ImageIcon(toucan3);
+        JLabel toucanpic = new JLabel(toucan);
+
+        //Creating panel for Help menu and Continue buttons
+        JPanel buttons = new JPanel();
+        JButton help = new JButton("Help");
+        JButton contin = new JButton("Continue");
+        contin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                startScreen.setVisible(false);
+                new YouCanBill(frame);
+            }
+        });
+        //Adding buttons to the button panel
+        buttons.add(help);
+        buttons.add(contin);
+
+        //Adding button panel and label (with image) to start screen
+        startScreen.add(buttons);
+        startScreen.add(toucanpic);
+
+        
+        //Adding Start Screen Panel to frame and other Frame configurations
+        frame.add(startScreen);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(3);
+        frame.setSize(400, 400);
         frame.setVisible(true);
     }
 }
-
-class mainMenu extends JPanel{
-    private JFrame frame;
-    public mainMenu(JFrame f) {
-        //creating the frame that will hold the buttons
+ 
+class YouCanBill {
+   private JFrame frame;
+   public YouCanBill(JFrame f) {
+        //Creating the frame for application
         frame = f;
-        frame.setSize(300, 300);
-        frame.setLayout(new BorderLayout());
+        JMenuBar mbFrame = new JMenuBar();//MenuBar frame
+        frame.pack();
+        frame.setSize(400, 400);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+ 
+       //Creating a CardLayout layout for the purpose of going inbetween panels/options as the user desires
+       CardLayout layout = new CardLayout();
+       JPanel deck = new JPanel();
+       deck.setLayout(layout);
 
-        //Button to go to submenu for inputting an image
-        JButton inputImage = new JButton("Input Image");
-        inputImage.addActionListener(new ActionListener(){
+        
+        /////PICK PAYMENT OPTION
+        JPanel paymentOptions = new JPanel();
+        JPanel pOQuestion = new JPanel();//Payment Options Quesiton
+        JLabel paymOpt = new JLabel("How would you like pay for your bill?");//Payment Option JLabel
+        pOQuestion.add(paymOpt);
+
+        //Creating buttons for that represent users payment options
+        JButton yourself = new JButton("Pay Yourself");
+        yourself.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                frame.setContentPane(new inputImage(frame));
-                f.setVisible(true);
+                layout.show(deck, "Input Image");
             }
         });
 
-        //Button to go to submenu for adding people to your "party"
-        JButton enterNames = new JButton("People");
-        enterNames.addActionListener(new ActionListener(){
+        JButton split = new JButton("Split Evenly");
+        split.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                frame.setContentPane(new namePeople(frame));
-                f.setVisible(true);
+                layout.show(deck, "Name People");
             }
         });
 
-        //Button to pick an option of how you want to pay your bill
-        JButton options = new JButton("Options");
-        options.addActionListener(new ActionListener(){
+        JButton random = new JButton("Random Payer");
+        random.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                frame.setContentPane(new pickOptions(frame));
-                f.setVisible(true);
+                layout.show(deck, "Name People");
             }
         });
 
-        //Adding buttons to the frame
-        add(inputImage);
-        add(enterNames);
-        add(options); 
-    }
-}
+        //Adding buttons to panel
+        paymentOptions.add(yourself);
+        paymentOptions.add(split);
+        paymentOptions.add(random);
+        paymentOptions.add(BorderLayout.NORTH, pOQuestion);
+        /////PICK PAYMENT OPTIONS
 
 
-class inputImage extends JPanel{
-    private JFrame frame;
-    public inputImage(JFrame f) {
-        frame = f;
-        frame.setSize(300, 300);
-        frame.setLayout(new BorderLayout());
-
-        //Button to go back to the Main Menu
-        JButton mainMenu = new JButton("Main Menu");
-        mainMenu.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                frame.setContentPane(new mainMenu(frame));
-                f.setVisible(true);
-            }
-        });
+        /////Input Image
+        JPanel inputImage = new JPanel();
 
         //Button to open directory and pick an image
         JButton openFiles= new JButton("Open");
         openFiles.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                 JFileChooser chooser = new JFileChooser();
-                 FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & JPEG Images", "jpg", "jpeg");
-                 chooser.setFileFilter(filter);
-                 int returnVal = chooser.showOpenDialog(frame);
-                 if(returnVal == JFileChooser.APPROVE_OPTION) {
+        @Override
+        public void actionPerformed(ActionEvent e){
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & JPEG Images", "jpg", "jpeg");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showOpenDialog(frame);
+                if(returnVal == JFileChooser.APPROVE_OPTION) {
                     System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
 
                     File input = new File(chooser.getSelectedFile().getPath());
                     ImagePopup.drawNew(input); // working
-                 }
+                }
             }
         });
 
         //Adding buttons to frame
-        add(openFiles);
-        add(mainMenu);
-    }
-}
+        inputImage.add(openFiles);
+        /////Input Image
 
-class namePeople extends JPanel{
-    private JFrame frame;
-    public namePeople(JFrame f) {
-        frame = f;
-        frame.setSize(300, 300);
-        frame.setLayout(new BorderLayout());
+ 
+        ////////NAME PEOPLE
+        JPanel namePeople = new JPanel();
+        namePeople.setLayout(null);
 
-        //Button to go back to the Main Menu
-        JButton mainMenu = new JButton("Main Menu");
-        mainMenu.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                frame.setContentPane(new mainMenu(frame));
-                f.setVisible(true);
-            }
-        });
+        //Creating textfield and directions for users input
+        JLabel task = new JLabel("Enter Name");
+        task.setBounds(100, 58, 100, 20);
+        JTextField textfield = new JTextField();
+        textfield.setBounds(100, 77, 193, 20);
+        namePeople.add(BorderLayout.SOUTH, task);
+        namePeople.add(BorderLayout.SOUTH, textfield);
+        
 
-        //Button to enter name of Persons
-        JButton addNames = new JButton("Enter Name");
-        addNames.addActionListener(new ActionListener(){
+
+        //Button to make an instance of Person
+        JButton submit = new JButton("Add");
+        submit.setBounds(100, 110, 90, 25);
+        submit.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent e){
-                remove(addNames);
-                JLabel task = new JLabel("Enter Name");
-                task.setSize(200, 30);
-                JTextField textfield = new JTextField();
-                textfield.setSize(200, 30);
-                add(BorderLayout.SOUTH, task);
-                add(BorderLayout.SOUTH, textfield);
+            public void actionPerformed(ActionEvent d) {
+                personHolder.append(new Person(textfield.getText()));
+                textfield.setText("");
+            }
+        });
+        
+        //Button to continue to submit and crop image after user is done adding people
+        JButton done = new JButton("Done");
+        done.setBounds(200, 110, 90, 25);
+        done.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent d) {
+                layout.show(deck, "Input Image");
+            }
+        });
+
+        namePeople.add(done);
+        //Adding buttons to frame
+        namePeople.add(BorderLayout.SOUTH, submit);
+        frame.setVisible(true);
+        ///////////ADD PEOPLE
+
+        //Creating and Adding help and back button for the frame menubar
+        JButton help = new JButton("Help");
+
+        JButton back = new JButton("Back");
+        back.setVisible(false);
+        back.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(inputImage.isVisible()) {
+                    layout.show(deck, "Payment Options");
+                }
+                if(!paymentOptions.isVisible()) {
+                    layout.previous(deck);
+                }
+            }
+        });
+
+        mbFrame.add(help);
+        mbFrame.add(back);
+
+
+        /////Login Window
+        //Creating "Login Window" for when users first open application, will add their name to the data structure immediately
+        JPanel loginPanel = new JPanel();
+        loginPanel.setLayout(null);
+
+        JLabel enterName = new JLabel("Enter Name");
+        enterName.setBounds(100, 58, 100, 20);
+
+        //Text field for the users name
+        JTextField nameTF = new JTextField();//name text field
+        nameTF.setBounds(100, 77, 193, 28);
+
+        //JLabel for warning in case textfield is empty
+        JLabel isEmpty = new JLabel("Please enter your name before continuing!");
+        isEmpty.setBounds(100, 120, 300, 100);
+        isEmpty.setVisible(false);
                 
-
-                //Button to make an instance of Person
-                JButton submit = new JButton("Submit");
-                submit.setBounds(50, 150, 50, 30);
-                submit.addActionListener(new ActionListener(){
-                    @Override
-                    public void actionPerformed(ActionEvent d) {
-                        personHolder.append(new Person(textfield.getText()));
-                        System.out.println(personHolder.getNames());
-                    }
-                });
-                //Adding buttons to frame
-                add(BorderLayout.SOUTH, submit);
-                add(BorderLayout.EAST, mainMenu);
-                frame.setVisible(true);
+        //Button for the puprose of entering the users name into the data structure and sending them to the application
+        JButton loginButton = new JButton("Login");
+        loginButton.setBounds(100, 110, 90, 25);
+        loginButton.setForeground(Color.BLACK);
+        loginButton.setBackground(Color.WHITE);
+        loginButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(!nameTF.getText().isEmpty()) {
+                    personHolder.append(new Person(nameTF.getText()));
+                    JLabel welcome = new JLabel("Welcome " + personHolder.getPerson(0).getName() + "!");
+                    mbFrame.add(welcome);
+                    back.setVisible(true);
+                    layout.show(deck, "Payment Options");
+                } else {
+                    isEmpty.setVisible(true);
+                }
             }
         });
 
-        //Adding buttons to frame
-        add(BorderLayout.WEST, addNames);
-        add(BorderLayout.EAST, mainMenu);
-    }
-}
+        loginPanel.add(enterName);
+        loginPanel.add(nameTF);
+        loginPanel.add(isEmpty);
+        loginPanel.add(loginButton);
+        /////Login Window
+        
 
-//Submenu after picking Options to pick how you would like to pay the bill
-class pickOptions extends JPanel{
-    private JFrame frame;
-    public pickOptions(JFrame f) {
-        //Making frame that holds the options
-        frame = f;
-        frame.setSize(300, 300);
-        frame.setLayout(new BorderLayout());
-        //Creating buttons for options
-        JButton optionOne = new JButton("Pay Yourself");
-        JButton optionTwo = new JButton("Split Evenly");
-        JButton optionThree = new JButton("Random Payer");
+        //Adding panels to the "deck" in order/semantically
+        deck.add(loginPanel, "Login Panel");
+        deck.add(paymentOptions, "Payment Options");
+        deck.add(namePeople, "Name People");
+        deck.add(inputImage, "Input Image");
 
-        //Button to go back to the Main Menu
-        JButton mainMenu = new JButton("Main Menu");
-        mainMenu.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                frame.setContentPane(new mainMenu(frame));
-                f.setVisible(true);
-            }
-        });
-
-        //Adding buttons to frame
-        add(optionOne);
-        add(optionTwo);
-        add(optionThree);
-        add(mainMenu);
-    }
+        //More frame configuration
+        frame.add(BorderLayout.NORTH, mbFrame);
+        frame.getContentPane().add(deck);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+   }
 }

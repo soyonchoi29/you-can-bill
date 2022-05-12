@@ -16,5 +16,4 @@ https://docs.oracle.com/javase/7/docs/api/java/awt/Robot.html
 https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseEvent.html
 https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseListener.html
 https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseMotionListener.html
-https://www.tabnine.com/code/java/methods/java.awt.Robot/createScreenCapture
 Helped me immensely in creating the cropping functionality
