@@ -88,6 +88,7 @@ public class Main extends JPanel{
         //Creating frame that will contain application
         JFrame frame = new JFrame("YouCanBill™");
         JMenuBar mbFrame = new JMenuBar();
+        mbFrame.setOpaque(false);
         frame.pack();
         frame.setSize(400, 400);
         frame.setResizable(false);
@@ -291,8 +292,9 @@ class YouCanBill {
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
+                    personHolder.append(new Person("dummy"));
                     personHolder.append(new Person(nameTF.getText()));
-                    JLabel welcome = new JLabel("Welcome " + personHolder.getPerson(0).getName() + "!");
+                    JLabel welcome = new JLabel("Welcome " + personHolder.getPerson(1).getName() + "!");
                     mbFrame.add(welcome);
                     back.setVisible(true);
                     layout.show(deck, "Payment Options");
