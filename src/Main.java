@@ -314,7 +314,6 @@ class YouCanBill {
                     Customer initial = new CreditUser(nameTF.getText());
                     customers.append(dummy);
                     customers.append(initial);
-                    System.out.println(customers.getIndex("Dummy"));
                     JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
                     back.setVisible(true);

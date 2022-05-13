@@ -16,6 +16,7 @@ public class ImageChange {
     private static CustomerHolder CustomerHolder;
     public static void imageCrop (CustomerHolder customers, BufferedImage originalImage, int x, int y, int width, int height, String name){
         try{
+            CustomerHolder = customers;
             // Creates new image out of the subimage of original image
             BufferedImage cropped = originalImage.getSubimage(x, y, width, height);
             //cropped.createGraphics().drawImage(originalImage.getSubimage(x, y, width, height),null,0,0);
@@ -37,8 +38,7 @@ public class ImageChange {
     public static void ImageStitch(String name){
         //Testing
         try{
-            int indexofCustomer = CustomerHolder.getIndex(name) - 1;
-            Customer currentCustomer = CustomerHolder.getCustomer(indexofCustomer);
+            Customer currentCustomer = CustomerHolder.getCustomer(0);
             currentCustomer = CustomerHolder.getCustomer(CustomerHolder.getIndex("dummy"));
             int width = 0;
             int height = 0;
@@ -65,13 +65,13 @@ public class ImageChange {
                 }
             }
 
-            CustomerHolder.getCustomer(indexofCustomer).addStitchedImage(finalImage);
+            CustomerHolder.getCustomer(0).addStitchedImage(finalImage);
 
             // Save/write stitched image to a file
-            String currentName = CustomerHolder.getCustomer(indexofCustomer).getName() + "StitchedImage.jpg";
+            String currentName = CustomerHolder.getCustomer(0).getName() + "StitchedImage.jpg";
             File stitchedImage = new File(currentName);
             System.out.println(currentName);
-            ImageIO.write(CustomerHolder.getCustomer(indexofCustomer).getStitched(), "png", stitchedImage); // Can change maybe later
+            ImageIO.write(CustomerHolder.getCustomer(0).getStitched(), "png", stitchedImage); // Can change maybe later
             
         }catch(IOException error){}
     }
