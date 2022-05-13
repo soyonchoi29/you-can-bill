@@ -72,7 +72,7 @@ public class ImageChange {
             File stitchedImage = new File(currentName);
             System.out.println(currentName);
             ImageIO.write(CustomerHolder.getCustomer(0).getStitched(), "jpg", stitchedImage);
-            CustomerHolder.getCustomer(0).receiptItems.clear();
+            Customer.receiptItems.clear();
             
         }catch(IOException error){}
     }

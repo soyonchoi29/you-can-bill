@@ -133,10 +133,11 @@ public class Main extends JPanel{
 }
  
 class YouCanBill {
+    static CardLayout layout;
    public YouCanBill() {
        CustomerHolder customers = new CustomerHolder();
         //Creating the frame for application
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("YouCanBill™");
         JMenuBar mbFrame = new JMenuBar();//MenuBar frame
         frame.pack();
         frame.setSize(400, 400);
@@ -144,7 +145,7 @@ class YouCanBill {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
        //Creating a CardLayout layout for the purpose of going inbetween panels/options as the user desires
-       CardLayout layout = new CardLayout();
+       layout = new CardLayout();
        JPanel deck = new JPanel();
        deck.setLayout(layout);
 
@@ -226,8 +227,8 @@ class YouCanBill {
 
 
         //Button to make an instance of Person
-        JButton credituser = new JButton("Add");
-        credituser.setBounds(100, 110, 90, 25);
+        JButton credituser = new JButton("Credit Card");
+        credituser.setBounds(100, 110, 100, 25);
         credituser.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent d) {
@@ -237,8 +238,8 @@ class YouCanBill {
             }
         });
 
-        JButton cashpayer = new JButton("Add");
-        cashpayer.setBounds(100, 150, 90, 25);
+        JButton cashpayer = new JButton("Cash");
+        cashpayer.setBounds(200, 110, 90, 25);
         cashpayer.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent d) {
@@ -250,7 +251,7 @@ class YouCanBill {
         
         //Button to continue to submit and crop image after user is done adding people
         JButton done = new JButton("Done");
-        done.setBounds(200, 110, 90, 25);
+        done.setBounds(145, 140, 90, 25);
         done.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent d) {
@@ -352,11 +353,21 @@ class YouCanBill {
         /////Login Window
         
 
+        /////CCBilling
+        JPanel ccbilling = new JPanel();
+        ccbilling.setLayout(null);
+        JLabel ccinfo = new JLabel("Enter Credit Card Information");
+
+        ccbilling.add(ccinfo);
+        /////CCBilling
+
+
         //Adding panels to the "deck" in order/semantically
         deck.add(loginPanel, "Login Panel");
         deck.add(paymentOptions, "Payment Options");
         deck.add(namePeople, "Name People");
         deck.add(inputImage, "Input Image");
+        deck.add(ccbilling, "CC Billing");
 
         //More frame configuration
         frame.add(BorderLayout.NORTH, mbFrame);

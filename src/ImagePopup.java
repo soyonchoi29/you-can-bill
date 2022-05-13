@@ -54,7 +54,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     public void crop(File input) {
         //Creates panel that will contain receipt
         JPanel panel = new JPanel();
-        panel.setSize(500,600);
+        panel.setSize(400,400);
         panel.setVisible(true);
         panel.addMouseListener(this);
         panel.addMouseMotionListener(this);
@@ -100,7 +100,17 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
         base.add(panel);
         frame.add(base);
-        frame.setSize(500, 600);
+        int panelwidth = scaledImageWidth + 50;
+        if(panelwidth < 400) {
+            panelwidth = 400;
+        }
+
+        int panelheight = scaledImageHeight + 50;
+        if(panelheight < 400) {
+            panelheight = 400;
+        }
+        frame.setSize(panelwidth, panelheight);
+        frame.setResizable(false);
         frame.setVisible(true);
         //Maybe some sort of an instructional popup
 
@@ -162,6 +172,12 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                 frame.setVisible(false);
             }
         });
+        JButton done = new JButton("Done");
+        done.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                frame.setVisible(false);
+            }
+        });
         //Menu to choose who the cropped images are for
         JMenu pickPers = new JMenu("Pick a Person to Add images");
         for(int i = 1; i < customerHolder.length(); i++) {
@@ -175,10 +191,10 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
             });
         }
 
-        
 
         recieptMenu.add(pickPers);
         recieptMenu.add(back);
+        recieptMenu.add(done);
         frame.setJMenuBar(recieptMenu);
         frame.setVisible(true);
 
