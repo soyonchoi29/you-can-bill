@@ -13,9 +13,9 @@ public class RSA {
     private BigInteger publicKey;
     private BigInteger modulus;
 
-    public RSA (int Nbits){
-        BigInteger p = BigInteger.probablePrime(Nbits/2, random);
-        BigInteger q = BigInteger.probablePrime(Nbits/2, random);
+    public RSA (){
+        BigInteger p = BigInteger.probablePrime(2048/2, random);
+        BigInteger q = BigInteger.probablePrime(2048/2, random);
         BigInteger phi = (p.subtract(one)).multiply(q.subtract(one));
 
         modulus = p.multiply(q);
@@ -60,5 +60,12 @@ public class RSA {
 
         return encrypted.modPow(privateKey,modulus);
     }
+
+    //public static void main(String args[]) {
+    //    RSA rsa = new RSA();
+    //    BigInteger cardNum = new BigInteger("5105105105105100");
+    //    rsa.encryptAndSave(cardNum);
+    //    System.out.println(rsa.decrypt());
+    //}
 
 }
