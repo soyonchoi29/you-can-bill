@@ -35,7 +35,7 @@ class personHolder{
        if(index == 0) {
            return n.person;
        } else {
-           while(index > 0) {
+           while(index >= 0) {
                n = n.prev;
                index--;
            }
@@ -294,7 +294,7 @@ class YouCanBill {
                 if(!nameTF.getText().isEmpty()) {
                     personHolder.append(new Person("dummy"));
                     personHolder.append(new Person(nameTF.getText()));
-                    JLabel welcome = new JLabel("Welcome " + personHolder.getPerson(1).getName() + "!");
+                    JLabel welcome = new JLabel("Welcome " + personHolder.getPerson(0).getName() + "!");
                     mbFrame.add(welcome);
                     back.setVisible(true);
                     layout.show(deck, "Payment Options");
