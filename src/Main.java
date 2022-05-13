@@ -8,58 +8,61 @@ import java.awt.Image;
 import java.awt.CardLayout;
  
 //Creating a linked list to store People
-class Node{
-   Person person;
-   Node prev;
-   public Node(Person person) {
-       this.person = person;
-   }
+
+class Node {
+    Node prev;
+    Customer customer;
+    public Node(Customer customer) {
+        this.customer = customer;
+    }
 }
- 
-class personHolder{
-   static Node end;
-   public personHolder(){
+
+class CustomerHolder{
+    Node end;
+   public CustomerHolder(){
        end = null;
    }
  
    //method called append to be able to add Persons
-   public static void append(Person toAppend){
+   public  void append(Customer toAppend){
        Node toAdd = new Node(toAppend);
        toAdd.prev = end;
        end = toAdd;
    }
  
-   //method called getPerson to get Person based off index
-   public static Person getPerson(int index) {
-       Node n = end;
-       if(index == 0) {
-           return n.person;
-       } else {
-           while(index >= 0) {
-               n = n.prev;
-               index--;
-           }
-           return n.person;
-       }
+   //Get a customer based off the index given
+   public  Customer getCustomer(int index) {
+        Node n = end;
+        int indices = length() - 1;
+        if(index == indices) {
+            return n.customer;
+        } else {
+            while(indices > index) {
+                n = n.prev;
+                indices--;
+            }
+        }
+        return n.customer;
    }
  
-   //method called getIndex to get index of Person based off name
-   public static int getIndex(String name) {
+   //get index of customer based off their name (i get 1 no matter what :(()))
+   public  int getIndex(String name) {
        Node n = end;
        int index = -1;
        boolean done = false;
-       while(n != null || !done) {
-           if(n.person.getName() == name) {
-               done = true;
-           }
-           n = n.prev;
-           index++;
+       while(n != null && !done) {
+            if(n.customer.getName() == name) {
+                done = true;
+            }
+            n = n.prev;
+            index++;
+           
        }
        return index;
    }
   
-   //method called length to get length of Person
-   public static int length() {
+   //method called length to get length of customer
+   public  int length() {
        Node n = end;
        int toReturn = 0;
        while(n != null) {
@@ -70,11 +73,12 @@ class personHolder{
        return toReturn;
    }
  
-   public static String getName() {
+   //returns all names inside
+   public  String getName() {
        String toReturn = "";
        Node n = end;
        while(n != null) {
-           toReturn = n.person + " " + toReturn;
+           toReturn = n.customer + " " + toReturn;
            n = n.prev;
        }
        return toReturn;
@@ -104,8 +108,8 @@ public class Main extends JPanel{
         JLabel toucanpic = new JLabel(toucan);
 
         JButton help = new JButton("Help");
-        JButton contin = new JButton("Continue");
-        contin.addActionListener(new ActionListener() {
+        JButton start = new JButton("Start");
+        start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 startScreen.setVisible(false);
                 new YouCanBill();
@@ -113,7 +117,7 @@ public class Main extends JPanel{
         });
         //Adding buttons to the mbFrame panel
         mbFrame.add(help);
-        mbFrame.add(contin);
+        mbFrame.add(start);
 
         //Adding label (with image) to start screen
         startScreen.add(toucanpic);
@@ -130,6 +134,7 @@ public class Main extends JPanel{
  
 class YouCanBill {
    public YouCanBill() {
+       CustomerHolder customers = new CustomerHolder();
         //Creating the frame for application
         JFrame frame = new JFrame();
         JMenuBar mbFrame = new JMenuBar();//MenuBar frame
@@ -196,7 +201,7 @@ class YouCanBill {
                     System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
 
                     File input = new File(chooser.getSelectedFile().getPath());
-                    ImagePopup.drawNew(input); // working
+                    ImagePopup.drawNew(customers, input); // working
                 }
             }
         });
@@ -221,12 +226,24 @@ class YouCanBill {
 
 
         //Button to make an instance of Person
-        JButton submit = new JButton("Add");
-        submit.setBounds(100, 110, 90, 25);
-        submit.addActionListener(new ActionListener(){
+        JButton credituser = new JButton("Add");
+        credituser.setBounds(100, 110, 90, 25);
+        credituser.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent d) {
-                personHolder.append(new Person(textfield.getText()));
+                Customer creditp = new CreditUser(textfield.getText());
+                customers.append(creditp);
+                textfield.setText("");
+            }
+        });
+
+        JButton cashpayer = new JButton("Add");
+        cashpayer.setBounds(100, 150, 90, 25);
+        cashpayer.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent d) {
+                Customer cashp = new CashPayer(textfield.getText());
+                customers.append(cashp);
                 textfield.setText("");
             }
         });
@@ -243,7 +260,8 @@ class YouCanBill {
 
         namePeople.add(done);
         //Adding buttons to frame
-        namePeople.add(BorderLayout.SOUTH, submit);
+        namePeople.add(credituser);
+        namePeople.add(cashpayer);
         frame.setVisible(true);
         ///////////ADD PEOPLE
 
@@ -285,16 +303,39 @@ class YouCanBill {
         isEmpty.setVisible(false);
                 
         //Button for the puprose of entering the users name into the data structure and sending them to the application
-        JButton loginButton = new JButton("Login");
-        loginButton.setBounds(100, 110, 90, 25);
-        loginButton.setForeground(Color.BLACK);
-        loginButton.setBackground(Color.WHITE);
-        loginButton.addActionListener(new ActionListener() {
+        JButton credit = new JButton("Credit Card");
+        credit.setBounds(100, 110, 100, 25);
+        credit.setForeground(Color.BLACK);
+        credit.setBackground(Color.WHITE);
+        credit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
-                    personHolder.append(new Person("dummy"));
-                    personHolder.append(new Person(nameTF.getText()));
-                    JLabel welcome = new JLabel("Welcome " + personHolder.getPerson(0).getName() + "!");
+                    Customer dummy = new CreditUser("Dummy");
+                    Customer initial = new CreditUser(nameTF.getText());
+                    customers.append(dummy);
+                    customers.append(initial);
+                    System.out.println(customers.getIndex("Dummy"));
+                    JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
+                    mbFrame.add(welcome);
+                    back.setVisible(true);
+                    layout.show(deck, "Payment Options");
+                } else {
+                    isEmpty.setVisible(true);
+                }
+            }
+        });
+        JButton cash = new JButton("Cash");
+        cash.setBounds(200, 110, 90, 25);
+        cash.setForeground(Color.BLACK);
+        cash.setBackground(Color.WHITE);
+        cash.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(!nameTF.getText().isEmpty()) {
+                    Customer dummy = new CreditUser("Dummy");
+                    Customer initial = new CashPayer(nameTF.getText());
+                    customers.append(dummy);
+                    customers.append(initial);
+                    JLabel welcome = new JLabel("Welcome " + customers.getCustomer(0).getName() + "!");
                     mbFrame.add(welcome);
                     back.setVisible(true);
                     layout.show(deck, "Payment Options");
@@ -307,7 +348,8 @@ class YouCanBill {
         loginPanel.add(enterName);
         loginPanel.add(nameTF);
         loginPanel.add(isEmpty);
-        loginPanel.add(loginButton);
+        loginPanel.add(credit);
+        loginPanel.add(cash);
         /////Login Window
         
 

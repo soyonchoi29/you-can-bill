@@ -23,6 +23,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseAdapter;
 
 public class ImagePopup extends JFrame implements MouseListener, MouseMotionListener {
+    private static CustomerHolder customerHolder;
     private boolean cropping = false;
     private static BufferedImage image;
     private static int imageWidth, imageHeight;
@@ -38,7 +39,8 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     private JLayeredPane base = new JLayeredPane();
     private JPanel rectangle = new JPanel();
 
-    public static void drawNew(File input) {
+    public static void drawNew(CustomerHolder customers, File input) {
+        customerHolder = customers;
         new ImagePopup().crop(input);
         try{
             image = ImageIO.read(input);
@@ -50,7 +52,6 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     }
 
     public void crop(File input) {
-
         //Creates panel that will contain receipt
         JPanel panel = new JPanel();
         panel.setSize(500,600);
@@ -163,8 +164,8 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         });
         //Menu to choose who the cropped images are for
         JMenu pickPers = new JMenu("Pick a Person to Add images");
-        for(int i = 0; i < personHolder.length(); i++) {
-            String name = personHolder.getPerson(i).getName();
+        for(int i = 0; i < customerHolder.length(); i++) {
+            String name = customerHolder.getCustomer(i).getName();
             JMenuItem names = new JMenuItem(name);
             pickPers.add(names);
             names.addActionListener(new ActionListener() {
@@ -232,7 +233,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
         // Use dummy Person created to temporarily store Items
         image = ImageIO.read(inputFile);
-        ImageChange.imageCrop(image, (int)(Math.min(x1 - xImage, x2 - xImage)*widthRatio), (int)(Math.min(y1 - yImage, y2 - yImage)*heightRatio), cropWidth, cropHeight, "dummy");
+        ImageChange.imageCrop(customerHolder, image, (int)(Math.min(x1 - xImage, x2 - xImage)*widthRatio), (int)(Math.min(y1 - yImage, y2 - yImage)*heightRatio), cropWidth, cropHeight, "dummy");
     }
 
     //Record x and y values of when mouse is first pressed

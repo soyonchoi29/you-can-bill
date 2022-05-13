@@ -4,7 +4,7 @@ public class Item {
     //private final String name;
     //private int quantity;
     private float price;
-    private Person payer;
+    private Customer payer;
     private BufferedImage image;
 
     //public Item(String name, int quantity, float price) {

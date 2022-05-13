@@ -13,18 +13,16 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 public class ImageChange {
-
-    public static void imageCrop (BufferedImage originalImage, int x, int y, int width, int height, String name){
+    private static CustomerHolder CustomerHolder;
+    public static void imageCrop (CustomerHolder customers, BufferedImage originalImage, int x, int y, int width, int height, String name){
         try{
-            int indexofPerson = personHolder.getIndex(name);
-            Person currentPerson = personHolder.getPerson(indexofPerson);
             // Creates new image out of the subimage of original image
             BufferedImage cropped = originalImage.getSubimage(x, y, width, height);
             //cropped.createGraphics().drawImage(originalImage.getSubimage(x, y, width, height),null,0,0);
 
             // Adds the item to the list for user's receipt
             Item toAdd = new Item(cropped);
-            currentPerson.receiptItems.add(toAdd);
+            Customer.receiptItems.add(toAdd);
             System.out.println("Trying to crop");
 
             // Save/write cropped image to a file
@@ -39,15 +37,15 @@ public class ImageChange {
     public static void ImageStitch(String name){
         //Testing
         try{
-            int indexofPerson = personHolder.getIndex(name) - 1;
-            Person currentPerson = personHolder.getPerson(indexofPerson);
-            currentPerson = personHolder.getPerson(personHolder.getIndex("dummy"));
+            int indexofCustomer = CustomerHolder.getIndex(name) - 1;
+            Customer currentCustomer = CustomerHolder.getCustomer(indexofCustomer);
+            currentCustomer = CustomerHolder.getCustomer(CustomerHolder.getIndex("dummy"));
             int width = 0;
             int height = 0;
 
             // Finds max of the widths of all cropped images to get the width of finalImage
             // Adds the height of all cropped images to get total height of finalImage
-            for (Item item : currentPerson.receiptItems){
+            for (Item item : Customer.receiptItems){
                 if (item.getImage().getWidth() > width){
                     width = item.getImage().getWidth();
                 }
@@ -60,20 +58,20 @@ public class ImageChange {
             // Draw finalImage out of all the cropped images
             int y = 0;
 
-            for (int i = 0; i < personHolder.length() - 1; i++) {
-                for (int j = 0; j < personHolder.getPerson(i).receiptItems.size(); j++) {
-                    finalImage.createGraphics().drawImage(personHolder.getPerson(i).receiptItems.get(j).getImage(), null, 0, y);
-                    y += personHolder.getPerson(i).receiptItems.get(j).getImage().getHeight();
+            for (int i = 0; i < CustomerHolder.length() - 1; i++) {
+                for (int j = 0; j < Customer.receiptItems.size(); j++) {
+                    finalImage.createGraphics().drawImage(Customer.receiptItems.get(j).getImage(), null, 0, y);
+                    y += Customer.receiptItems.get(j).getImage().getHeight();
                 }
             }
 
-            personHolder.getPerson(indexofPerson).addStitchedImage(finalImage);
+            CustomerHolder.getCustomer(indexofCustomer).addStitchedImage(finalImage);
 
             // Save/write stitched image to a file
-            String currentName = personHolder.getPerson(indexofPerson).getName() + "StitchedImage.jpg";
+            String currentName = CustomerHolder.getCustomer(indexofCustomer).getName() + "StitchedImage.jpg";
             File stitchedImage = new File(currentName);
             System.out.println(currentName);
-            ImageIO.write(personHolder.getPerson(indexofPerson).getStitched(), "png", stitchedImage); // Can change maybe later
+            ImageIO.write(CustomerHolder.getCustomer(indexofCustomer).getStitched(), "png", stitchedImage); // Can change maybe later
             
         }catch(IOException error){}
     }
