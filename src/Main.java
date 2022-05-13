@@ -35,7 +35,7 @@ class personHolder{
        if(index == 0) {
            return n.person;
        } else {
-           while(index > 0) {
+           while(index >= 0) {
                n = n.prev;
                index--;
            }
@@ -87,6 +87,8 @@ public class Main extends JPanel{
  
         //Creating frame that will contain application
         JFrame frame = new JFrame("YouCanBill™");
+        JMenuBar mbFrame = new JMenuBar();
+        mbFrame.setOpaque(false);
         frame.pack();
         frame.setSize(400, 400);
         frame.setResizable(false);
@@ -97,43 +99,39 @@ public class Main extends JPanel{
         //Creating our brand image ;3. Don't worry image does not need license. I used the google search to help look for it.
         ImageIcon toucan = new ImageIcon("/Users/risantpaul/COSC-112/VSCode/Projects/Final Project/COSC112Final/src/Images/toco-3718588_1280.jpg");//load image to imageIcon
         Image toucan2 = toucan.getImage();//transform it
-        Image toucan3 = toucan2.getScaledInstance(400, 375, java.awt.Image.SCALE_SMOOTH);//scale it and make it smooth ;3
+        Image toucan3 = toucan2.getScaledInstance(400, 400, java.awt.Image.SCALE_SMOOTH);//scale it and make it smooth ;3
         toucan = new ImageIcon(toucan3);
         JLabel toucanpic = new JLabel(toucan);
 
-        //Creating panel for Help menu and Continue buttons
-        JPanel buttons = new JPanel();
         JButton help = new JButton("Help");
         JButton contin = new JButton("Continue");
         contin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 startScreen.setVisible(false);
-                new YouCanBill(frame);
+                new YouCanBill();
             }
         });
-        //Adding buttons to the button panel
-        buttons.add(help);
-        buttons.add(contin);
+        //Adding buttons to the mbFrame panel
+        mbFrame.add(help);
+        mbFrame.add(contin);
 
-        //Adding button panel and label (with image) to start screen
-        startScreen.add(buttons);
+        //Adding label (with image) to start screen
         startScreen.add(toucanpic);
 
         
         //Adding Start Screen Panel to frame and other Frame configurations
+        frame.add(BorderLayout.NORTH, mbFrame);
         frame.add(startScreen);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setDefaultCloseOperation(3);
         frame.setSize(400, 400);
         frame.setVisible(true);
     }
 }
  
 class YouCanBill {
-   private JFrame frame;
-   public YouCanBill(JFrame f) {
+   public YouCanBill() {
         //Creating the frame for application
-        frame = f;
+        JFrame frame = new JFrame();
         JMenuBar mbFrame = new JMenuBar();//MenuBar frame
         frame.pack();
         frame.setSize(400, 400);
@@ -294,6 +292,7 @@ class YouCanBill {
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
+                    personHolder.append(new Person("dummy"));
                     personHolder.append(new Person(nameTF.getText()));
                     JLabel welcome = new JLabel("Welcome " + personHolder.getPerson(0).getName() + "!");
                     mbFrame.add(welcome);
