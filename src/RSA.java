@@ -1,13 +1,18 @@
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RSA {
     private final static BigInteger one = new BigInteger("1");
     private final static SecureRandom random = new SecureRandom();
+
+    //private ArrayList<String> info = new ArrayList<String>();
 
     private BigInteger privateKey;
     private BigInteger publicKey;
@@ -27,17 +32,25 @@ public class RSA {
     public void encryptAndSave(BigInteger cardNum, String name){
         BigInteger encrypted = cardNum.modPow(publicKey,modulus);
 
+        //info.add(name);
+        //info.add(""+encrypted);
+
         try {
             File output = new File("CreditCardNumber.txt");
-            PrintWriter printer = new PrintWriter(output);
+            //PrintWriter printer = new PrintWriter(output);
+            FileWriter fileWriter = new FileWriter(output, true);
 
-            printer.write(name + "\n" + encrypted + "\n");
+            //for (String string : info){
+            //    printer.write(string + "\n");
+            //}
 
-            printer.close();
+            fileWriter.write(name + "\n" + encrypted + "\n");
+
+            fileWriter.close();
         } catch (FileNotFoundException error){
             System.err.println("File not found.");
             System.err.println(error);
-        }
+        } catch (IOException error) {}
 
     }
 
