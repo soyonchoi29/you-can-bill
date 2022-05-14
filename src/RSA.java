@@ -3,16 +3,12 @@ import java.security.SecureRandom;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RSA {
     private final static BigInteger one = new BigInteger("1");
     private final static SecureRandom random = new SecureRandom();
-
-    //private ArrayList<String> info = new ArrayList<String>();
 
     private BigInteger privateKey;
     private BigInteger publicKey;
@@ -32,17 +28,9 @@ public class RSA {
     public void encryptAndSave(BigInteger cardNum, String name){
         BigInteger encrypted = cardNum.modPow(publicKey,modulus);
 
-        //info.add(name);
-        //info.add(""+encrypted);
-
         try {
-            File output = new File("CreditCardNumber.txt");
-            //PrintWriter printer = new PrintWriter(output);
+            File output = new File("CreditCardNumber.txt"); // check to add no dupe names somewhere
             FileWriter fileWriter = new FileWriter(output, true);
-
-            //for (String string : info){
-            //    printer.write(string + "\n");
-            //}
 
             fileWriter.write(name + "\n" + encrypted + "\n");
 
@@ -64,20 +52,19 @@ public class RSA {
             Scanner sc = new Scanner(input);
 
             while (sc.hasNext()){
-                
-                System.out.println("next: " + sc.next());
-                if (sc.next() == name){
-                    System.out.println("next line: " + sc.nextLine());
+                if (sc.next().equals(name)){
                     encrypted = sc.nextBigInteger();
-                    sc.close();
+                    break;
                 } else {sc.nextLine();}
             }
+
+            sc.close();
 
         } catch (FileNotFoundException error){
             System.err.println("File not found.");
             System.err.println(error);
         }
-
+        //System.out.println(modulus);
         return encrypted.modPow(privateKey,modulus);
     }
 
