@@ -412,8 +412,8 @@ class YouCanBill {
             public void actionPerformed(ActionEvent e) {
                 BigInteger cardNum = new BigInteger(ccnumberTF.getText());
                 ccnumberTF.setText("****************");
-                rsa.encryptAndSave(cardNum);
-                System.out.println(rsa.decrypt());
+                //rsa.encryptAndSave(cardNum);
+                //System.out.println(rsa.decrypt());
             }
         });
 
