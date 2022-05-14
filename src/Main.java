@@ -102,10 +102,12 @@ class CustomerHolder{
  
 //Creating the general Main Menu and subsequent submenus
 public class Main extends JPanel{
+    static JFrame frame;
+    static JButton help;
     public static void main(String[] args) {
  
         //Creating frame that will contain application
-        JFrame frame = new JFrame("YouCanBill™");
+        frame = new JFrame("YouCanBill™");
         JMenuBar mbFrame = new JMenuBar();
         mbFrame.setOpaque(false);
         frame.pack();
@@ -122,7 +124,7 @@ public class Main extends JPanel{
             }
          });
 
-         
+
         //Creating first panel seen by user. Contain image and buttons. Help and Start. Help for instructions, and start to literally start using program
         JPanel startScreen = new JPanel();
         //Creating our brand image ;3. Don't worry image does not need license. I used the google search to help look for it.
@@ -132,15 +134,21 @@ public class Main extends JPanel{
         toucan = new ImageIcon(toucan3);
         JLabel toucanpic = new JLabel(toucan);
 
-        JButton help = new JButton("Help");
+        help = new JButton("Help");
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
+                frame.setVisible(false);
+                help.setVisible(false);
+                new YouCanBill();
+                YouCanBill.help.setVisible(false);
+                YouCanBill.layout.show(YouCanBill.deck, "Help");
+                YouCanBill.mainMenu.setVisible(true);
             }
         });
         JButton start = new JButton("Start");
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                YouCanBill.checker++;
                 frame.setVisible(false);
                 new YouCanBill();
             }
@@ -168,7 +176,9 @@ class YouCanBill {
     static JPanel deck;
     static String ccnameinfo;
     static JFrame frame;
-
+    static JButton mainMenu;
+    static JButton help;
+    static int checker = 0;
 
    public YouCanBill() {
        CustomerHolder customers = new CustomerHolder();
@@ -206,6 +216,7 @@ class YouCanBill {
         yourself.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Input Image");
+                mainMenu.setVisible(true);
             }
         });
 
@@ -213,6 +224,7 @@ class YouCanBill {
         split.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Name People");
+                mainMenu.setVisible(true);
             }
         });
 
@@ -220,6 +232,7 @@ class YouCanBill {
         random.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Name People");
+                mainMenu.setVisible(true);
             }
         });
 
@@ -312,19 +325,7 @@ class YouCanBill {
         frame.setVisible(true);
         ///////////ADD PEOPLE
 
-        //Creating and Adding help and back button for the frame menubar
-        JButton help = new JButton("Help");
-
-        JButton mainMenu = new JButton("Main Menu");
-        mainMenu.setVisible(false);
-        mainMenu.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                layout.show(deck, "Payment Options");
-            }
-        });
-
-        mbFrame.add(help);
-        mbFrame.add(mainMenu);
+       
 
 
         /////Login Window
@@ -352,13 +353,14 @@ class YouCanBill {
         credit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
+                    checker++;
+
                     Customer dummy = new CreditUser("Dummy");
                     Customer initial = new CreditUser(nameTF.getText());
                     customers.append(dummy);
                     customers.append(initial);
                     JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
-                    mainMenu.setVisible(true);
                     layout.show(deck, "Payment Options");
                 } else {
                     isEmpty.setVisible(true);
@@ -372,13 +374,14 @@ class YouCanBill {
         cash.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
+                    checker++;
+
                     Customer dummy = new CreditUser("Dummy");
                     Customer initial = new CashPayer(nameTF.getText());
                     customers.append(dummy);
                     customers.append(initial);
                     JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
-                    mainMenu.setVisible(true);
                     layout.show(deck, "Payment Options");
                 } else {
                     isEmpty.setVisible(true);
@@ -516,6 +519,41 @@ class YouCanBill {
 
         helpPanel.add(instructions);
         /////Help Panel
+
+
+
+         //Creating and Adding help and back button for the frame menubar
+
+        mainMenu = new JButton("Return");
+         mainMenu.setVisible(false);
+         mainMenu.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+                 if(checker == 1) {
+                    layout.show(deck, "Login Panel");
+                    mainMenu.setVisible(false);
+                    help.setVisible(true);
+                 } else if(checker == 0) {
+                     Main.frame.setVisible(true);
+                     Main.help.setVisible(true);
+                 }else {
+                    layout.show(deck, "Payment Options");
+                    mainMenu.setVisible(false);
+                    help.setVisible(true);
+                 }
+                 
+             }
+         });
+         help = new JButton("Help");
+         help.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+                 help.setVisible(false);
+                layout.show(deck, "Help");
+                mainMenu.setVisible(true);
+             }
+         });
+ 
+         mbFrame.add(help);
+         mbFrame.add(mainMenu);
 
 
         //Adding panels to the "deck" in order/semantically
