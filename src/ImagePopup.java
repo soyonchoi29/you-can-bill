@@ -24,7 +24,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseAdapter;
 
 public class ImagePopup extends JFrame implements MouseListener, MouseMotionListener {
-    private static CustomerHolder customerHolder;
     private boolean cropping = false;
     private static BufferedImage image;
     private static int imageWidth, imageHeight;
@@ -40,8 +39,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     private JLayeredPane base = new JLayeredPane();
     private JPanel rectangle = new JPanel();
 
-    public static void drawNew(CustomerHolder customers, File input) {
-        customerHolder = customers;
+    public static void drawNew(File input) {
         new ImagePopup().crop(input);
         try{
             image = ImageIO.read(input);
@@ -189,7 +187,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
             public void actionPerformed(ActionEvent e){
                 frame.setVisible(false);
                 YouCanBill.frame.setVisible(true);
-                Customer credit = customerHolder.isCredit();
+                Customer credit = YouCanBill.customers.isCredit();
                 if(credit != null && credit.getName() != "Dummy") {
                     YouCanBill.layout.show(YouCanBill.deck, "CC Billing");
                 } else {
@@ -199,8 +197,8 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         });
         //Menu to choose who the cropped images are for
         JMenu pickPers = new JMenu("Append Image to Person");
-        for(int i = 1; i < customerHolder.length(); i++) {
-            String name = customerHolder.getCustomer(i).getName(); // Start at 1 to skip Dummy
+        for(int i = 1; i < YouCanBill.customers.length(); i++) {
+            String name = YouCanBill.customers.getCustomer(i).getName(); // Start at 1 to skip Dummy
             JMenuItem names = new JMenuItem(name);
             pickPers.add(names);
             names.addActionListener(new ActionListener() {
@@ -268,7 +266,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
         // Use dummy Person created to temporarily store Items
         image = ImageIO.read(inputFile);
-        ImageChange.imageCrop(customerHolder, image, (int)(Math.min(x1 - xImage, x2 - xImage)*widthRatio), (int)(Math.min(y1 - yImage, y2 - yImage)*heightRatio), cropWidth, cropHeight, "dummy");
+        ImageChange.imageCrop(YouCanBill.customers, image, (int)(Math.min(x1 - xImage, x2 - xImage)*widthRatio), (int)(Math.min(y1 - yImage, y2 - yImage)*heightRatio), cropWidth, cropHeight, "dummy");
     }
 
     //Record x and y values of when mouse is first pressed

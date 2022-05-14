@@ -10,8 +10,8 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-//Creating a linked list to store People
 
+//Creating a linked list to store Customers
 class Node {
     Node prev;
     Customer customer;
@@ -22,166 +22,176 @@ class Node {
 
 class CustomerHolder{
     Node end;
-   public CustomerHolder(){
-       end = null;
-   }
+    public CustomerHolder(){
+        end = null;
+    }
  
-   //method called append to be able to add Persons
-   public  void append(Customer toAppend){
-       Node toAdd = new Node(toAppend);
-       toAdd.prev = end;
-       end = toAdd;
-   }
+    //Method called append to add customers to linked list
+    public  void append(Customer toAppend){
+        Node toAdd = new Node(toAppend);
+        toAdd.prev = end;
+        end = toAdd;
+    }
  
-   //Get a customer based off the index given
-   public  Customer getCustomer(int index) {
-        Node n = end;
-        int indices = length() - 1;
-        if(index == indices) {
-            return n.customer;
-        } else {
-            while(indices > index) {
-                n = n.prev;
-                indices--;
+    //Method called getCustomer to get customer based off an index
+    public  Customer getCustomer(int index) {
+            Node n = end;
+            int indices = length() - 1;
+            if(index == indices) {
+                return n.customer;
+            } else {
+                while(indices > index) {
+                    n = n.prev;
+                    indices--;
+                }
             }
-        }
-        return n.customer;
-   }
+            return n.customer;
+    }
  
-   //get index of customer based off their name (i get 1 no matter what :(()))
-   public  int getIndex(String name) {
-       Node n = end;
-       int index = -1;
-       boolean done = false;
-       while(n != null && !done) {
-            if(n.customer.getName() == name) {
-                done = true;
+    //Method called getIndex to get the index of a customer based off their name (string)
+    public  int getIndex(String name) {
+        Node n = end;
+        int index = -1;
+        boolean done = false;
+        while(n != null && !done) {
+                if(n.customer.getName() == name) {
+                    done = true;
+                }
+                n = n.prev;
+                index++;
+            
+        }
+        return index;
+    }
+  
+    //Method called length to get the length of the linked list
+    public  int length() {
+        Node n = end;
+        int toReturn = 0;
+        while(n != null) {
+            n = n.prev;
+            toReturn++;
+        }
+    
+        return toReturn;
+    }
+
+    public Customer isCredit() {
+        Node n = end;
+        boolean done = false;
+        while(n != null && !done) {
+            if(n.customer.isCredit()) {
+                    done = true;
+                    return n.customer;
             }
             n = n.prev;
-            index++;
-           
-       }
-       return index;
-   }
-  
-   //method called length to get length of customer
-   public  int length() {
-       Node n = end;
-       int toReturn = 0;
-       while(n != null) {
-           n = n.prev;
-           toReturn++;
-       }
- 
-       return toReturn;
-   }
- 
-   //returns all names inside
-   public  String getName() {
-       String toReturn = "";
-       Node n = end;
-       while(n != null) {
-           toReturn = n.customer + " " + toReturn;
-           n = n.prev;
-       }
-       return toReturn;
-   }
-   public Customer isCredit() {
-       Node n = end;
-       boolean done = false;
-       while(n != null && !done) {
-           if(n.customer.isCredit()) {
-                done = true;
-                return n.customer;
-           }
-           n = n.prev;
-       }
-       return n.customer;
-   }
+        }
+        return n.customer;
+    }
+
+    //Method called get toString to get all names (of customers) inside the linked list
+    public  String toString() {
+        String toReturn = "";
+        Node n = end;
+        while(n != null) {
+            toReturn = n.customer.getName() + " " + toReturn;
+            n = n.prev;
+        }
+        return toReturn;
+    }
 }
  
-//Creating the general Main Menu and subsequent submenus
+//Main class that contains first JFrame seen by user and calls YouCanBill class to continue using the application
 public class Main extends JPanel{
     static JFrame frame;
     static JButton help;
     public static void main(String[] args) {
- 
-        //Creating frame that will contain application
+        //Creating the frame that will contain Toucan picture and buttons to continue to next JFrame
         frame = new JFrame("YouCanBill™");
-        JMenuBar mbFrame = new JMenuBar();
-        mbFrame.setOpaque(false);
+        JMenuBar mbFrame = new JMenuBar();//menubar for frame
+        mbFrame.setBounds(0, 0, 400, 30);
         frame.pack();
         frame.setSize(400, 400);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //Adding a component listener to the frame so that when it is moved, it will return to its original location
         frame.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-               frame.setSize(400,400);  // or whatever your full size is
-            }
             public void componentMoved(ComponentEvent e) {
-               frame.setLocation(0,0);
+                frame.setLocation(0,0);
             }
-         });
+        });
 
+        //Creating start screen JPanel that will hold buttons and toucan image
+        JPanel ssPanel = new JPanel();
+        ssPanel.setLayout(null);
 
-        //Creating first panel seen by user. Contain image and buttons. Help and Start. Help for instructions, and start to literally start using program
-        JPanel startScreen = new JPanel();
-        //Creating our brand image ;3. Don't worry image does not need license. I used the google search to help look for it.
+        //Creating Panel to hold picture of toucan
+        JPanel toucanPanel = new JPanel();
+        toucanPanel.setBounds(0, 0, 400, 400);
+        //Inputting and resizing toucan image
         ImageIcon toucan = new ImageIcon("/Users/risantpaul/COSC-112/VSCode/Projects/Final Project/COSC112Final/src/Images/toco-3718588_1280.jpg");//load image to imageIcon
         Image toucan2 = toucan.getImage();//transform it
         Image toucan3 = toucan2.getScaledInstance(400, 400, java.awt.Image.SCALE_SMOOTH);//scale it and make it smooth ;3
         toucan = new ImageIcon(toucan3);
         JLabel toucanpic = new JLabel(toucan);
+        toucanPanel.add(toucanpic);
 
+        //Button called help to display help screen
         help = new JButton("Help");
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                //Setting current frame invisible and creating an instance of YouCanBill to show help panel
                 frame.setVisible(false);
-                help.setVisible(false);
                 new YouCanBill();
                 YouCanBill.help.setVisible(false);
                 YouCanBill.layout.show(YouCanBill.deck, "Help");
-                YouCanBill.mainMenu.setVisible(true);
+                YouCanBill.mMButton.setVisible(true);
             }
         });
+        //Button called start for user to create instance of YouCanBill and start using application
         JButton start = new JButton("Start");
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                YouCanBill.checker++;
+                YouCanBill.tracker++;
                 frame.setVisible(false);
                 new YouCanBill();
             }
         });
+
         //Adding buttons to the mbFrame panel
         mbFrame.add(help);
         mbFrame.add(start);
 
-        //Adding label (with image) to start screen
-        startScreen.add(toucanpic);
+        //Adding menubar and panel containing buttons and toucan panel to start screen panel for a nice layout
+        ssPanel.add(mbFrame);
+        ssPanel.add(toucanPanel);
 
-        
-        //Adding Start Screen Panel to frame and other Frame configurations
-        frame.add(BorderLayout.NORTH, mbFrame);
-        frame.add(startScreen);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        //Adding Start Screen Panel to frame and frame configuration
+        frame.add(ssPanel);
         frame.setVisible(true);
     }
 }
  
 class YouCanBill {
+    //Creating an instance of RSA to use to encrypt credit card information
     RSA rsa = new RSA();
+    //integer to track where the user (0 means at start screen, 1 means at login panel, 2 means at main menu)
+    static int tracker = 0;
+
+    //Customer information/storage
+    static CustomerHolder customers;
+    static String ccnameinfo;
+
+    //Frame, Layout and buttons
+    static JFrame frame;
     static CardLayout layout;
     static JPanel deck;
-    static String ccnameinfo;
-    static JFrame frame;
-    static JButton mainMenu;
+    static JButton mMButton;
     static JButton help;
-    static int checker = 0;
 
-   public YouCanBill() {
-       CustomerHolder customers = new CustomerHolder();
+    public YouCanBill() {
+        customers = new CustomerHolder();
         //Creating the frame for application
         frame = new JFrame("YouCanBill™");
         JMenuBar mbFrame = new JMenuBar();//MenuBar frame
@@ -190,10 +200,8 @@ class YouCanBill {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //Adding a component listener to the frame so that when it is moved, it will return to its original location
         frame.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-               frame.setSize(400,400);  // or whatever your full size is
-            }
             public void componentMoved(ComponentEvent e) {
                frame.setLocation(0,0);
             }
@@ -205,11 +213,11 @@ class YouCanBill {
        deck.setLayout(layout);
 
         
-        /////PICK PAYMENT OPTION
-        JPanel paymentOptions = new JPanel();
-        JPanel pOQuestion = new JPanel();//Payment Options Quesiton
+        /////Main Menu
+        JPanel mainMenu = new JPanel();
+        JPanel paymentOptions = new JPanel();//Payment Options Quesiton
         JLabel paymOpt = new JLabel("How would you like pay for your bill?");//Payment Option JLabel
-        pOQuestion.add(paymOpt);
+        paymentOptions.add(paymOpt);
 
         //Creating buttons for that represent users payment options
         JButton yourself = new JButton("Pay Yourself");
@@ -217,6 +225,7 @@ class YouCanBill {
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Input Image");
                 mainMenu.setVisible(true);
+                System.out.println(customers.toString());
             }
         });
 
@@ -237,10 +246,10 @@ class YouCanBill {
         });
 
         //Adding buttons to panel
-        paymentOptions.add(yourself);
-        paymentOptions.add(split);
-        paymentOptions.add(random);
-        paymentOptions.add(BorderLayout.NORTH, pOQuestion);
+        mainMenu.add(yourself);
+        mainMenu.add(split);
+        mainMenu.add(random);
+        mainMenu.add(BorderLayout.NORTH, paymentOptions);
         /////PICK PAYMENT OPTIONS
 
 
@@ -261,7 +270,7 @@ class YouCanBill {
                     System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
 
                     File input = new File(chooser.getSelectedFile().getPath());
-                    ImagePopup.drawNew(customers, input); // working
+                    ImagePopup.drawNew(input); // working
                 }
             }
         });
@@ -353,7 +362,7 @@ class YouCanBill {
         credit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
-                    checker++;
+                    tracker++;
 
                     Customer dummy = new CreditUser("Dummy");
                     Customer initial = new CreditUser(nameTF.getText());
@@ -361,7 +370,7 @@ class YouCanBill {
                     customers.append(initial);
                     JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
-                    layout.show(deck, "Payment Options");
+                    layout.show(deck, "Main Menu");
                 } else {
                     isEmpty.setVisible(true);
                 }
@@ -374,7 +383,7 @@ class YouCanBill {
         cash.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
-                    checker++;
+                    tracker++;
 
                     Customer dummy = new CreditUser("Dummy");
                     Customer initial = new CashPayer(nameTF.getText());
@@ -382,7 +391,7 @@ class YouCanBill {
                     customers.append(initial);
                     JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
-                    layout.show(deck, "Payment Options");
+                    layout.show(deck, "Main Menu");
                 } else {
                     isEmpty.setVisible(true);
                 }
@@ -478,7 +487,7 @@ class YouCanBill {
         ccdone.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!ccnameTF.getText().isBlank() && !ccnumberTF.getText().isBlank()) {
-                    mainMenu.setVisible(true);
+                    mMButton.setVisible(true);
                     layout.show(deck, "Reciepts");
                 } else {
                     infowarning.setVisible(true);
@@ -524,20 +533,20 @@ class YouCanBill {
 
          //Creating and Adding help and back button for the frame menubar
 
-        mainMenu = new JButton("Return");
-         mainMenu.setVisible(false);
-         mainMenu.addActionListener(new ActionListener() {
+        mMButton = new JButton("Return");
+         mMButton.setVisible(false);
+         mMButton.addActionListener(new ActionListener() {
              public void actionPerformed(ActionEvent e) {
-                 if(checker == 1) {
+                 if(tracker == 1) {
                     layout.show(deck, "Login Panel");
-                    mainMenu.setVisible(false);
+                    mMButton.setVisible(false);
                     help.setVisible(true);
-                 } else if(checker == 0) {
+                 } else if(tracker == 0) {
                      Main.frame.setVisible(true);
                      Main.help.setVisible(true);
                  }else {
-                    layout.show(deck, "Payment Options");
-                    mainMenu.setVisible(false);
+                    layout.show(deck, "Main Menu");
+                    mMButton.setVisible(false);
                     help.setVisible(true);
                  }
                  
@@ -548,17 +557,17 @@ class YouCanBill {
              public void actionPerformed(ActionEvent e) {
                  help.setVisible(false);
                 layout.show(deck, "Help");
-                mainMenu.setVisible(true);
+                mMButton.setVisible(true);
              }
          });
  
          mbFrame.add(help);
-         mbFrame.add(mainMenu);
+         mbFrame.add(mMButton);
 
 
         //Adding panels to the "deck" in order/semantically
         deck.add(loginPanel, "Login Panel");
-        deck.add(paymentOptions, "Payment Options");
+        deck.add(mainMenu, "Main Menu");
         deck.add(namePeople, "Name People");
         deck.add(inputImage, "Input Image");
         deck.add(ccbilling, "CC Billing");
