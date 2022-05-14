@@ -410,10 +410,9 @@ class YouCanBill {
         ccnumberButton.setBackground(Color.WHITE);
         ccnumberButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                BigInteger cardNum = new BigInteger(ccnumberTF.getText());
+                BigInteger ccnumber = new BigInteger(ccnumberTF.getText());
+                rsa.encryptAndSave(ccnumber, ccnameinfo);
                 ccnumberTF.setText("****************");
-                //rsa.encryptAndSave(cardNum);
-                //System.out.println(rsa.decrypt());
             }
         });
 
@@ -430,10 +429,6 @@ class YouCanBill {
                     ccname.setForeground(Color.BLACK);
                     ccnumber.setForeground(Color.BLACK);
                     infowarning.setVisible(false);
-                    try {
-                        Path source = Paths.get("/Users/risantpaul/COSC-112/VSCode/Projects/Final Project/COSC112Final/src/CreditCardNumber.txt");
-                        Files.move(source, source.resolveSibling(ccnameinfo));
-                    } catch(Exception a) {}
                 } else {
                     infowarning.setVisible(true);
                     if(ccnameTF.getText().isBlank()) {
