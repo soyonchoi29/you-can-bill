@@ -203,14 +203,14 @@ class YouCanBill {
         //Adding a component listener to the frame so that when it is moved, it will return to its original location
         frame.addComponentListener(new ComponentAdapter() {
             public void componentMoved(ComponentEvent e) {
-               frame.setLocation(0,0);
+                frame.setLocation(0,0);
             }
-         });
+        });
 
-       //Creating a CardLayout layout for the purpose of going inbetween panels/options as the user desires
-       layout = new CardLayout();
-       deck = new JPanel();
-       deck.setLayout(layout);
+        //Creating a CardLayout layout for the purpose of going inbetween panels/options as the user desires
+        layout = new CardLayout();
+        deck = new JPanel();
+        deck.setLayout(layout);
 
         
         /////Main Menu
@@ -219,8 +219,8 @@ class YouCanBill {
         JLabel paymOpt = new JLabel("How would you like pay for your bill?");//Payment Option JLabel
         paymentOptions.add(paymOpt);
 
-        //Creating buttons for that represent users payment options
-        JButton yourself = new JButton("Pay Yourself");
+        //Button called yourself to take user directly to inputting their image and then billing
+        JButton yourself = new JButton("Yourself");
         yourself.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Input Image");
@@ -228,7 +228,8 @@ class YouCanBill {
             }
         });
 
-        JButton split = new JButton("Split Evenly");
+        //Button called split to take user to namePeople panel where they are able to add whoever else they want
+        JButton split = new JButton("Split");
         split.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Name People");
@@ -236,6 +237,7 @@ class YouCanBill {
             }
         });
 
+        //Button called random to take user to namePeople panel where they are able to add whoever else they want
         JButton random = new JButton("Random Payer");
         random.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -254,12 +256,10 @@ class YouCanBill {
 
         /////Input Image
         JPanel inputImage = new JPanel();
-
         //Button to open directory and pick an image
         JButton openFiles= new JButton("Open");
         openFiles.addActionListener(new ActionListener(){
-        @Override
-        public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e){
                 frame.setVisible(false);
                 JFileChooser chooser = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & JPEG Images", "jpg", "jpeg");
@@ -267,19 +267,18 @@ class YouCanBill {
                 int returnVal = chooser.showOpenDialog(frame);
                 if(returnVal == JFileChooser.APPROVE_OPTION) {
                     System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
-
                     File input = new File(chooser.getSelectedFile().getPath());
-                    ImagePopup.drawNew(input); // working
+                    ImagePopup.drawNew(input);
                 }
             }
         });
 
-        //Adding buttons to frame
+        //Adding button to panel
         inputImage.add(openFiles);
         /////Input Image
 
  
-        ////////NAME PEOPLE
+        /////Add People
         JPanel namePeople = new JPanel();
         namePeople.setLayout(null);
 
@@ -290,10 +289,8 @@ class YouCanBill {
         textfield.setBounds(100, 77, 193, 20);
         namePeople.add(BorderLayout.SOUTH, task);
         namePeople.add(BorderLayout.SOUTH, textfield);
-        
 
-
-        //Button to make an instance of Person
+        //Button to make an instance of Customer that will use their credit card
         JButton credituser = new JButton("Credit Card");
         credituser.setBounds(100, 110, 100, 25);
         credituser.addActionListener(new ActionListener(){
@@ -305,6 +302,7 @@ class YouCanBill {
             }
         });
 
+        //Button to make an instance of Customer that will pay in cash
         JButton cashpayer = new JButton("Cash");
         cashpayer.setBounds(200, 110, 90, 25);
         cashpayer.addActionListener(new ActionListener(){
@@ -316,7 +314,7 @@ class YouCanBill {
             }
         });
         
-        //Button to continue to submit and crop image after user is done adding people
+        //Button to continue to inputImage after user is done adding people
         JButton done = new JButton("Done");
         done.setBounds(145, 140, 90, 25);
         done.addActionListener(new ActionListener(){
@@ -331,11 +329,9 @@ class YouCanBill {
         namePeople.add(credituser);
         namePeople.add(cashpayer);
         frame.setVisible(true);
-        ///////////ADD PEOPLE
+        /////Add People
 
        
-
-
         /////Login Window
         //Creating "Login Window" for when users first open application, will add their name to the data structure immediately
         JPanel loginPanel = new JPanel();
@@ -361,9 +357,11 @@ class YouCanBill {
         credit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
+                    //tracks when user is done "logging in"
                     tracker++;
-
+                    //"Dummy" instance of Customer that will hold stitched image until it is distributed to a customer
                     Customer dummy = new CreditUser("Dummy");
+                    //Instance of Customer of the user who "logged in"
                     Customer initial = new CreditUser(nameTF.getText());
                     customers.append(dummy);
                     customers.append(initial);
@@ -375,6 +373,8 @@ class YouCanBill {
                 }
             }
         });
+
+        //Button for the puprose of entering the users name into the data structure and sending them to the application
         JButton cash = new JButton("Cash");
         cash.setBounds(200, 110, 90, 25);
         cash.setForeground(Color.BLACK);
@@ -382,9 +382,11 @@ class YouCanBill {
         cash.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
+                    //tracks when user is done "logging in"
                     tracker++;
-
+                    //"Dummy" instance of Customer that will hold stitched image until it is distributed to a customer
                     Customer dummy = new CreditUser("Dummy");
+                    //Instance of Customer of the user who "logged in"
                     Customer initial = new CashPayer(nameTF.getText());
                     customers.append(dummy);
                     customers.append(initial);
@@ -397,6 +399,7 @@ class YouCanBill {
             }
         });
 
+        //Adding components to the panel
         loginPanel.add(enterName);
         loginPanel.add(nameTF);
         loginPanel.add(isEmpty);
@@ -405,7 +408,7 @@ class YouCanBill {
         /////Login Window
         
 
-        /////CCBilling
+        /////Credit Card Billing
         JPanel ccbilling = new JPanel();
         ccbilling.setLayout(null);
 
@@ -511,7 +514,7 @@ class YouCanBill {
         ccbilling.add(ccnumber);
         ccbilling.add(ccname);
         ccbilling.add(ccinfo);
-        /////CCBilling
+        /////Credit Card Billing
 
 
         /////Reciepts
@@ -530,39 +533,41 @@ class YouCanBill {
 
 
 
-         //Creating and Adding help and back button for the frame menubar
-
+        //Creating and Adding help and reutn button for the frame menubar
+        
+        //Button to return user to the main menu in case they forgot something
         mMButton = new JButton("Return");
-         mMButton.setVisible(false);
-         mMButton.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent e) {
-                 if(tracker == 1) {
+        mMButton.setVisible(false);
+        mMButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(tracker == 1) {
                     layout.show(deck, "Login Panel");
                     mMButton.setVisible(false);
                     help.setVisible(true);
-                 } else if(tracker == 0) {
-                     Main.frame.setVisible(true);
-                     Main.help.setVisible(true);
-                 }else {
+                } else if(tracker == 0) {
+                    Main.frame.setVisible(true);
+                    Main.help.setVisible(true);
+                } else {
                     layout.show(deck, "Main Menu");
                     mMButton.setVisible(false);
                     help.setVisible(true);
-                 }
+                }
                  
-             }
-         });
-         help = new JButton("Help");
-         help.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent e) {
-                 help.setVisible(false);
-                layout.show(deck, "Help");
-                mMButton.setVisible(true);
-             }
-         });
- 
-         mbFrame.add(help);
-         mbFrame.add(mMButton);
+            }
+        });
 
+        //Button to take user to help panel in case they need instructions
+        help = new JButton("Help");
+        help.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                help.setVisible(false);
+            layout.show(deck, "Help");
+            mMButton.setVisible(true);
+            }
+        });
+ 
+        mbFrame.add(help);
+        mbFrame.add(mMButton);
 
         //Adding panels to the "deck" in order/semantically
         deck.add(loginPanel, "Login Panel");
