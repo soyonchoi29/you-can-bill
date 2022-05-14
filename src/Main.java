@@ -219,37 +219,27 @@ class YouCanBill {
         JLabel paymOpt = new JLabel("How would you like pay for your bill?");//Payment Option JLabel
         paymentOptions.add(paymOpt);
 
-        //Button called yourself to take user directly to inputting their image and then billing
-        JButton yourself = new JButton("Yourself");
-        yourself.addActionListener(new ActionListener(){
+        //Button called contin to take user directly to inputting their image and then billing
+        JButton contin = new JButton("Input a Receipt");
+        contin.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Input Image");
                 mMButton.setVisible(true);
             }
         });
 
-        //Button called split to take user to namePeople panel where they are able to add whoever else they want
-        JButton split = new JButton("Split");
-        split.addActionListener(new ActionListener(){
+        //Button called addCust to take user to namePeople panel where they are able to add whoever else they want
+        JButton addCust = new JButton("Add People");
+        addCust.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Name People");
                 mMButton.setVisible(true); 
             }
         });
 
-        //Button called random to take user to namePeople panel where they are able to add whoever else they want
-        JButton random = new JButton("Random Payer");
-        random.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                layout.show(deck, "Name People");
-                mMButton.setVisible(true);
-            }
-        });
-
         //Adding buttons to panel
-        mainMenu.add(yourself);
-        mainMenu.add(split);
-        mainMenu.add(random);
+        mainMenu.add(contin);
+        mainMenu.add(addCust);
         mainMenu.add(BorderLayout.NORTH, paymentOptions);
         /////PICK PAYMENT OPTIONS
 
@@ -346,7 +336,7 @@ class YouCanBill {
 
         //JLabel for warning in case textfield is empty
         JLabel isEmpty = new JLabel("Please enter your name before continuing!");
-        isEmpty.setBounds(100, 120, 300, 100);
+        isEmpty.setBounds(70, 100, 300, 100);
         isEmpty.setVisible(false);
                 
         //Button for the puprose of entering the users name into the data structure and sending them to the application
@@ -369,6 +359,7 @@ class YouCanBill {
                     mbFrame.add(welcome);
                     layout.show(deck, "Main Menu");
                 } else {
+                    enterName.setForeground(Color.RED);
                     isEmpty.setVisible(true);
                 }
             }
@@ -490,7 +481,6 @@ class YouCanBill {
             public void actionPerformed(ActionEvent e) {
                 if(!ccnameTF.getText().isBlank() && !ccnumberTF.getText().isBlank()) {
                     mMButton.setVisible(true);
-                    layout.show(deck, "Reciepts");
                 } else {
                     infowarning.setVisible(true);
                     if(ccnameTF.getText().isBlank()) {
@@ -517,19 +507,6 @@ class YouCanBill {
         /////Credit Card Billing
 
 
-        /////Reciepts
-        JPanel reciepts = new JPanel();
-        JButton printout = new JButton("Print");
-        printout.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(rsa.decrypt("Ris Paulino"));
-            }
-        });
-
-        reciepts.add(printout);
-        /////Reciepts
-
-
         /////Help Panel
         JPanel helpPanel = new JPanel();
         helpPanel.setLayout(null);
@@ -551,56 +528,56 @@ class YouCanBill {
         label4.setBounds(10, 60, 400, 15);
 
         JLabel label5 = new JLabel();
-        label5.setText("name. Once done, choose how you would like to pay.");
+        label5.setText("name.");
         label5.setBounds(25, 80, 400, 15);
 
         JLabel label6 = new JLabel();
-        label6.setText("2. Choose whether you are paying for the bill yourself,");
+        label6.setText("2. Once done, choose whether you are paying for the bill,");
         label6.setBounds(10, 100, 400, 15);
 
         JLabel label7 = new JLabel();
-        label7.setText("splitting the bill according to who ate what, or have it");
+        label7.setText("or would like to add people.");
         label7.setBounds(25, 120, 400, 15);
 
         JLabel label8 = new JLabel();
-        label8.setText("randomly choose who will pay for the bill.");
-        label8.setBounds(25, 140, 400, 15);
+        label8.setText("3. Given your previous choice, either input your receipt");
+        label8.setBounds(10, 140, 400, 15);
 
         JLabel label9 = new JLabel();
-        label9.setText("3. Given your previous choice, either input your receipt");
-        label9.setBounds(10, 160, 400, 15);
+        label9.setText("(only JPG or JPEG images are allowed), or add whoever");
+        label9.setBounds(25, 160, 400, 15);
 
         JLabel label10 = new JLabel();
-        label10.setText("(only JPG or JPEG images are allowed), or add whoever");
+        label10.setText("you would like to join you in paying for the bill.");
         label10.setBounds(25, 180, 400, 15);
 
         JLabel label11 = new JLabel();
-        label11.setText("you would like to join you in paying for the bill.");
-        label11.setBounds(25, 200, 400, 15);
+        label11.setText("4. After that, continue on to billing. If there is a credit card");
+        label11.setBounds(10, 200, 400, 15);
 
         JLabel label12 = new JLabel();
-        label12.setText("4. After that, continue on to billing. If there is a credit card");
-        label12.setBounds(10, 220, 400, 15);
+        label12.setText("user amongst your party you will be prompted to enter");
+        label12.setBounds(25, 220, 400, 15);
 
         JLabel label13 = new JLabel();
-        label13.setText("user amongst your party you will be prompted to enter");
+        label13.setText("their credit card information. Please do not include");
         label13.setBounds(25, 240, 400, 15);
 
         JLabel label14 = new JLabel();
-        label14.setText("their credit card information. Please do not include");
+        label14.setText("spaces in the credit card number.");
         label14.setBounds(25, 260, 400, 15);
 
         JLabel label15 = new JLabel();
-        label15.setText("spaces in the credit card number.");
-        label15.setBounds(25, 280, 400, 15);
+        label15.setText("5. When done, press enter and then press done.");
+        label15.setBounds(10, 280, 400, 15);
 
         JLabel label16 = new JLabel();
-        label16.setText("5. When done, press enter and then press done.");
+        label16.setText("6. You are finally done! And have access to your");
         label16.setBounds(10, 300, 400, 15);
 
         JLabel label17 = new JLabel();
-        label17.setText("6. You are finally done! Here are your receipts.");
-        label17.setBounds(10, 320, 400, 15);
+        label17.setText("individual receipts.");
+        label17.setBounds(25, 320, 400, 15);
 
         helpPanel.add(label1);
         helpPanel.add(label2);
@@ -666,7 +643,6 @@ class YouCanBill {
         deck.add(namePeople, "Name People");
         deck.add(inputImage, "Input Image");
         deck.add(ccbilling, "CC Billing");
-        deck.add(reciepts, "Reciepts");
         deck.add(helpPanel, "Help");
         
         
