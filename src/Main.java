@@ -103,73 +103,8 @@ class CustomerHolder{
  
 //Main class that contains first JFrame seen by user and calls YouCanBill class to continue using the application
 public class Main extends JPanel{
-    static JFrame frame;
-    static JButton help;
     public static void main(String[] args) {
-        //Creating the frame that will contain Toucan picture and buttons to continue to next JFrame
-        frame = new JFrame("YouCanBill™");
-        JMenuBar mbFrame = new JMenuBar();//menubar for frame
-        mbFrame.setBounds(0, 0, 400, 30);
-        frame.pack();
-        frame.setSize(400, 400);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //Adding a component listener to the frame so that when it is moved, it will return to its original location
-        frame.addComponentListener(new ComponentAdapter() {
-            public void componentMoved(ComponentEvent e) {
-                frame.setLocation(0,0);
-            }
-        });
-
-        //Creating start screen JPanel that will hold buttons and toucan image
-        JPanel ssPanel = new JPanel();
-        ssPanel.setLayout(null);
-
-        //Creating Panel to hold picture of toucan
-        JPanel toucanPanel = new JPanel();
-        toucanPanel.setBounds(0, 0, 400, 400);
-        //Inputting and resizing toucan image
-        ImageIcon toucan = new ImageIcon("/Users/risantpaul/COSC-112/VSCode/Projects/Final Project/COSC112Final/src/Images/toco-3718588_1280.jpg");//load image to imageIcon
-        Image toucan2 = toucan.getImage();//transform it
-        Image toucan3 = toucan2.getScaledInstance(400, 400, java.awt.Image.SCALE_SMOOTH);//scale it and make it smooth ;3
-        toucan = new ImageIcon(toucan3);
-        JLabel toucanpic = new JLabel(toucan);
-        toucanPanel.add(toucanpic);
-
-        //Button called help to display help screen
-        help = new JButton("Help");
-        help.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //Setting current frame invisible and creating an instance of YouCanBill to show help panel
-                frame.setVisible(false);
-                new YouCanBill();
-                YouCanBill.help.setVisible(false);
-                YouCanBill.layout.show(YouCanBill.deck, "Help");
-                YouCanBill.mMButton.setVisible(true);
-            }
-        });
-        //Button called start for user to create instance of YouCanBill and start using application
-        JButton start = new JButton("Start");
-        start.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                YouCanBill.tracker++;
-                frame.setVisible(false);
-                new YouCanBill();
-            }
-        });
-
-        //Adding buttons to the mbFrame panel
-        mbFrame.add(help);
-        mbFrame.add(start);
-
-        //Adding menubar and panel containing buttons and toucan panel to start screen panel for a nice layout
-        ssPanel.add(mbFrame);
-        ssPanel.add(toucanPanel);
-
-        //Adding Start Screen Panel to frame and frame configuration
-        frame.add(ssPanel);
-        frame.setVisible(true);
+        new YouCanBill();
     }
 }
  
@@ -219,37 +154,27 @@ class YouCanBill {
         JLabel paymOpt = new JLabel("How would you like pay for your bill?");//Payment Option JLabel
         paymentOptions.add(paymOpt);
 
-        //Button called yourself to take user directly to inputting their image and then billing
-        JButton yourself = new JButton("Yourself");
-        yourself.addActionListener(new ActionListener(){
+        //Button called contin to take user directly to inputting their image and then billing
+        JButton contin = new JButton("Input a Receipt");
+        contin.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Input Image");
                 mMButton.setVisible(true);
             }
         });
 
-        //Button called split to take user to namePeople panel where they are able to add whoever else they want
-        JButton split = new JButton("Split");
-        split.addActionListener(new ActionListener(){
+        //Button called addCust to take user to namePeople panel where they are able to add whoever else they want
+        JButton addCust = new JButton("Add People");
+        addCust.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Name People");
                 mMButton.setVisible(true); 
             }
         });
 
-        //Button called random to take user to namePeople panel where they are able to add whoever else they want
-        JButton random = new JButton("Random Payer");
-        random.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                layout.show(deck, "Name People");
-                mMButton.setVisible(true);
-            }
-        });
-
         //Adding buttons to panel
-        mainMenu.add(yourself);
-        mainMenu.add(split);
-        mainMenu.add(random);
+        mainMenu.add(contin);
+        mainMenu.add(addCust);
         mainMenu.add(BorderLayout.NORTH, paymentOptions);
         /////PICK PAYMENT OPTIONS
 
@@ -346,7 +271,7 @@ class YouCanBill {
 
         //JLabel for warning in case textfield is empty
         JLabel isEmpty = new JLabel("Please enter your name before continuing!");
-        isEmpty.setBounds(100, 120, 300, 100);
+        isEmpty.setBounds(70, 100, 300, 100);
         isEmpty.setVisible(false);
                 
         //Button for the puprose of entering the users name into the data structure and sending them to the application
@@ -369,6 +294,7 @@ class YouCanBill {
                     mbFrame.add(welcome);
                     layout.show(deck, "Main Menu");
                 } else {
+                    enterName.setForeground(Color.RED);
                     isEmpty.setVisible(true);
                 }
             }
@@ -490,7 +416,6 @@ class YouCanBill {
             public void actionPerformed(ActionEvent e) {
                 if(!ccnameTF.getText().isBlank() && !ccnumberTF.getText().isBlank()) {
                     mMButton.setVisible(true);
-                    layout.show(deck, "Reciepts");
                 } else {
                     infowarning.setVisible(true);
                     if(ccnameTF.getText().isBlank()) {
@@ -517,19 +442,6 @@ class YouCanBill {
         /////Credit Card Billing
 
 
-        /////Reciepts
-        JPanel reciepts = new JPanel();
-        JButton printout = new JButton("Print");
-        printout.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(rsa.decrypt("Ris Paulino"));
-            }
-        });
-
-        reciepts.add(printout);
-        /////Reciepts
-
-
         /////Help Panel
         JPanel helpPanel = new JPanel();
         helpPanel.setLayout(null);
@@ -547,60 +459,60 @@ class YouCanBill {
         label3.setForeground(Color.RED);
 
         JLabel label4 = new JLabel();
-        label4.setText("1. After pressing start, you will be prompted to enter your");
+        label4.setText("1. Start off by entering your name and then choosing");
         label4.setBounds(10, 60, 400, 15);
 
         JLabel label5 = new JLabel();
-        label5.setText("name. Once done, choose how you would like to pay.");
+        label5.setText("your preffered payment type.");
         label5.setBounds(25, 80, 400, 15);
 
         JLabel label6 = new JLabel();
-        label6.setText("2. Choose whether you are paying for the bill yourself,");
+        label6.setText("1. Once done, choose whether you are paying for the bill,");
         label6.setBounds(10, 100, 400, 15);
 
         JLabel label7 = new JLabel();
-        label7.setText("splitting the bill according to who ate what, or have it");
+        label7.setText("or would like to add people.");
         label7.setBounds(25, 120, 400, 15);
 
         JLabel label8 = new JLabel();
-        label8.setText("randomly choose who will pay for the bill.");
-        label8.setBounds(25, 140, 400, 15);
+        label8.setText("3. Given your previous choice, either input your receipt");
+        label8.setBounds(10, 140, 400, 15);
 
         JLabel label9 = new JLabel();
-        label9.setText("3. Given your previous choice, either input your receipt");
-        label9.setBounds(10, 160, 400, 15);
+        label9.setText("(only JPG or JPEG images are allowed), or add whoever");
+        label9.setBounds(25, 160, 400, 15);
 
         JLabel label10 = new JLabel();
-        label10.setText("(only JPG or JPEG images are allowed), or add whoever");
+        label10.setText("you would like to join you in paying for the bill.");
         label10.setBounds(25, 180, 400, 15);
 
         JLabel label11 = new JLabel();
-        label11.setText("you would like to join you in paying for the bill.");
-        label11.setBounds(25, 200, 400, 15);
+        label11.setText("4. After that, continue on to billing. If there is a credit card");
+        label11.setBounds(10, 200, 400, 15);
 
         JLabel label12 = new JLabel();
-        label12.setText("4. After that, continue on to billing. If there is a credit card");
-        label12.setBounds(10, 220, 400, 15);
+        label12.setText("user amongst your party you will be prompted to enter");
+        label12.setBounds(25, 220, 400, 15);
 
         JLabel label13 = new JLabel();
-        label13.setText("user amongst your party you will be prompted to enter");
+        label13.setText("their credit card information. Please do not include");
         label13.setBounds(25, 240, 400, 15);
 
         JLabel label14 = new JLabel();
-        label14.setText("their credit card information. Please do not include");
+        label14.setText("spaces in the credit card number.");
         label14.setBounds(25, 260, 400, 15);
 
         JLabel label15 = new JLabel();
-        label15.setText("spaces in the credit card number.");
-        label15.setBounds(25, 280, 400, 15);
+        label15.setText("5. When done, press enter and then press done.");
+        label15.setBounds(10, 280, 400, 15);
 
         JLabel label16 = new JLabel();
-        label16.setText("5. When done, press enter and then press done.");
+        label16.setText("6. You are finally done! And have access to your");
         label16.setBounds(10, 300, 400, 15);
 
         JLabel label17 = new JLabel();
-        label17.setText("6. You are finally done! Here are your receipts.");
-        label17.setBounds(10, 320, 400, 15);
+        label17.setText("individual receipts.");
+        label17.setBounds(25, 320, 400, 15);
 
         helpPanel.add(label1);
         helpPanel.add(label2);
@@ -634,10 +546,6 @@ class YouCanBill {
                     layout.show(deck, "Login Panel");
                     mMButton.setVisible(false);
                     help.setVisible(true);
-                } else if(tracker == 0) {
-                    Main.frame.setVisible(true);
-                    Main.help.setVisible(true);
-                    frame.setVisible(false);
                 } else {
                     layout.show(deck, "Main Menu");
                     mMButton.setVisible(false);
@@ -666,7 +574,6 @@ class YouCanBill {
         deck.add(namePeople, "Name People");
         deck.add(inputImage, "Input Image");
         deck.add(ccbilling, "CC Billing");
-        deck.add(reciepts, "Reciepts");
         deck.add(helpPanel, "Help");
         
         

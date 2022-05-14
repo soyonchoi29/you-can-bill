@@ -38,6 +38,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     private JLabel picLabel = new JLabel();
     private JLayeredPane base = new JLayeredPane();
     private JPanel rectangle = new JPanel();
+    public JMenu pickPers;
 
     public static void drawNew(File input) {
         new ImagePopup().crop(input);
@@ -190,19 +191,20 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                 Customer credit = YouCanBill.customers.isCredit();
                 if(credit != null && credit.getName() != "Dummy") {
                     YouCanBill.layout.show(YouCanBill.deck, "CC Billing");
-                } else {
-                    YouCanBill.layout.show(YouCanBill.deck, "Reciepts");
-                }
+                    System.out.println(Customer.receiptItems.size());
+                } 
             }
         });
+
         //Menu to choose who the cropped images are for
-        JMenu pickPers = new JMenu("Append Image to Person");
+        pickPers = new JMenu("Append Image to Person");
         for(int i = 1; i < YouCanBill.customers.length(); i++) {
             String name = YouCanBill.customers.getCustomer(i).getName(); // Start at 1 to skip Dummy
             JMenuItem names = new JMenuItem(name);
             pickPers.add(names);
             names.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
+                    YouCanBill.tracker++;
                     ImageChange.ImageStitch(name);
                 }
             });
