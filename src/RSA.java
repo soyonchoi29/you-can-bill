@@ -36,7 +36,7 @@ public class RSA {
         //info.add(""+encrypted);
 
         try {
-            File output = new File("CreditCardNumber.txt");
+            File output = new File("CreditCardNumber.txt"); // check to add no dupe names somewhere
             //PrintWriter printer = new PrintWriter(output);
             FileWriter fileWriter = new FileWriter(output, true);
 
@@ -64,20 +64,23 @@ public class RSA {
             Scanner sc = new Scanner(input);
 
             while (sc.hasNext()){
-                
-                System.out.println("next: " + sc.next());
-                if (sc.next() == name){
-                    System.out.println("next line: " + sc.nextLine());
+                //String currentLine = sc.next();
+                //System.out.println("next: " + sc.next());
+                //System.out.println(sc.next());
+                if (sc.next().equals(name)){
+                    //System.out.println("next line: " + sc.nextLine());
                     encrypted = sc.nextBigInteger();
-                    sc.close();
+                    break;
                 } else {sc.nextLine();}
             }
+
+            sc.close();
 
         } catch (FileNotFoundException error){
             System.err.println("File not found.");
             System.err.println(error);
         }
-
+        //System.out.println(modulus);
         return encrypted.modPow(privateKey,modulus);
     }
 
@@ -88,9 +91,9 @@ public class RSA {
         rsa.encryptAndSave(new BigInteger("5105105105105100"), "Kevin");
         System.out.println(rsa.decrypt("Kevin"));
         System.out.println(rsa.decrypt("Soyon"));
-        rsa.encryptAndSave(new BigInteger("4111111111111111"), "Ris");
-        System.out.println(rsa.decrypt("Kevin"));
-        System.out.println(rsa.decrypt("Ris"));
-        System.out.println(rsa.decrypt("Soyon"));
+        //rsa.encryptAndSave(new BigInteger("4111111111111111"), "Ris");
+        //System.out.println(rsa.decrypt("Kevin"));
+        //System.out.println(rsa.decrypt("Ris"));
+        //System.out.println(rsa.decrypt("Soyon"));
     }  
 }
