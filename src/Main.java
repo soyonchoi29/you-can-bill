@@ -224,8 +224,7 @@ class YouCanBill {
         yourself.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Input Image");
-                mainMenu.setVisible(true);
-                System.out.println(customers.toString());
+                mMButton.setVisible(true);
             }
         });
 
@@ -233,7 +232,7 @@ class YouCanBill {
         split.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Name People");
-                mainMenu.setVisible(true);
+                mMButton.setVisible(true); 
             }
         });
 
@@ -241,7 +240,7 @@ class YouCanBill {
         random.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "Name People");
-                mainMenu.setVisible(true);
+                mMButton.setVisible(true);
             }
         });
 
