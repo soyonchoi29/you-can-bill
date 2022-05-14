@@ -103,73 +103,8 @@ class CustomerHolder{
  
 //Main class that contains first JFrame seen by user and calls YouCanBill class to continue using the application
 public class Main extends JPanel{
-    static JFrame frame;
-    static JButton help;
     public static void main(String[] args) {
-        //Creating the frame that will contain Toucan picture and buttons to continue to next JFrame
-        frame = new JFrame("YouCanBill™");
-        JMenuBar mbFrame = new JMenuBar();//menubar for frame
-        mbFrame.setBounds(0, 0, 400, 30);
-        frame.pack();
-        frame.setSize(400, 400);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //Adding a component listener to the frame so that when it is moved, it will return to its original location
-        frame.addComponentListener(new ComponentAdapter() {
-            public void componentMoved(ComponentEvent e) {
-                frame.setLocation(0,0);
-            }
-        });
-
-        //Creating start screen JPanel that will hold buttons and toucan image
-        JPanel ssPanel = new JPanel();
-        ssPanel.setLayout(null);
-
-        //Creating Panel to hold picture of toucan
-        JPanel toucanPanel = new JPanel();
-        toucanPanel.setBounds(0, 0, 400, 400);
-        //Inputting and resizing toucan image
-        ImageIcon toucan = new ImageIcon("/Users/risantpaul/COSC-112/VSCode/Projects/Final Project/COSC112Final/src/Images/toco-3718588_1280.jpg");//load image to imageIcon
-        Image toucan2 = toucan.getImage();//transform it
-        Image toucan3 = toucan2.getScaledInstance(400, 400, java.awt.Image.SCALE_SMOOTH);//scale it and make it smooth ;3
-        toucan = new ImageIcon(toucan3);
-        JLabel toucanpic = new JLabel(toucan);
-        toucanPanel.add(toucanpic);
-
-        //Button called help to display help screen
-        help = new JButton("Help");
-        help.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //Setting current frame invisible and creating an instance of YouCanBill to show help panel
-                frame.setVisible(false);
-                new YouCanBill();
-                YouCanBill.help.setVisible(false);
-                YouCanBill.layout.show(YouCanBill.deck, "Help");
-                YouCanBill.mMButton.setVisible(true);
-            }
-        });
-        //Button called start for user to create instance of YouCanBill and start using application
-        JButton start = new JButton("Start");
-        start.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                YouCanBill.tracker++;
-                frame.setVisible(false);
-                new YouCanBill();
-            }
-        });
-
-        //Adding buttons to the mbFrame panel
-        mbFrame.add(help);
-        mbFrame.add(start);
-
-        //Adding menubar and panel containing buttons and toucan panel to start screen panel for a nice layout
-        ssPanel.add(mbFrame);
-        ssPanel.add(toucanPanel);
-
-        //Adding Start Screen Panel to frame and frame configuration
-        frame.add(ssPanel);
-        frame.setVisible(true);
+        new YouCanBill();
     }
 }
  
@@ -524,15 +459,15 @@ class YouCanBill {
         label3.setForeground(Color.RED);
 
         JLabel label4 = new JLabel();
-        label4.setText("1. After pressing start, you will be prompted to enter your");
+        label4.setText("1. Start off by entering your name and then choosing");
         label4.setBounds(10, 60, 400, 15);
 
         JLabel label5 = new JLabel();
-        label5.setText("name.");
+        label5.setText("your preffered payment type.");
         label5.setBounds(25, 80, 400, 15);
 
         JLabel label6 = new JLabel();
-        label6.setText("2. Once done, choose whether you are paying for the bill,");
+        label6.setText("1. Once done, choose whether you are paying for the bill,");
         label6.setBounds(10, 100, 400, 15);
 
         JLabel label7 = new JLabel();
@@ -611,10 +546,6 @@ class YouCanBill {
                     layout.show(deck, "Login Panel");
                     mMButton.setVisible(false);
                     help.setVisible(true);
-                } else if(tracker == 0) {
-                    Main.frame.setVisible(true);
-                    Main.help.setVisible(true);
-                    frame.setVisible(false);
                 } else {
                     layout.show(deck, "Main Menu");
                     mMButton.setVisible(false);
