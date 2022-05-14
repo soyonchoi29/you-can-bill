@@ -542,7 +542,7 @@ class YouCanBill {
         mMButton.setVisible(false);
         mMButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(tracker == 1) {
+                if(tracker == 0) {
                     layout.show(deck, "Login Panel");
                     mMButton.setVisible(false);
                     help.setVisible(true);
