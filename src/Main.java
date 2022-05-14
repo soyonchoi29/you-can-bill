@@ -519,16 +519,106 @@ class YouCanBill {
 
         /////Reciepts
         JPanel reciepts = new JPanel();
+        JButton printout = new JButton("Print");
+        printout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(rsa.decrypt("Ris Paulino"));
+            }
+        });
 
+        reciepts.add(printout);
         /////Reciepts
 
 
         /////Help Panel
         JPanel helpPanel = new JPanel();
-        JLabel instructions = new JLabel("Welcome to YouCanBill™!");
+        helpPanel.setLayout(null);
+        JLabel label1 = new JLabel();
+        label1.setText("<html><h2>Welcome to YouCanBill™!</h2></html>");
+        label1.setBounds(5, 3, 400, 20);
+        
+        JLabel label2 = new JLabel();
+        label2.setText("When you feel ready press return and continue");
+        label2.setBounds(5, 25, 400, 15);
 
+        JLabel label3 = new JLabel();
+        label3.setText("<html><h3>Instructions to Use YouCanBill™</h2></html>");
+        label3.setBounds(5, 40, 400, 15);
+        label3.setForeground(Color.RED);
 
-        helpPanel.add(instructions);
+        JLabel label4 = new JLabel();
+        label4.setText("1. After pressing start, you will be prompted to enter your");
+        label4.setBounds(10, 60, 400, 15);
+
+        JLabel label5 = new JLabel();
+        label5.setText("name. Once done, choose how you would like to pay.");
+        label5.setBounds(25, 80, 400, 15);
+
+        JLabel label6 = new JLabel();
+        label6.setText("2. Choose whether you are paying for the bill yourself,");
+        label6.setBounds(10, 100, 400, 15);
+
+        JLabel label7 = new JLabel();
+        label7.setText("splitting the bill according to who ate what, or have it");
+        label7.setBounds(25, 120, 400, 15);
+
+        JLabel label8 = new JLabel();
+        label8.setText("randomly choose who will pay for the bill.");
+        label8.setBounds(25, 140, 400, 15);
+
+        JLabel label9 = new JLabel();
+        label9.setText("3. Given your previous choice, either input your receipt");
+        label9.setBounds(10, 160, 400, 15);
+
+        JLabel label10 = new JLabel();
+        label10.setText("(only JPG or JPEG images are allowed), or add whoever");
+        label10.setBounds(25, 180, 400, 15);
+
+        JLabel label11 = new JLabel();
+        label11.setText("you would like to join you in paying for the bill.");
+        label11.setBounds(25, 200, 400, 15);
+
+        JLabel label12 = new JLabel();
+        label12.setText("4. After that, continue on to billing. If there is a credit card");
+        label12.setBounds(10, 220, 400, 15);
+
+        JLabel label13 = new JLabel();
+        label13.setText("user amongst your party you will be prompted to enter");
+        label13.setBounds(25, 240, 400, 15);
+
+        JLabel label14 = new JLabel();
+        label14.setText("their credit card information. Please do not include");
+        label14.setBounds(25, 260, 400, 15);
+
+        JLabel label15 = new JLabel();
+        label15.setText("spaces in the credit card number.");
+        label15.setBounds(25, 280, 400, 15);
+
+        JLabel label16 = new JLabel();
+        label16.setText("5. When done, press enter and then press done.");
+        label16.setBounds(10, 300, 400, 15);
+
+        JLabel label17 = new JLabel();
+        label17.setText("6. You are finally done! Here are your receipts.");
+        label17.setBounds(10, 320, 400, 15);
+
+        helpPanel.add(label1);
+        helpPanel.add(label2);
+        helpPanel.add(label3);
+        helpPanel.add(label4);
+        helpPanel.add(label5);
+        helpPanel.add(label6);
+        helpPanel.add(label7);
+        helpPanel.add(label8);
+        helpPanel.add(label9);
+        helpPanel.add(label10);
+        helpPanel.add(label11);
+        helpPanel.add(label12);
+        helpPanel.add(label13);
+        helpPanel.add(label14);
+        helpPanel.add(label15);
+        helpPanel.add(label16);
+        helpPanel.add(label17);
         /////Help Panel
 
 
@@ -547,6 +637,7 @@ class YouCanBill {
                 } else if(tracker == 0) {
                     Main.frame.setVisible(true);
                     Main.help.setVisible(true);
+                    frame.setVisible(false);
                 } else {
                     layout.show(deck, "Main Menu");
                     mMButton.setVisible(false);
