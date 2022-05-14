@@ -5,6 +5,7 @@ import java.awt.image.AffineTransformOp;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.management.DescriptorKey;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -54,7 +55,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     public void crop(File input) {
         //Creates panel that will contain receipt
         JPanel panel = new JPanel();
-        panel.setSize(400,400);
+        panel.setSize(500,500);
         panel.setVisible(true);
         panel.addMouseListener(this);
         panel.addMouseMotionListener(this);
@@ -101,13 +102,13 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         base.add(panel);
         frame.add(base);
         int panelwidth = scaledImageWidth + 50;
-        if(panelwidth < 400) {
-            panelwidth = 400;
+        if(panelwidth < 500) {
+            panelwidth = 450;
         }
 
         int panelheight = scaledImageHeight + 50;
-        if(panelheight < 400) {
-            panelheight = 400;
+        if(panelheight < 500) {
+            panelheight = 500;
         }
         frame.setSize(panelwidth, panelheight);
         frame.setResizable(false);
@@ -172,14 +173,20 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                 frame.setVisible(false);
             }
         });
-        JButton done = new JButton("Done");
+        JButton done = new JButton("Continue To Billing");
         done.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 frame.setVisible(false);
+                Customer credit = customerHolder.isCredit();
+                if(credit != null && credit.getName() != "Dummy") {
+                    YouCanBill.layout.show(YouCanBill.deck, "CC Billing");
+                } else {
+                    YouCanBill.layout.show(YouCanBill.deck, "Reciepts");
+                }
             }
         });
         //Menu to choose who the cropped images are for
-        JMenu pickPers = new JMenu("Pick a Person to Add images");
+        JMenu pickPers = new JMenu("Append Image to Person");
         for(int i = 1; i < customerHolder.length(); i++) {
             String name = customerHolder.getCustomer(i).getName(); // Start at 1 to skip Dummy
             JMenuItem names = new JMenuItem(name);

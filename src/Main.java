@@ -6,7 +6,10 @@ import java.awt.event.*;
 import java.io.*;
 import java.awt.Image;
 import java.awt.CardLayout;
- 
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 //Creating a linked list to store People
 
 class Node {
@@ -83,6 +86,18 @@ class CustomerHolder{
        }
        return toReturn;
    }
+   public Customer isCredit() {
+       Node n = end;
+       boolean done = false;
+       while(n != null && !done) {
+           if(n.customer.isCredit()) {
+                done = true;
+                return n.customer;
+           }
+           n = n.prev;
+       }
+       return n.customer;
+   }
 }
  
 //Creating the general Main Menu and subsequent submenus
@@ -133,7 +148,11 @@ public class Main extends JPanel{
 }
  
 class YouCanBill {
+    RSA rsa = new RSA();
     static CardLayout layout;
+    static JPanel deck;
+    static String ccnameinfo;
+
    public YouCanBill() {
        CustomerHolder customers = new CustomerHolder();
         //Creating the frame for application
@@ -146,7 +165,7 @@ class YouCanBill {
  
        //Creating a CardLayout layout for the purpose of going inbetween panels/options as the user desires
        layout = new CardLayout();
-       JPanel deck = new JPanel();
+       deck = new JPanel();
        deck.setLayout(layout);
 
         
@@ -269,21 +288,16 @@ class YouCanBill {
         //Creating and Adding help and back button for the frame menubar
         JButton help = new JButton("Help");
 
-        JButton back = new JButton("Back");
-        back.setVisible(false);
-        back.addActionListener(new ActionListener() {
+        JButton mainMenu = new JButton("Main Menu");
+        mainMenu.setVisible(false);
+        mainMenu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(inputImage.isVisible()) {
-                    layout.show(deck, "Payment Options");
-                }
-                if(!paymentOptions.isVisible()) {
-                    layout.previous(deck);
-                }
+                layout.show(deck, "Payment Options");
             }
         });
 
         mbFrame.add(help);
-        mbFrame.add(back);
+        mbFrame.add(mainMenu);
 
 
         /////Login Window
@@ -317,7 +331,7 @@ class YouCanBill {
                     customers.append(initial);
                     JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
-                    back.setVisible(true);
+                    mainMenu.setVisible(true);
                     layout.show(deck, "Payment Options");
                 } else {
                     isEmpty.setVisible(true);
@@ -335,9 +349,9 @@ class YouCanBill {
                     Customer initial = new CashPayer(nameTF.getText());
                     customers.append(dummy);
                     customers.append(initial);
-                    JLabel welcome = new JLabel("Welcome " + customers.getCustomer(0).getName() + "!");
+                    JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
-                    back.setVisible(true);
+                    mainMenu.setVisible(true);
                     layout.show(deck, "Payment Options");
                 } else {
                     isEmpty.setVisible(true);
@@ -356,10 +370,121 @@ class YouCanBill {
         /////CCBilling
         JPanel ccbilling = new JPanel();
         ccbilling.setLayout(null);
-        JLabel ccinfo = new JLabel("Enter Credit Card Information");
 
+        JLabel ccinfo = new JLabel("Enter Credit Card Information");
+        ccinfo.setBounds(100, 0, 300, 30);
+        
+        JLabel infowarning = new JLabel("Please Input Missing Information");
+        infowarning.setBounds(75, 240, 300, 25);
+        infowarning.setVisible(false); 
+
+        //Credit Card name information
+        JLabel ccname = new JLabel("Enter Name on Credit Card");
+        ccname.setBounds(20, 50, 300, 30);
+
+        JTextField ccnameTF = new JTextField();//name text field
+        ccnameTF.setBounds(20, 80, 175, 30);
+
+        JButton ccnameButton = new JButton("Enter");
+        ccnameButton.setBounds(200, 83, 90, 25);
+        ccnameButton.setForeground(Color.BLACK);
+        ccnameButton.setBackground(Color.WHITE);
+        ccnameButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ccnameinfo = ccnameTF.getText();
+                ccnameTF.setText("**********");
+            }
+        });
+
+        //Credit Card Number components
+        JLabel ccnumber = new JLabel("Enter Credit Card Number");
+        ccnumber.setBounds(20, 140, 300, 30);
+
+
+        JTextField ccnumberTF = new JTextField();//name text field
+        ccnumberTF.setBounds(20, 170, 175, 30);
+
+        JButton ccnumberButton = new JButton("Enter");
+        ccnumberButton.setBounds(200, 173, 90, 25);
+        ccnumberButton.setForeground(Color.BLACK);
+        ccnumberButton.setBackground(Color.WHITE);
+        ccnumberButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                BigInteger cardNum = new BigInteger(ccnumberTF.getText());
+                ccnumberTF.setText("****************");
+                rsa.encryptAndSave(cardNum);
+                System.out.println(rsa.decrypt());
+            }
+        });
+
+        //Add and done buttons for cc information
+        JButton addccinfo = new JButton("Add Billing Info");
+        addccinfo.setBounds(70, 210, 130, 25);
+        addccinfo.setForeground(Color.BLACK);
+        addccinfo.setBackground(Color.WHITE);
+        addccinfo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(!ccnameTF.getText().isBlank() && !ccnumberTF.getText().isBlank()) {
+                    ccnameTF.setText("");
+                    ccnumberTF.setText("");
+                    ccname.setForeground(Color.BLACK);
+                    ccnumber.setForeground(Color.BLACK);
+                    infowarning.setVisible(false);
+                    try {
+                        Path source = Paths.get("/Users/risantpaul/COSC-112/VSCode/Projects/Final Project/COSC112Final/src/CreditCardNumber.txt");
+                        Files.move(source, source.resolveSibling(ccnameinfo));
+                    } catch(Exception a) {}
+                } else {
+                    infowarning.setVisible(true);
+                    if(ccnameTF.getText().isBlank()) {
+                        ccname.setForeground(Color.RED);
+                    }
+                    if(ccnumberTF.getText().isBlank()) {
+                        ccnumber.setForeground(Color.RED);
+                    }
+                }
+            }
+        });
+
+        JButton ccdone = new JButton("Done");
+        ccdone.setBounds(200, 210, 70, 25);
+        ccdone.setForeground(Color.BLACK);
+        ccdone.setBackground(Color.WHITE);
+        ccdone.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(!ccnameTF.getText().isBlank() && !ccnumberTF.getText().isBlank()) {
+                    mainMenu.setVisible(true);
+                    layout.show(deck, "Reciepts");
+                } else {
+                    infowarning.setVisible(true);
+                    if(ccnameTF.getText().isBlank()) {
+                        ccname.setForeground(Color.RED);
+                    }
+                    if(ccnumberTF.getText().isBlank()) {
+                        ccnumber.setForeground(Color.RED);
+                    }
+                }
+            }
+        });
+
+
+        ccbilling.add(ccdone);
+        ccbilling.add(infowarning);
+        ccbilling.add(addccinfo);
+        ccbilling.add(ccnumberButton);
+        ccbilling.add(ccnameButton);
+        ccbilling.add(ccnumberTF);
+        ccbilling.add(ccnameTF);
+        ccbilling.add(ccnumber);
+        ccbilling.add(ccname);
         ccbilling.add(ccinfo);
         /////CCBilling
+
+
+        /////Reciepts
+        JPanel reciepts = new JPanel();
+
+        /////Reciepts
 
 
         //Adding panels to the "deck" in order/semantically
@@ -368,6 +493,9 @@ class YouCanBill {
         deck.add(namePeople, "Name People");
         deck.add(inputImage, "Input Image");
         deck.add(ccbilling, "CC Billing");
+        deck.add(reciepts, "Reciepts");
+        
+        
 
         //More frame configuration
         frame.add(BorderLayout.NORTH, mbFrame);

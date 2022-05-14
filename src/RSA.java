@@ -61,11 +61,4 @@ public class RSA {
         return encrypted.modPow(privateKey,modulus);
     }
 
-    //public static void main(String args[]) {
-    //    RSA rsa = new RSA();
-    //    BigInteger cardNum = new BigInteger("5105105105105100");
-    //    rsa.encryptAndSave(cardNum);
-    //    System.out.println(rsa.decrypt());
-    //}
-
 }
