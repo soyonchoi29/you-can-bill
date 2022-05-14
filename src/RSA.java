@@ -51,6 +51,7 @@ public class RSA {
             Scanner sc = new Scanner(input);
 
             while (sc.hasNext()){
+                
                 System.out.println("next: " + sc.next());
                 if (sc.next() == name){
                     System.out.println("next line: " + sc.nextLine());
