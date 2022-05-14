@@ -113,6 +113,16 @@ public class Main extends JPanel{
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        frame.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+               frame.setSize(400,400);  // or whatever your full size is
+            }
+            public void componentMoved(ComponentEvent e) {
+               frame.setLocation(0,0);
+            }
+         });
+
+         
         //Creating first panel seen by user. Contain image and buttons. Help and Start. Help for instructions, and start to literally start using program
         JPanel startScreen = new JPanel();
         //Creating our brand image ;3. Don't worry image does not need license. I used the google search to help look for it.
@@ -123,10 +133,15 @@ public class Main extends JPanel{
         JLabel toucanpic = new JLabel(toucan);
 
         JButton help = new JButton("Help");
+        help.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
         JButton start = new JButton("Start");
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                startScreen.setVisible(false);
+                frame.setVisible(false);
                 new YouCanBill();
             }
         });
@@ -152,17 +167,28 @@ class YouCanBill {
     static CardLayout layout;
     static JPanel deck;
     static String ccnameinfo;
+    static JFrame frame;
+
 
    public YouCanBill() {
        CustomerHolder customers = new CustomerHolder();
         //Creating the frame for application
-        JFrame frame = new JFrame("YouCanBill™");
+        frame = new JFrame("YouCanBill™");
         JMenuBar mbFrame = new JMenuBar();//MenuBar frame
         frame.pack();
         frame.setSize(400, 400);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
+
+        frame.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+               frame.setSize(400,400);  // or whatever your full size is
+            }
+            public void componentMoved(ComponentEvent e) {
+               frame.setLocation(0,0);
+            }
+         });
+
        //Creating a CardLayout layout for the purpose of going inbetween panels/options as the user desires
        layout = new CardLayout();
        deck = new JPanel();
@@ -213,6 +239,7 @@ class YouCanBill {
         openFiles.addActionListener(new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e){
+                frame.setVisible(false);
                 JFileChooser chooser = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & JPEG Images", "jpg", "jpeg");
                 chooser.setFileFilter(filter);
@@ -482,6 +509,15 @@ class YouCanBill {
         /////Reciepts
 
 
+        /////Help Panel
+        JPanel helpPanel = new JPanel();
+        JLabel instructions = new JLabel("Welcome to YouCanBill™!");
+
+
+        helpPanel.add(instructions);
+        /////Help Panel
+
+
         //Adding panels to the "deck" in order/semantically
         deck.add(loginPanel, "Login Panel");
         deck.add(paymentOptions, "Payment Options");
@@ -489,6 +525,7 @@ class YouCanBill {
         deck.add(inputImage, "Input Image");
         deck.add(ccbilling, "CC Billing");
         deck.add(reciepts, "Reciepts");
+        deck.add(helpPanel, "Help");
         
         
 

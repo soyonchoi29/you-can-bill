@@ -110,7 +110,16 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         if(panelheight < 500) {
             panelheight = 500;
         }
+
         frame.setSize(panelwidth, panelheight);
+        frame.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+               frame.setSize(frame.getWidth(), frame.getHeight());  // or whatever your full size is
+            }
+            public void componentMoved(ComponentEvent e) {
+               frame.setLocation(0,0);
+            }
+         });
         frame.setResizable(false);
         frame.setVisible(true);
         //Maybe some sort of an instructional popup
@@ -171,12 +180,15 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         back.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 frame.setVisible(false);
+                YouCanBill.frame.setVisible(true);
+                YouCanBill.layout.show(YouCanBill.deck, "Input Image");
             }
         });
         JButton done = new JButton("Continue To Billing");
         done.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 frame.setVisible(false);
+                YouCanBill.frame.setVisible(true);
                 Customer credit = customerHolder.isCredit();
                 if(credit != null && credit.getName() != "Dummy") {
                     YouCanBill.layout.show(YouCanBill.deck, "CC Billing");
