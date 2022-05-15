@@ -24,12 +24,12 @@ public class RSA {
         privateKey = publicKey.modInverse(phi);
     }
 
-    // Call w name of person and their card num
+    // Call w/ name of person and their card num
     public void encryptAndSave(BigInteger cardNum, String name){
         BigInteger encrypted = cardNum.modPow(publicKey,modulus);
 
         try {
-            File output = new File("CreditCardNumber.txt"); // check to add no dupe names somewhere
+            File output = new File("CreditCardNumber.txt");
             FileWriter fileWriter = new FileWriter(output, true);
 
             fileWriter.write(name + "\n" + encrypted + "\n");
@@ -64,7 +64,7 @@ public class RSA {
             System.err.println("File not found.");
             System.err.println(error);
         }
-        //System.out.println(modulus);
+
         return encrypted.modPow(privateKey,modulus);
     }
 

@@ -15,30 +15,17 @@ import java.awt.image.BufferedImage;
 public class ImageChange {
     private static CustomerHolder CustomerHolder;
     public static void imageCrop (CustomerHolder customers, BufferedImage originalImage, int x, int y, int width, int height, String name){
-        //try{
-            CustomerHolder = customers;
-            // Creates new image out of the subimage of original image
-            BufferedImage cropped = originalImage.getSubimage(x, y, width, height);
-            //cropped.createGraphics().drawImage(originalImage.getSubimage(x, y, width, height),null,0,0);
+        CustomerHolder = customers;
+        // Creates new image out of the subimage of original image
+        BufferedImage cropped = originalImage.getSubimage(x, y, width, height);
 
-            // Adds the item to the list for user's receipt
-            Item toAdd = new Item(cropped);
-            Customer.receiptItems.add(toAdd);
-            System.out.println("Trying to crop");
-
-            // Save/write cropped image to a file - should be unneeded now
-            //File croppedImage = new File ("croppedImage.jpg");
-            //ImageIO.write(cropped, "jpg", croppedImage);
-            
-        //}catch(IOException error){}
+        // Adds the item to the list for user's receipt
+        Item toAdd = new Item(cropped);
+        Customer.receiptItems.add(toAdd);
+        System.out.println("Trying to crop");
     }
 
     public static void ImageStitch(String name){
-        //Testing
-        // Not actually changing the ArrayLists associated with specific Customers
-        //int currentIndex = CustomerHolder.getIndex(name);
-        //Customer currentCustomer = CustomerHolder.getCustomer(0);
-        //currentCustomer = CustomerHolder.getCustomer(CustomerHolder.getIndex("dummy"));
         int width = 0;
         int height = 0;
 
@@ -51,7 +38,7 @@ public class ImageChange {
             height += item.getImage().getHeight();
         }
 
-            // Create finalImage
+        // Create BufferedImage to hold finalImage
         BufferedImage finalImage = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
 
         // Draw finalImage out of all the cropped images
@@ -64,12 +51,11 @@ public class ImageChange {
             }
         }
 
-        CustomerHolder.getCustomer(0).addStitchedImage(finalImage); // I think much of the arraylist of customers is not used
+        CustomerHolder.getCustomer(0).addStitchedImage(finalImage);
         try{
-            // Save/write stitched image to a file
+            // Save stitched image to a file and clear list of items
             String currentName = name + "StitchedImage.jpg";
             File stitchedImage = new File(currentName);
-            System.out.println(currentName);
             ImageIO.write(CustomerHolder.getCustomer(0).getStitched(), "jpg", stitchedImage);
             Customer.receiptItems.clear();
         }catch(IOException error){}
@@ -83,6 +69,7 @@ public class ImageChange {
         int scaledImageHeight = height;
         Image scaledImage = finalImage;
 
+        // Scale to fit screen
         if (width > 800 || height > 800) {
             float WoverH = width/height;
             if (WoverH >= 1){
@@ -97,11 +84,10 @@ public class ImageChange {
                     scaledImageHeight *= 0.9;
                 }
             }
-
             scaledImage = finalImage.getScaledInstance(scaledImageWidth, scaledImageHeight, Image.SCALE_SMOOTH);
         }
 
-        //Creates panel that will contain receipt
+        // Creates panel that will display stitched image
         userPanel.setSize(scaledImageWidth, scaledImageHeight);
         userFrame.setSize(scaledImageWidth + 50, scaledImageHeight + 50);
         userLabel.setIcon(new ImageIcon(scaledImage));
