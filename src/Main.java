@@ -115,7 +115,7 @@ public class Main extends JPanel{
 class YouCanBill {
     //Creating an instance of RSA to use to encrypt credit card information
     RSA rsa = new RSA();
-    //integer to track where the user (0 means at start screen, 1 means at login panel, 2 means at main menu)
+    //integer to track where the user (0 means at login panel, 1 means at main menu)
     static int tracker = 0;
 
     //Customer information/storage
@@ -614,6 +614,7 @@ class YouCanBill {
 
 
         /////Finished Panel
+        //Creating panel for when user is done with the program
         JPanel finished = new JPanel();
         finished.setLayout(null);
         JLabel flabel1 = new JLabel();
@@ -641,11 +642,9 @@ class YouCanBill {
         finished.add(flabel3);
         finished.add(flabel4);
         finished.add(flabel5);
-        
-
         /////Finished Panel
 
-        
+
         //Creating and Adding help and main menu button for the frame menubar
         //Button to go back to the Main Menu
         mMButton = new JButton("Main Menu");

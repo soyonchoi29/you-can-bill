@@ -100,14 +100,16 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
         base.add(panel);
         frame.add(base);
+
+        //In case the image is too small and giving the JPanel some leeway
         int panelwidth = scaledImageWidth + 50;
-        if(panelwidth < 500) {
-            panelwidth = 450;
+        if(panelwidth < 400) {
+            panelwidth = 400;
         }
 
         int panelheight = scaledImageHeight + 50;
-        if(panelheight < 500) {
-            panelheight = 500;
+        if(panelheight < 400) {
+            panelheight = 400;
         }
 
         frame.setSize(panelwidth, panelheight);
@@ -189,29 +191,29 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                 frame.setVisible(false);
                 YouCanBill.frame.setVisible(true);
                 Customer credit = YouCanBill.customers.isCredit();
+
+                //If no one (except for the dummy customer) is using credit, show the Finished panel
                 if(credit != null && credit.getName() != "Dummy") {
-                    if(YouCanBill.customers.length() == 2) {
-                        YouCanBill.addccinfo.setVisible(false);
-                    }
                     YouCanBill.layout.show(YouCanBill.deck, "CC Billing");
-                } 
+                }  else {
+                    YouCanBill.layout.show(YouCanBill.deck, "Finished");
+                }
             }
         });
 
         //Menu to choose who the cropped images are for
         pickPers = new JMenu("Select Person After Crop");
         for(int i = 1; i < YouCanBill.customers.length(); i++) {
+            //Creating JMenuItems for each person named by user
             String name = YouCanBill.customers.getCustomer(i).getName(); // Start at 1 to skip Dummy
             JMenuItem names = new JMenuItem(name);
             pickPers.add(names);
             names.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    YouCanBill.tracker++;
                     ImageChange.ImageStitch(name);
                 }
             });
         }
-
 
         recieptMenu.add(pickPers);
         recieptMenu.add(back);
