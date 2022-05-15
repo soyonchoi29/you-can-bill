@@ -133,7 +133,7 @@ class YouCanBill {
     JButton help;
     JButton credituser;
     JButton cashpayer;
-
+    static JButton addccinfo;
 
     public YouCanBill() {
         customers = new CustomerHolder();
@@ -459,7 +459,7 @@ class YouCanBill {
         });
 
         //Add and done buttons for cc information
-        JButton addccinfo = new JButton("Add Billing Info");
+        addccinfo = new JButton("Add Billing Info");
         addccinfo.setBounds(70, 210, 130, 25);
         addccinfo.setForeground(Color.BLACK);
         addccinfo.setBackground(Color.WHITE);
@@ -471,6 +471,7 @@ class YouCanBill {
                     ccname.setForeground(Color.BLACK);
                     ccnumber.setForeground(Color.BLACK);
                     infowarning.setVisible(false);
+                    System.out.println(customers.length());
                 } else {
                     infowarning.setVisible(true);
                     if(ccnameTF.getText().isBlank()) {
@@ -483,8 +484,8 @@ class YouCanBill {
             }
         });
 
-        JButton ccdone = new JButton("Done");
-        ccdone.setBounds(200, 210, 70, 25);
+        JButton ccdone = new JButton("Finished");
+        ccdone.setBounds(200, 210, 90, 25);
         ccdone.setForeground(Color.BLACK);
         ccdone.setBackground(Color.WHITE);
         ccdone.addActionListener(new ActionListener() {

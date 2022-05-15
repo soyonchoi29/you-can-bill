@@ -190,6 +190,9 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                 YouCanBill.frame.setVisible(true);
                 Customer credit = YouCanBill.customers.isCredit();
                 if(credit != null && credit.getName() != "Dummy") {
+                    if(YouCanBill.customers.length() == 2) {
+                        YouCanBill.addccinfo.setVisible(false);
+                    }
                     YouCanBill.layout.show(YouCanBill.deck, "CC Billing");
                     System.out.println(Customer.receiptItems.size());
                 } 
@@ -197,7 +200,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         });
 
         //Menu to choose who the cropped images are for
-        pickPers = new JMenu("Append Image to Person");
+        pickPers = new JMenu("Select Person After Crop");
         for(int i = 1; i < YouCanBill.customers.length(); i++) {
             String name = YouCanBill.customers.getCustomer(i).getName(); // Start at 1 to skip Dummy
             JMenuItem names = new JMenuItem(name);
