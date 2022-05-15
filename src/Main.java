@@ -122,8 +122,11 @@ class YouCanBill {
     static JFrame frame;
     static CardLayout layout;
     static JPanel deck;
-    static JButton mMButton;
-    static JButton help;
+    JButton returnButton;
+    JButton help;
+    JButton credituser;
+    JButton cashpayer;
+
 
     public YouCanBill() {
         customers = new CustomerHolder();
@@ -158,17 +161,17 @@ class YouCanBill {
         JButton contin = new JButton("Input a Receipt");
         contin.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                layout.show(deck, "Input Image");
-                mMButton.setVisible(true);
+                show("Input Image");
+                returnButton.setVisible(true);
             }
         });
 
-        //Button called addCust to take user to namePeople panel where they are able to add whoever else they want
+        //Button called addCust to take user to addPeople panel where they are able to add whoever else they want
         JButton addCust = new JButton("Add People");
         addCust.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                layout.show(deck, "Name People");
-                mMButton.setVisible(true); 
+                show("Add People");
+                returnButton.setVisible(true); 
             }
         });
 
@@ -176,7 +179,7 @@ class YouCanBill {
         mainMenu.add(contin);
         mainMenu.add(addCust);
         mainMenu.add(BorderLayout.NORTH, paymentOptions);
-        /////PICK PAYMENT OPTIONS
+        /////Main Menu
 
 
         /////Input Image
@@ -204,38 +207,74 @@ class YouCanBill {
 
  
         /////Add People
-        JPanel namePeople = new JPanel();
-        namePeople.setLayout(null);
+        JPanel addPeople = new JPanel();
+        addPeople.setLayout(null);
 
         //Creating textfield and directions for users input
         JLabel task = new JLabel("Enter Name");
         task.setBounds(100, 58, 100, 20);
+
         JTextField textfield = new JTextField();
         textfield.setBounds(100, 77, 193, 20);
-        namePeople.add(BorderLayout.SOUTH, task);
-        namePeople.add(BorderLayout.SOUTH, textfield);
+        addPeople.add(BorderLayout.SOUTH, task);
+        addPeople.add(BorderLayout.SOUTH, textfield);
+
+        //Warning in case no name is inputted
+        JLabel nameWarning = new JLabel("Please enter a name");
+        nameWarning.setBounds(130, 160, 300, 25);
+        nameWarning.setVisible(false);
+
+        JLabel pickone = new JLabel("Please pick payment method");
+        pickone.setBounds(110, 160, 300, 25);
+        pickone.setVisible(false);
 
         //Button to make an instance of Customer that will use their credit card
-        JButton credituser = new JButton("Credit Card");
+        credituser = new JButton("Credit Card");
         credituser.setBounds(100, 110, 100, 25);
         credituser.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent d) {
-                Customer creditp = new CreditUser(textfield.getText());
-                customers.append(creditp);
-                textfield.setText("");
+                if(textfield.getText().isEmpty()) {
+                    if(pickone.isVisible()) {
+                        nameWarning.setBounds(130, 180, 300, 25);
+                    }
+                    nameWarning.setVisible(true);
+                    task.setForeground(Color.RED);
+                } else {
+                    Customer creditp = new CreditUser(textfield.getText());
+                    customers.append(creditp);
+                    textfield.setText("");
+                    pickone.setVisible(false);
+                    nameWarning.setVisible(false);
+                    credituser.setForeground(Color.BLACK);
+                    cashpayer.setForeground(Color.BLACK);
+                    task.setForeground(Color.BLACK);
+                }
             }
         });
 
         //Button to make an instance of Customer that will pay in cash
-        JButton cashpayer = new JButton("Cash");
+        cashpayer = new JButton("Cash");
         cashpayer.setBounds(200, 110, 90, 25);
         cashpayer.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent d) {
-                Customer cashp = new CashPayer(textfield.getText());
-                customers.append(cashp);
-                textfield.setText("");
+                if(textfield.getText().isEmpty()) {
+                    if(pickone.isVisible()) {
+                        nameWarning.setBounds(130, 180, 300, 25);
+                    }
+                    nameWarning.setVisible(true);
+                    task.setForeground(Color.RED);
+                } else {
+                    Customer cashp = new CashPayer(textfield.getText());
+                    customers.append(cashp);
+                    textfield.setText("");
+                    pickone.setVisible(false);
+                    nameWarning.setVisible(false);
+                    credituser.setForeground(Color.BLACK);
+                    cashpayer.setForeground(Color.BLACK);
+                    task.setForeground(Color.BLACK);
+                }
             }
         });
         
@@ -245,14 +284,26 @@ class YouCanBill {
         done.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent d) {
-                layout.show(deck, "Input Image");
+                if(customers.length() == 2) {
+                    if(nameWarning.isVisible()) {
+                        pickone.setBounds(110, 180, 300, 25);
+                    }
+                    credituser.setForeground(Color.RED);
+                    cashpayer.setForeground(Color.RED);
+                    pickone.setVisible(true);
+                } else {
+                    show("Input Image");
+                }
             }
         });
 
-        namePeople.add(done);
+        
         //Adding buttons to frame
-        namePeople.add(credituser);
-        namePeople.add(cashpayer);
+        addPeople.add(pickone);
+        addPeople.add(nameWarning);
+        addPeople.add(done);
+        addPeople.add(credituser);
+        addPeople.add(cashpayer);
         frame.setVisible(true);
         /////Add People
 
@@ -283,7 +334,7 @@ class YouCanBill {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
                     //tracks when user is done "logging in"
-                    tracker++;
+                    tracker = 1;
                     //"Dummy" instance of Customer that will hold stitched image until it is distributed to a customer
                     Customer dummy = new CreditUser("Dummy");
                     //Instance of Customer of the user who "logged in"
@@ -292,7 +343,7 @@ class YouCanBill {
                     customers.append(initial);
                     JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
-                    layout.show(deck, "Main Menu");
+                    show("Main Menu");
                 } else {
                     enterName.setForeground(Color.RED);
                     isEmpty.setVisible(true);
@@ -309,7 +360,7 @@ class YouCanBill {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
                     //tracks when user is done "logging in"
-                    tracker++;
+                    tracker = 1;
                     //"Dummy" instance of Customer that will hold stitched image until it is distributed to a customer
                     Customer dummy = new CreditUser("Dummy");
                     //Instance of Customer of the user who "logged in"
@@ -318,8 +369,9 @@ class YouCanBill {
                     customers.append(initial);
                     JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
-                    layout.show(deck, "Main Menu");
+                    show("Main Menu");
                 } else {
+                    enterName.setForeground(Color.RED);
                     isEmpty.setVisible(true);
                 }
             }
@@ -358,8 +410,15 @@ class YouCanBill {
         ccnameButton.setBackground(Color.WHITE);
         ccnameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ccnameinfo = ccnameTF.getText();
-                ccnameTF.setText("**********");
+                if(ccnameTF.getText().isEmpty()) {
+                    ccname.setForeground(Color.RED);
+                    infowarning.setVisible(true);
+                } else {
+                    ccnameinfo = ccnameTF.getText();
+                    ccnameTF.setText("**********");
+                    ccname.setForeground(Color.BLACK);
+                    infowarning.setVisible(false);
+                }
             }
         });
 
@@ -377,9 +436,16 @@ class YouCanBill {
         ccnumberButton.setBackground(Color.WHITE);
         ccnumberButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                BigInteger ccnumber = new BigInteger(ccnumberTF.getText());
-                rsa.encryptAndSave(ccnumber, ccnameinfo);
-                ccnumberTF.setText("****************");
+                if(ccnumberTF.getText().isEmpty()) {
+                    ccnumber.setForeground(Color.RED);
+                    infowarning.setVisible(true);
+                } else {
+                    BigInteger ccnumberBI = new BigInteger(ccnumberTF.getText());
+                    rsa.encryptAndSave(ccnumberBI, ccnameinfo);
+                    ccnumberTF.setText("****************");
+                    ccnumber.setForeground(Color.BLACK);
+                    infowarning.setVisible(false);
+                }
             }
         });
 
@@ -415,7 +481,7 @@ class YouCanBill {
         ccdone.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!ccnameTF.getText().isBlank() && !ccnumberTF.getText().isBlank()) {
-                    mMButton.setVisible(true);
+                    returnButton.setVisible(true);
                 } else {
                     infowarning.setVisible(true);
                     if(ccnameTF.getText().isBlank()) {
@@ -513,7 +579,6 @@ class YouCanBill {
         JLabel label17 = new JLabel();
         label17.setText("individual receipts.");
         label17.setBounds(25, 320, 400, 15);
-
         helpPanel.add(label1);
         helpPanel.add(label2);
         helpPanel.add(label3);
@@ -537,21 +602,41 @@ class YouCanBill {
 
         //Creating and Adding help and reutn button for the frame menubar
         
-        //Button to return user to the main menu in case they forgot something
-        mMButton = new JButton("Return");
-        mMButton.setVisible(false);
-        mMButton.addActionListener(new ActionListener() {
+
+        //////HELPPPP
+        //Button to go back to previous panel
+        returnButton = new JButton("Return");
+        returnButton.setVisible(false);
+        returnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                System.out.println(current + " " + previous);
                 if(tracker == 0) {
-                    layout.show(deck, "Login Panel");
-                    mMButton.setVisible(false);
+                    show("Login Panel");
+                    previous = "Main Menu";
+                    current = "Main Menu";
                     help.setVisible(true);
+                    returnButton.setVisible(false);
                 } else {
-                    layout.show(deck, "Main Menu");
-                    mMButton.setVisible(false);
+                    previous();
                     help.setVisible(true);
+                    if(previous == "Main Menu" && current == "Main Menu") {
+                        help.setVisible(true);
+                        returnButton.setVisible(false);
+                    }
+                    if(current == "Input Image" && previous == "Input Image") {
+                        show("Main Menu");
+                        returnButton.setVisible(false);
+                    }
+                    if(current == "CC Billing" || previous == "Input Image") {
+                        show("Input Image");
+                    }
+
+                    if(current == "Menu Bar" || previous == "CC Billing") {
+                        show("Main Menu");
+                    }
+
                 }
-                 
+                
             }
         });
 
@@ -560,18 +645,18 @@ class YouCanBill {
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 help.setVisible(false);
-            layout.show(deck, "Help");
-            mMButton.setVisible(true);
+                layout.show(deck, "Help");
+                returnButton.setVisible(true);
             }
         });
- 
+   //////HELPPPP
         mbFrame.add(help);
-        mbFrame.add(mMButton);
+        mbFrame.add(returnButton);
 
         //Adding panels to the "deck" in order/semantically
         deck.add(loginPanel, "Login Panel");
         deck.add(mainMenu, "Main Menu");
-        deck.add(namePeople, "Name People");
+        deck.add(addPeople, "Add People");
         deck.add(inputImage, "Input Image");
         deck.add(ccbilling, "CC Billing");
         deck.add(helpPanel, "Help");
@@ -584,4 +669,18 @@ class YouCanBill {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
    }
+
+     //////HELPPPP
+    static String previous;
+    static String current;
+    public static void show(String newTab) {
+        previous = current;
+        current = newTab;
+        YouCanBill.layout.show(YouCanBill.deck, current);
+    }
+
+    public static void previous() {
+        YouCanBill.layout.show(YouCanBill.deck, previous);
+    }
+      //////HELPPPP
 }
