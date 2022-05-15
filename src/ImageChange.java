@@ -22,10 +22,10 @@ public class ImageChange {
         // Adds the item to the list for user's receipt
         Item toAdd = new Item(cropped);
         Customer.receiptItems.add(toAdd);
-        System.out.println("Trying to crop");
     }
 
     public static void ImageStitch(String name){
+        //Array to hold cropped images
         int width = 0;
         int height = 0;
 
@@ -61,7 +61,7 @@ public class ImageChange {
         }catch(IOException error){}
 
         // Display to user
-        JFrame userFrame = new JFrame("Selected Items");
+        JFrame userFrame = new JFrame(name + "'s Selected Items");
         JPanel userPanel = new JPanel();
         JLabel userLabel = new JLabel();
 
@@ -86,6 +86,7 @@ public class ImageChange {
             }
             scaledImage = finalImage.getScaledInstance(scaledImageWidth, scaledImageHeight, Image.SCALE_SMOOTH);
         }
+
 
         // Creates panel that will display stitched image
         userPanel.setSize(scaledImageWidth, scaledImageHeight);

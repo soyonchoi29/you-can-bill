@@ -194,7 +194,6 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                         YouCanBill.addccinfo.setVisible(false);
                     }
                     YouCanBill.layout.show(YouCanBill.deck, "CC Billing");
-                    System.out.println(Customer.receiptItems.size());
                 } 
             }
         });

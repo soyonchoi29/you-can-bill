@@ -7,9 +7,6 @@ import java.io.*;
 import java.awt.Image;
 import java.awt.CardLayout;
 import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 //Creating a linked list to store Customers
 class Node {
@@ -203,7 +200,6 @@ class YouCanBill {
                 chooser.setFileFilter(filter);
                 int returnVal = chooser.showOpenDialog(frame);
                 if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
                     File input = new File(chooser.getSelectedFile().getPath());
                     ImagePopup.drawNew(input);
                 }
@@ -423,8 +419,11 @@ class YouCanBill {
                     ccname.setForeground(Color.RED);
                     infowarning.setVisible(true);
                 } else {
-                    ccnameinfo = ccnameTF.getText();
-                    ccnameTF.setText("**********");
+                    String newText = "";
+                    for(int i = ccnameTF.getText().length(); i > 0; i--) {
+                        newText = newText + "*";
+                    }
+                    ccnameTF.setText(newText);
                     ccname.setForeground(Color.BLACK);
                     infowarning.setVisible(false);
                 }
@@ -451,7 +450,11 @@ class YouCanBill {
                 } else {
                     BigInteger ccnumberBI = new BigInteger(ccnumberTF.getText());
                     rsa.encryptAndSave(ccnumberBI, ccnameinfo);
-                    ccnumberTF.setText("****************");
+                    String newText = "";
+                    for(int i = ccnumberTF.getText().length(); i > 0; i--) {
+                        newText = newText + "*";
+                    }
+                    ccnumberTF.setText(newText);
                     ccnumber.setForeground(Color.BLACK);
                     infowarning.setVisible(false);
                 }
@@ -471,7 +474,6 @@ class YouCanBill {
                     ccname.setForeground(Color.BLACK);
                     ccnumber.setForeground(Color.BLACK);
                     infowarning.setVisible(false);
-                    System.out.println(customers.length());
                 } else {
                     infowarning.setVisible(true);
                     if(ccnameTF.getText().isBlank()) {
@@ -492,6 +494,8 @@ class YouCanBill {
             public void actionPerformed(ActionEvent e) {
                 if(!ccnameTF.getText().isBlank() && !ccnumberTF.getText().isBlank()) {
                     mMButton.setVisible(true);
+                    layout.show(deck, "Finished");
+                    help.setVisible(false);
                 } else {
                     infowarning.setVisible(true);
                     if(ccnameTF.getText().isBlank()) {
@@ -609,7 +613,39 @@ class YouCanBill {
         /////Help Panel
 
 
+        /////Finished Panel
+        JPanel finished = new JPanel();
+        finished.setLayout(null);
+        JLabel flabel1 = new JLabel();
+        flabel1.setText("<html><h1>You Are Done!</h1></html>");
+        flabel1.setBounds(100, 40, 400, 20);
+        
+        JLabel flabel2 = new JLabel();
+        flabel2.setText("Your images are readily accessible to you");
+        flabel2.setBounds(50, 70, 400, 15);
 
+        JLabel flabel3 = new JLabel();
+        flabel3.setText("within your local directory. As well as");
+        flabel3.setBounds(60, 90, 400, 15);
+
+        JLabel flabel4 = new JLabel();
+        flabel4.setText("clearly visible on your desktop!");
+        flabel4.setBounds(80, 110, 400, 15);
+
+        JLabel flabel5 = new JLabel();
+        flabel5.setText("Thank you!");
+        flabel5.setBounds(140, 130, 400, 15);
+
+        finished.add(flabel1);
+        finished.add(flabel2);
+        finished.add(flabel3);
+        finished.add(flabel4);
+        finished.add(flabel5);
+        
+
+        /////Finished Panel
+
+        
         //Creating and Adding help and main menu button for the frame menubar
         //Button to go back to the Main Menu
         mMButton = new JButton("Main Menu");
@@ -647,6 +683,7 @@ class YouCanBill {
         deck.add(addPeople, "Add People");
         deck.add(inputImage, "Input Image");
         deck.add(ccbilling, "CC Billing");
+        deck.add(finished, "Finished");
         deck.add(helpPanel, "Help");
 
         //More frame configuration
