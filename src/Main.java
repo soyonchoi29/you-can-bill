@@ -105,6 +105,13 @@ class CustomerHolder{
 public class Main extends JPanel{
     public static void main(String[] args) {
         new YouCanBill();
+        File creditCardNumsFile = new File("CreditCardNumber.txt");
+        
+        // To get rid of pre-existing file
+        // (If file exists, the system will add again and mess it up)
+        if (creditCardNumsFile.exists()){
+            creditCardNumsFile.delete();
+        }
     }
 }
  
