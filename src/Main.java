@@ -129,7 +129,7 @@ class YouCanBill {
     static JFrame frame;
     static CardLayout layout;
     static JPanel deck;
-    JButton returnButton;
+    JButton mMButton;
     JButton help;
     JButton credituser;
     JButton cashpayer;
@@ -168,8 +168,9 @@ class YouCanBill {
         JButton contin = new JButton("Input a Receipt");
         contin.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                show("Input Image");
-                returnButton.setVisible(true);
+                layout.show(deck, "Input Image");
+                help.setVisible(false);
+                mMButton.setVisible(true);
             }
         });
 
@@ -177,8 +178,9 @@ class YouCanBill {
         JButton addCust = new JButton("Add People");
         addCust.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                show("Add People");
-                returnButton.setVisible(true); 
+                layout.show(deck, "Add People");
+                mMButton.setVisible(true);
+                help.setVisible(false); 
             }
         });
 
@@ -299,7 +301,7 @@ class YouCanBill {
                     cashpayer.setForeground(Color.RED);
                     pickone.setVisible(true);
                 } else {
-                    show("Input Image");
+                    layout.show(deck, "Input Image");
                 }
             }
         });
@@ -350,7 +352,7 @@ class YouCanBill {
                     customers.append(initial);
                     JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
-                    show("Main Menu");
+                    layout.show(deck, "Main Menu");
                 } else {
                     enterName.setForeground(Color.RED);
                     isEmpty.setVisible(true);
@@ -376,7 +378,7 @@ class YouCanBill {
                     customers.append(initial);
                     JLabel welcome = new JLabel("Welcome " + customers.getCustomer(1).getName() + "!");
                     mbFrame.add(welcome);
-                    show("Main Menu");
+                    layout.show(deck, "Main Menu");
                 } else {
                     enterName.setForeground(Color.RED);
                     isEmpty.setVisible(true);
@@ -488,7 +490,7 @@ class YouCanBill {
         ccdone.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!ccnameTF.getText().isBlank() && !ccnumberTF.getText().isBlank()) {
-                    returnButton.setVisible(true);
+                    mMButton.setVisible(true);
                 } else {
                     infowarning.setVisible(true);
                     if(ccnameTF.getText().isBlank()) {
@@ -607,41 +609,20 @@ class YouCanBill {
 
 
 
-        //Creating and Adding help and reutn button for the frame menubar
-        
-
-        //////HELPPPP
-        //Button to go back to previous panel
-        returnButton = new JButton("Return");
-        returnButton.setVisible(false);
-        returnButton.addActionListener(new ActionListener() {
+        //Creating and Adding help and main menu button for the frame menubar
+        //Button to go back to the Main Menu
+        mMButton = new JButton("Main Menu");
+        mMButton.setVisible(false);
+        mMButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println(current + " " + previous);
                 if(tracker == 0) {
-                    show("Login Panel");
-                    previous = "Main Menu";
-                    current = "Main Menu";
+                    layout.show(deck, "Login Panel");
                     help.setVisible(true);
-                    returnButton.setVisible(false);
+                    mMButton.setVisible(false);
                 } else {
-                    previous();
+                    layout.show(deck, "Main Menu");
                     help.setVisible(true);
-                    if(previous == "Main Menu" && current == "Main Menu") {
-                        help.setVisible(true);
-                        returnButton.setVisible(false);
-                    }
-                    if(current == "Input Image" && previous == "Input Image") {
-                        show("Main Menu");
-                        returnButton.setVisible(false);
-                    }
-                    if(current == "CC Billing" || previous == "Input Image") {
-                        show("Input Image");
-                    }
-
-                    if(current == "Menu Bar" || previous == "CC Billing") {
-                        show("Main Menu");
-                    }
-
+                    mMButton.setVisible(false);
                 }
                 
             }
@@ -653,12 +634,11 @@ class YouCanBill {
             public void actionPerformed(ActionEvent e) {
                 help.setVisible(false);
                 layout.show(deck, "Help");
-                returnButton.setVisible(true);
+                mMButton.setVisible(true);
             }
         });
-   //////HELPPPP
         mbFrame.add(help);
-        mbFrame.add(returnButton);
+        mbFrame.add(mMButton);
 
         //Adding panels to the "deck" in order/semantically
         deck.add(loginPanel, "Login Panel");
@@ -667,8 +647,6 @@ class YouCanBill {
         deck.add(inputImage, "Input Image");
         deck.add(ccbilling, "CC Billing");
         deck.add(helpPanel, "Help");
-        
-        
 
         //More frame configuration
         frame.add(BorderLayout.NORTH, mbFrame);
@@ -676,18 +654,4 @@ class YouCanBill {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
    }
-
-     //////HELPPPP
-    static String previous;
-    static String current;
-    public static void show(String newTab) {
-        previous = current;
-        current = newTab;
-        YouCanBill.layout.show(YouCanBill.deck, current);
-    }
-
-    public static void previous() {
-        YouCanBill.layout.show(YouCanBill.deck, previous);
-    }
-      //////HELPPPP
 }

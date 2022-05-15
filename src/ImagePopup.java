@@ -180,7 +180,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
             public void actionPerformed(ActionEvent e){
                 frame.setVisible(false);
                 YouCanBill.frame.setVisible(true);
-                YouCanBill.show("Input Image");
+                YouCanBill.layout.show(YouCanBill.deck, "Input Image");
             }
         });
         JButton done = new JButton("Continue To Billing");
@@ -190,7 +190,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                 YouCanBill.frame.setVisible(true);
                 Customer credit = YouCanBill.customers.isCredit();
                 if(credit != null && credit.getName() != "Dummy") {
-                    YouCanBill.show("CC Billing");
+                    YouCanBill.layout.show(YouCanBill.deck, "CC Billing");
                     System.out.println(Customer.receiptItems.size());
                 } 
             }
