@@ -116,11 +116,11 @@ class YouCanBill {
     //Creating an instance of RSA to use to encrypt credit card information
     RSA rsa = new RSA();
     //integer to track where the user (0 means at login panel, 1 means at main menu)
-    static int tracker = 0;
+    int tracker = 0;
 
     //Customer information/storage
     static CustomerHolder customers;
-    static String ccnameinfo;
+    String ccnameinfo;
 
     //Frame, Layout and buttons
     static JFrame frame;

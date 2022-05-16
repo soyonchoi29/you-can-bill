@@ -13,9 +13,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 public class ImageChange {
-    private static CustomerHolder CustomerHolder;
-    public static void imageCrop (CustomerHolder customers, BufferedImage originalImage, int x, int y, int width, int height, String name){
-        CustomerHolder = customers;
+    public static void imageCrop (BufferedImage originalImage, int x, int y, int width, int height, String name){
         // Creates new image out of the subimage of original image
         BufferedImage cropped = originalImage.getSubimage(x, y, width, height);
 
@@ -44,19 +42,19 @@ public class ImageChange {
         // Draw finalImage out of all the cropped images
         int y = 0;
 
-        for (int i = 0; i < CustomerHolder.length() - 1; i++) {
+        for (int i = 0; i < YouCanBill.customers.length() - 1; i++) {
             for (int j = 0; j < Customer.receiptItems.size(); j++) {
                 finalImage.createGraphics().drawImage(Customer.receiptItems.get(j).getImage(), null, 0, y);
                 y += Customer.receiptItems.get(j).getImage().getHeight();
             }
         }
 
-        CustomerHolder.getCustomer(0).addStitchedImage(finalImage);
+        YouCanBill.customers.getCustomer(0).addStitchedImage(finalImage);
         try{
             // Save stitched image to a file and clear list of items
             String currentName = name + "StitchedImage.jpg";
             File stitchedImage = new File(currentName);
-            ImageIO.write(CustomerHolder.getCustomer(0).getStitched(), "jpg", stitchedImage);
+            ImageIO.write(YouCanBill.customers.getCustomer(0).getStitched(), "jpg", stitchedImage);
             Customer.receiptItems.clear();
         }catch(IOException error){}
 
