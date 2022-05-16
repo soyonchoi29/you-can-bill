@@ -32,7 +32,6 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     private Point imagePosition;
     private int xImage, yImage;
     private int x1, y1, x2, y2;
-    static int counter = 0;
     private JFrame frame = new JFrame("Selected receipt");
     private JLabel picLabel = new JLabel();
     private JLayeredPane base = new JLayeredPane();
