@@ -28,7 +28,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     private static BufferedImage image;
     private static int imageWidth, imageHeight;
     private static int scaledImageWidth, scaledImageHeight;
-    static File inputFile;
+    private static File inputFile;
     private Point imagePosition;
     private int xImage, yImage;
     private int x1, y1, x2, y2;
