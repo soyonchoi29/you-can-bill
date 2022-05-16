@@ -45,22 +45,6 @@ class CustomerHolder{
             return n.customer;
     }
  
-    //Method called getIndex to get the index of a customer based off their name (string)
-    public  int getIndex(String name) {
-        Node n = end;
-        int index = -1;
-        boolean done = false;
-        while(n != null && !done) {
-                if(n.customer.getName() == name) {
-                    done = true;
-                }
-                n = n.prev;
-                index++;
-            
-        }
-        return index;
-    }
-  
     //Method called length to get the length of the linked list
     public  int length() {
         Node n = end;
@@ -84,17 +68,6 @@ class CustomerHolder{
             n = n.prev;
         }
         return n.customer;
-    }
-
-    //Method called get toString to get all names (of customers) inside the linked list
-    public  String toString() {
-        String toReturn = "";
-        Node n = end;
-        while(n != null) {
-            toReturn = n.customer.getName() + " " + toReturn;
-            n = n.prev;
-        }
-        return toReturn;
     }
 }
  
