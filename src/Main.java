@@ -239,6 +239,7 @@ class YouCanBill {
         credituser.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent d) {
+                //If textfield is empty, show directions, if not empty reverse the possible warnings and continue
                 if(textfield.getText().isEmpty()) {
                     if(pickone.isVisible()) {
                         nameWarning.setBounds(130, 180, 300, 25);
@@ -264,6 +265,7 @@ class YouCanBill {
         cashpayer.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent d) {
+                //If textfield is empty, show directions, if not empty reverse the possible warnings and continue
                 if(textfield.getText().isEmpty()) {
                     if(pickone.isVisible()) {
                         nameWarning.setBounds(130, 180, 300, 25);
@@ -289,6 +291,8 @@ class YouCanBill {
         done.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent d) {
+                /*If the linked list has a length of 2 (i.e., no one was added apart from original user and dummy customer) give warning since 
+                user is in a frame that is meant to add more people. */
                 if(customers.length() == 2) {
                     if(nameWarning.isVisible()) {
                         pickone.setBounds(110, 180, 300, 25);
@@ -415,6 +419,7 @@ class YouCanBill {
         ccnameButton.setBackground(Color.WHITE);
         ccnameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                //If textfield is empty give warning and ask for information
                 if(ccnameTF.getText().isEmpty()) {
                     ccname.setForeground(Color.RED);
                     infowarning.setVisible(true);
@@ -444,6 +449,7 @@ class YouCanBill {
         ccnumberButton.setBackground(Color.WHITE);
         ccnumberButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                //If textfield is empty gives warning otherwise continue
                 if(ccnumberTF.getText().isEmpty()) {
                     ccnumber.setForeground(Color.RED);
                     infowarning.setVisible(true);
@@ -468,6 +474,7 @@ class YouCanBill {
         addccinfo.setBackground(Color.WHITE);
         addccinfo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                //If textfield is empty give warning otherwise continue
                 if(!ccnameTF.getText().isBlank() && !ccnumberTF.getText().isBlank()) {
                     ccnameTF.setText("");
                     ccnumberTF.setText("");

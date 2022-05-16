@@ -28,7 +28,6 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     private static BufferedImage image;
     private static int imageWidth, imageHeight;
     private static int scaledImageWidth, scaledImageHeight;
-    //static float scaleFactor = 1;
     static File inputFile;
     private Point imagePosition;
     private int xImage, yImage;
@@ -77,14 +76,12 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
             while (scaledImageWidth >= 500){
                 scaledImageWidth *= 0.7;
                 scaledImageHeight *= 0.7;
-                //scaleFactor *= 0.7; 
             }
         }
         if (scaledImageHeight > scaledImageWidth){
             while (scaledImageHeight >= 500){
                 scaledImageWidth *= 0.7;
                 scaledImageHeight *= 0.7;
-                //scaleFactor *= 0.7;
             }
         }
 
@@ -102,14 +99,14 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
         frame.add(base);
 
         //In case the image is too small and giving the JPanel some leeway
-        int panelwidth = scaledImageWidth + 50;
-        if(panelwidth < 400) {
-            panelwidth = 400;
+        int panelwidth = scaledImageWidth + 100;
+        if(panelwidth < 500) {
+            panelwidth = 500;
         }
 
-        int panelheight = scaledImageHeight + 50;
-        if(panelheight < 400) {
-            panelheight = 400;
+        int panelheight = scaledImageHeight + 100;
+        if(panelheight < 500) {
+            panelheight = 500;
         }
 
         frame.setSize(panelwidth, panelheight);
@@ -123,60 +120,9 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
          });
         frame.setResizable(false);
         frame.setVisible(true);
-        //Maybe some sort of an instructional popup
-
-        //In case user inputs an image in the wrong orientation, button to fix it
-        //JButton rotateB = new JButton("Rotate Image");
-        //rotateB.setBounds(0, 0, 50, 30); // Might need to move
-        //panel.add(rotateB);
-        //rotateB.addActionListener(new ActionListener(){
-
-        //    @Override
-        //    public void actionPerformed(ActionEvent e){
-        //        counter++;
-                //System.out.println("reeeeeee");
-                //Get the components in the panel
-        //        Component[] componentList = panel.getComponents();
-
-                //Loop through the components
-        //        for(Component c : componentList){ // https://stackoverflow.com/questions/7117332/dynamically-remove-component-from-jpanel
-
-                    //Find the components you want to remove
-        //            if(c instanceof JLabel){
-
-                        //Remove it
-        //                panel.remove(c);
-        //            }
-        //        }
-        //        panel.validate();
-        //        panel.repaint();
-        //        if (counter % 2 == 0){
-        //            AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90 * counter), scaledImageWidth/2, scaledImageHeight/2); // ROTATE BY 90 (CAN CHANGE)
-        //            AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
-        //            BufferedImage rotated = new BufferedImage(scaledImageWidth, scaledImageHeight, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
-        //            Graphics2D redraw = rotated.createGraphics(); // Turns rotated into Graphics2D object and draws it
-        //            redraw.drawImage(resized, 0, 0, null);
-        //            redraw.dispose();
-
-        //            JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
-        //            panel.add(picLabel);
-        //        } else if (counter % 2 == 1){
-        //            AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians (90 * counter), scaledImageHeight/2, scaledImageWidth/2); // ROTATE BY 90 (CAN CHANGE)
-        //            AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
-        //            BufferedImage rotated = new BufferedImage(scaledImageHeight, scaledImageWidth, BufferedImage.TYPE_INT_ARGB); // Creates new BufferedImage, then fills it in with rotated/scaled version
-        //            Graphics2D redraw = rotated.createGraphics(); // Turns rotated into Graphics2D object and draws it
-        //            redraw.drawImage(resized, 0, 0, null);
-        //            redraw.dispose();
-
-        //            JLabel picLabel = new JLabel(new ImageIcon(operation.filter(rotated, null)));
-        //            panel.add(picLabel);
-        //        }
-        //        frame.setVisible(true);
-        //    }            
-        //});
-
+        
         JMenuBar recieptMenu = new JMenuBar();
-        //Button to go "back" to main menu
+        //Button to go "back" to YouCanBill frame
         JButton back = new JButton("Back");
         back.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -191,9 +137,11 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
                 frame.setVisible(false);
                 YouCanBill.frame.setVisible(true);
                 Customer credit = YouCanBill.customers.isCredit();
-
-                //If no one (except for the dummy customer) is using credit, show the Finished panel
+                //If no one (except for the dummy customer) is using credit, show the "Finished" panel
                 if(credit != null && credit.getName() != "Dummy") {
+                    if(YouCanBill.customers.length() == 2) {
+                        YouCanBill.addccinfo.setVisible(false);
+                    }
                     YouCanBill.layout.show(YouCanBill.deck, "CC Billing");
                 }  else {
                     YouCanBill.layout.show(YouCanBill.deck, "Finished");
@@ -260,15 +208,6 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
         int cropWidth = (int) (width * widthRatio);
         int cropHeight = (int) (height * heightRatio);
-
-        // System.out.println(x1);
-        // System.out.println(y1);
-        // System.out.println("scaledImageWidth = " + scaledImageWidth);
-        // System.out.println("scaledImageHeight = " + scaledImageHeight);
-        // System.out.println("mouse width = " + width);
-        // System.out.println("mouse height = " + height);
-        // System.out.println(widthRatio);
-        // System.out.println(heightRatio);
 
         // Use dummy Person created to temporarily store Items
         image = ImageIO.read(inputFile);
