@@ -200,8 +200,13 @@ class YouCanBill {
                 chooser.setFileFilter(filter);
                 int returnVal = chooser.showOpenDialog(frame);
                 if(returnVal == JFileChooser.APPROVE_OPTION) {
+                    //If user presses "Open" use that file as a parameter for ImagePopup.drawNew
                     File input = new File(chooser.getSelectedFile().getPath());
                     ImagePopup.drawNew(input);
+                } else if (returnVal == JFileChooser.CANCEL_OPTION) {
+                    //If user presses cancel, take user back to the program instead of closing
+                    frame.setVisible(true);
+                    layout.show(deck, "Input Image");
                 }
             }
         });
