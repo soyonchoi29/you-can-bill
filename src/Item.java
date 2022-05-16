@@ -1,8 +1,6 @@
 import java.awt.image.BufferedImage;
 
 public class Item {
-    private float price;
-    private Customer payer;
     private BufferedImage image;
 
     public Item(BufferedImage image){
