@@ -373,7 +373,7 @@ class YouCanBill {
         cash.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!nameTF.getText().isEmpty()) {
-                    //tracks when user is done "logging in"
+                    //Tracks when user is done "logging in"
                     tracker = 1;
                     //"Dummy" instance of Customer that will hold stitched image until it is distributed to a customer
                     Customer dummy = new CreditUser("Dummy");
@@ -542,7 +542,7 @@ class YouCanBill {
         label1.setBounds(5, 3, 400, 20);
         
         JLabel label2 = new JLabel();
-        label2.setText("When you feel ready press return and continue");
+        label2.setText("Press Main Menu to return to the main menu and continue");
         label2.setBounds(5, 25, 400, 15);
 
         JLabel label3 = new JLabel();
@@ -555,11 +555,11 @@ class YouCanBill {
         label4.setBounds(10, 60, 400, 15);
 
         JLabel label5 = new JLabel();
-        label5.setText("your preffered payment type.");
+        label5.setText("your preferred payment type.");
         label5.setBounds(25, 80, 400, 15);
 
         JLabel label6 = new JLabel();
-        label6.setText("1. Once done, choose whether you are paying for the bill,");
+        label6.setText("2. Once done, choose whether you are paying for the bill,");
         label6.setBounds(10, 100, 400, 15);
 
         JLabel label7 = new JLabel();
@@ -571,7 +571,7 @@ class YouCanBill {
         label8.setBounds(10, 140, 400, 15);
 
         JLabel label9 = new JLabel();
-        label9.setText("(only JPG or JPEG images are allowed), or add whoever");
+        label9.setText("(only JPG or JPEG images are allowed), or first add whoever");
         label9.setBounds(25, 160, 400, 15);
 
         JLabel label10 = new JLabel();
