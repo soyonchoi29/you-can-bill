@@ -38,18 +38,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     private JPanel rectangle = new JPanel();
     public JMenu pickPers;
 
-    public static void drawNew(File input) {
-        new ImagePopup().crop(input);
-        try{
-            image = ImageIO.read(input);
-            imageWidth = image.getWidth();
-            imageHeight = image.getHeight();
-            inputFile = input;
-        }
-        catch(IOException error){}
-    }
-
-    public void crop(File input) {
+    public void drawNew(File input) {
         //Creates panel that will contain receipt
         JPanel panel = new JPanel();
         panel.setSize(500,500);
@@ -174,16 +163,16 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     public void drawRect() {
         base.remove(rectangle);
         int width = Math.abs(x1-x2);
-        int height = Math.abs(y1-y2); // https://www.javatpoint.com/java-jlayeredpane
-        rectangle.setBorder(BorderFactory.createLineBorder(Color.black)); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
+        int height = Math.abs(y1-y2);
+        rectangle.setBorder(BorderFactory.createLineBorder(Color.black));
         if (x1-x2 >= 0 && y1-y2 >= 0) {
-            rectangle.setBounds(x2, y2, width, height); // https://coderanch.com/t/632120/java/Add-Rectangle-JFrame
+            rectangle.setBounds(x2, y2, width, height);
         } else if (y1-y2 >= 0) {
-            rectangle.setBounds(x1, y2, width, height); // https://docs.oracle.com/javase/7/docs/api/javax/swing/JLayeredPane.html#moveToFront(java.awt.Component)
+            rectangle.setBounds(x1, y2, width, height);
         } else if (x1-x2 >= 0) {
-            rectangle.setBounds(x2, y1, width, height); // https://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html
+            rectangle.setBounds(x2, y1, width, height);
         } else {
-            rectangle.setBounds(x1, y1, width, height); //https://microeducate.tech/placing-a-transparent-jpanel-on-top-of-another-jpanel-not-working/
+            rectangle.setBounds(x1, y1, width, height);
         }
         rectangle.setOpaque(false);
         rectangle.setVisible(true);
@@ -239,7 +228,7 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
 
     //As mouse is being dragged, record x and y values
     @Override
-    public void mouseDragged (MouseEvent e) {
+    public void mouseDragged(MouseEvent e) {
         this.repaint();
         cropping = false;
         x2 = e.getX()-imagePosition.x;
@@ -259,9 +248,3 @@ public class ImagePopup extends JFrame implements MouseListener, MouseMotionList
     @Override
     public void mouseExited(MouseEvent e) {}
 }
-
-//Based on https://www.javaexercise.com/java/add-an-image-to-a-jpanel
-//https://docs.oracle.com/javase/7/docs/api/java/awt/Image.html#getScaledInstance(int,%20int,%20int)
-// https://mkyong.com/java/how-to-resize-an-image-in-java/
-//https://stackoverflow.com/questions/13605248/java-converting-image-to-bufferedimage
-//https://stackoverflow.com/questions/8639567/java-rotating-images

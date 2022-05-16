@@ -18,3 +18,18 @@ https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseEvent.html
 https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseListener.html
 https://docs.oracle.com/javase/7/docs/api/java/awt/event/MouseMotionListener.html
 Helped me immensely in creating the cropping functionality
+
+https://www.javatpoint.com/java-jlayeredpane
+https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
+https://coderanch.com/t/632120/java/Add-Rectangle-JFrame
+https://docs.oracle.com/javase/7/docs/api/javax/swing/JLayeredPane.html#moveToFront(java.awt.Component)
+https://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html
+https://microeducate.tech/placing-a-transparent-jpanel-on-top-of-another-jpanel-not-working/
+Used to implement drawing a rectangle on top of image
+
+Based on https://www.javaexercise.com/java/add-an-image-to-a-jpanel
+https://docs.oracle.com/javase/7/docs/api/java/awt/Image.html#getScaledInstance(int,%20int,%20int)
+https://mkyong.com/java/how-to-resize-an-image-in-java/
+https://stackoverflow.com/questions/13605248/java-converting-image-to-bufferedimage
+https://stackoverflow.com/questions/8639567/java-rotating-images
+Drawing and displaying image to screen
