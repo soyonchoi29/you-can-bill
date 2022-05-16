@@ -68,16 +68,4 @@ public class RSA {
         return encrypted.modPow(privateKey,modulus);
     }
 
-    public static void main(String[] args) {
-        RSA rsa = new RSA();
-        rsa.encryptAndSave(new BigInteger("5555555555554444"), "Soyon");
-        System.out.println(rsa.decrypt("Soyon"));
-        rsa.encryptAndSave(new BigInteger("5105105105105100"), "Kevin");
-        System.out.println(rsa.decrypt("Kevin"));
-        System.out.println(rsa.decrypt("Soyon"));
-        rsa.encryptAndSave(new BigInteger("4111111111111111"), "Ris");
-        System.out.println(rsa.decrypt("Kevin"));
-        System.out.println(rsa.decrypt("Ris"));
-        System.out.println(rsa.decrypt("Soyon"));
-    }  
 }
