@@ -384,6 +384,10 @@ class YouCanBill {
         infowarning.setBounds(75, 240, 300, 25);
         infowarning.setVisible(false); 
 
+        JLabel numberWarning = new JLabel("Please enter a number between 0-9");
+        numberWarning.setBounds(75, 240, 300, 25);
+        numberWarning.setVisible(false); 
+
         //Credit Card name information
         JLabel ccname = new JLabel("Enter Name on Credit Card");
         ccname.setBounds(20, 50, 300, 30);
@@ -401,11 +405,18 @@ class YouCanBill {
                 if(ccnameTF.getText().isEmpty()) {
                     ccname.setForeground(Color.RED);
                     infowarning.setVisible(true);
+                    if(numberWarning.getY() == 260) {
+                        infowarning.setBounds(75, 240, 300, 25);
+                    } else {
+                        infowarning.setBounds(75, 260, 300, 25);
+                    }
                 } else {
                     String newText = "";
                     for(int i = ccnameTF.getText().length(); i > 0; i--) {
                         newText = newText + "*";
                     }
+                    infowarning.setBounds(75, 240, 300, 25);
+                    numberWarning.setBounds(75, 240, 300, 25);
                     ccnameTF.setText(newText);
                     ccname.setForeground(Color.BLACK);
                     infowarning.setVisible(false);
@@ -420,10 +431,6 @@ class YouCanBill {
         JTextField ccnumberTF = new JTextField();//name text field
         ccnumberTF.setBounds(20, 170, 175, 30);
 
-        JLabel numberWarning = new JLabel("Please enter a number between 0-9");
-        numberWarning.setBounds(75, 240, 300, 25);
-        numberWarning.setVisible(false); 
-
         JButton ccnumberButton = new JButton("Enter");
         ccnumberButton.setBounds(200, 173, 90, 25);
         ccnumberButton.setForeground(Color.BLACK);
@@ -436,8 +443,13 @@ class YouCanBill {
                     infowarning.setVisible(true);
                 } else if(!ccnumberTF.getText().matches("[0-9]+")) { 
                     if(infowarning.isVisible()) {
-                        infowarning.setVisible(false);
+                        if(infowarning.getY() == 260) {
+                            numberWarning.setBounds(75, 240, 300, 25);
+                        } else {
+                            numberWarning.setBounds(75, 260, 300, 25);
+                        }
                     }
+                    ccnumber.setForeground(Color.RED);
                     numberWarning.setVisible(true);
                 } else {
                     BigInteger ccnumberBI = new BigInteger(ccnumberTF.getText());
@@ -446,7 +458,10 @@ class YouCanBill {
                     for(int i = ccnumberTF.getText().length(); i > 0; i--) {
                         newText = newText + "*";
                     }
+                    infowarning.setBounds(75, 240, 300, 25);
+                    numberWarning.setBounds(75, 240, 300, 25);
                     ccnumberTF.setText(newText);
+                    numberWarning.setVisible(false);
                     ccnumber.setForeground(Color.BLACK);
                     infowarning.setVisible(false);
                 }
