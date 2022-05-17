@@ -417,9 +417,12 @@ class YouCanBill {
         JLabel ccnumber = new JLabel("Enter Credit Card Number");
         ccnumber.setBounds(20, 140, 300, 30);
 
-
         JTextField ccnumberTF = new JTextField();//name text field
         ccnumberTF.setBounds(20, 170, 175, 30);
+
+        JLabel numberWarning = new JLabel("Please enter a number between 0-9");
+        numberWarning.setBounds(75, 240, 300, 25);
+        numberWarning.setVisible(false); 
 
         JButton ccnumberButton = new JButton("Enter");
         ccnumberButton.setBounds(200, 173, 90, 25);
@@ -431,6 +434,11 @@ class YouCanBill {
                 if(ccnumberTF.getText().isEmpty()) {
                     ccnumber.setForeground(Color.RED);
                     infowarning.setVisible(true);
+                } else if(!ccnumberTF.getText().matches("[0-9]+")) { 
+                    if(infowarning.isVisible()) {
+                        infowarning.setVisible(false);
+                    }
+                    numberWarning.setVisible(true);
                 } else {
                     BigInteger ccnumberBI = new BigInteger(ccnumberTF.getText());
                     rsa.encryptAndSave(ccnumberBI, ccnameinfo);
@@ -494,6 +502,7 @@ class YouCanBill {
         });
 
 
+        ccbilling.add(numberWarning);
         ccbilling.add(ccdone);
         ccbilling.add(infowarning);
         ccbilling.add(addccinfo);
