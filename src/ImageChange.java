@@ -6,11 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.lang.Math;
-import java.lang.ProcessBuilder.Redirect.Type;
-import java.util.ArrayList;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 
 public class ImageChange {
     public static void imageCrop (BufferedImage originalImage, int x, int y, int width, int height, String name){

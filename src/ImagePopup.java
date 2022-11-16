@@ -1,11 +1,8 @@
 import java.awt.image.BufferedImage;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.management.DescriptorKey;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,15 +10,11 @@ import javax.swing.JPanel;
 import java.lang.Math;
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.*;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseAdapter;
 
 public class ImagePopup extends JFrame implements MouseListener, MouseMotionListener {
     private boolean cropping = false;

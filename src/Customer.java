@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public interface Customer {
     public static ArrayList<Item> receiptItems = new ArrayList<Item>();
